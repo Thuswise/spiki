@@ -5,7 +5,7 @@ name = "speechmark"
 version = "0.10.0"
 description = "A markup language for Speech and Dialogue."
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 keywords = ["markup"]
 authors = [
     {name = "Tundish", email = "tundish@gigeconomy.org.uk"}
@@ -15,14 +15,20 @@ maintainers = [
 ]
 license = "LGPL-3.0-or-later"
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Programming Language :: Python"
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = [
-    "tomli >= 2.0.0; python_version < '3.11'"
 ]
+
+[project.urls]
+
+[project.scripts]
+speechmark = "speechmark.main:run"
 
 [tool.black]
 line-length = 96
-target-version = ["py310"]
+target-version = ["py311"]
 

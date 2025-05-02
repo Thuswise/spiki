@@ -2,7 +2,7 @@
 #   encoding: utf-8
 
 # This is part of the speechmark library.
-# Copyright (C) 2023 D E Haynes
+# Copyright (C) 2025 D E Haynes
 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
