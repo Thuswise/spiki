@@ -21,6 +21,10 @@
 
 import unittest
 
+"""
+https://stackoverflow.com/questions/61679282/create-web-server-using-only-standard-library
+https://html.spec.whatwg.org/multipage/
+"""
 
 class RendererTests(unittest.TestCase):
 
