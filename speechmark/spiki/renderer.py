@@ -48,7 +48,7 @@ class Renderer:
             blocks=self.handle_blocks,
             config=self.handle_config,
         )
-        self.state = SimpleNamespace(tag=None, attrib={}, config=ChainMap(config or dict()))
+        self.state = SimpleNamespace(attrib={}, blocks=[], config=ChainMap(config or dict()))
         self.sm = SpeechMark()
 
     @classmethod
@@ -70,6 +70,15 @@ class Renderer:
                 continue
 
         state.config = state.config.new_child(val)
+        return state
+
+    @classmethod
+    def handle_dict(cls, state, key: str, val: dict):
+        state.attrib = val
+        return state
+
+    @classmethod
+    def handle_list(cls, state, key: str, val: list):
         return state
 
     def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
@@ -97,6 +106,34 @@ class Renderer:
                     yield from self.walk(item, path + [key, n])
             else:
                 yield path, f"<{key}{attrs}>{val}</{key}>"
+
+    def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
+        path = path or list()
+        context = context or dict()
+
+        # For each table:
+        # + Pop config
+        # + Pop attrib
+        # + Pop blocks
+        # For each remaining item:
+        #   + Render all string values
+        #   + Recurse over dict values
+        #   + Recurse for each entry in list values
+        self.state.attrib = tree.pop("attrib", {})
+        self.state.blocks = tree.pop("blocks", [])
+        self.state.config = self.state.config.new_child(tree.pop("config", {}))
+
+        pool = [(k, v) for k, v in tree.items() if isinstance(v, str)]
+        for k, v in pool:
+            pass
+
+        pool = [(k, v) for k, v in tree.items() if isinstance(v, list)]
+        for k, v in pool:
+            pass
+
+        pool = [(k, v) for k, v in tree.items() if isinstance(v, dict)]
+        for k, v in pool:
+            pass
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
