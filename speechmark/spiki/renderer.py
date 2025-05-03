@@ -119,9 +119,15 @@ class Renderer:
         #   + Render all string values
         #   + Recurse over dict values
         #   + Recurse for each entry in list values
+        print(f"{tree=}", file=sys.stderr)
         self.state.attrib = tree.pop("attrib", {})
         self.state.blocks = tree.pop("blocks", [])
         self.state.config = self.state.config.new_child(tree.pop("config", {}))
+
+        attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
+
+        if path:
+            yield f"<{path[-1]}{attrs}>"
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, str)]
         for k, v in pool:
@@ -129,18 +135,22 @@ class Renderer:
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, list)]
         for k, v in pool:
-            pass
+            for item in v:
+                yield from self.walk(item, path=path, context=context)
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, dict)]
         for k, v in pool:
-            pass
+            path.append(k)
+            yield from self.walk(v, path=path, context=context)
+
+        if path:
+            yield f"</{path[-1]}>"
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
         buf = buf or list()
         context = copy.deepcopy(self.template)
         tree = context.pop("doc", dict())
-        for path, text in self.walk(tree, context=context):
-            print(path, file=sys.stderr)
+        for text in self.walk(tree, context=context):
             buf.append(text)
         return "\n".join(filter(None, buf))
