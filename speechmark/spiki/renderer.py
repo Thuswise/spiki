@@ -55,19 +55,31 @@ class Renderer:
     def handle_default(self, val: dict):
         pass
 
-    def walk(self, tree: dict, path: list = None) -> Generator[str]:
+    def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
         path = path or list()
-        for key, val in tree.items():
+        context = context or dict()
+        for key, val in (tree or dict()).items():
+            try:
+                handler = self.handlers.get(key.lower(), self.handle_default)
+            except AttributeError:
+                handler = self.handlers.get(key, self.handle_default)
+
             if isinstance(val, dict):
+                val = handler(val)
                 yield from self.walk(val, path[:] + [key])
             elif isinstance(val, list):
                 for n, item in enumerate(val):
+                    item = handler(item)
                     yield from self.walk(item, path[:] + [n])
             else:
-                yield path[:] + [key], val
+                entry = handler(val.format(**context))
+                yield path[:] + [key], entry
 
-    def serialize(self, template: dict = None) -> str:
+    def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
-        for node in self.walk(template):
-            print(f"{node=}")
-        return ""
+        buf = buf or list()
+        context = self.template.copy()
+        tree = context.pop("doc", dict())
+        for path, text in self.walk(tree, context=context):
+            buf.append(text)
+        return "".join(filter(None, buf))
