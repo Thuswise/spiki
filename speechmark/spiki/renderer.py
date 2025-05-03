@@ -26,7 +26,9 @@ https://html.spec.whatwg.org/multipage/
 
 from collections import ChainMap
 from collections.abc import Generator
+import copy
 import enum
+import html
 import sys
 from types import SimpleNamespace
 import warnings
@@ -46,7 +48,7 @@ class Renderer:
             blocks=self.handle_blocks,
             config=self.handle_config,
         )
-        self.state = SimpleNamespace(tag=None, attrib=None, config=ChainMap(config or dict()))
+        self.state = SimpleNamespace(tag=None, attrib={}, config=ChainMap(config or dict()))
         self.sm = SpeechMark()
 
     @classmethod
@@ -83,22 +85,23 @@ class Renderer:
             else:
                 self.state = handler(self.state, key, val)
 
+        attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
         for key, val in (tree or dict()).items():
             if isinstance(val, dict):
-                # TODO: attrtibs
-                yield path, f"<{key}>"
+                yield path, f"<{key}{attrs}>"
+                self.state.attrib = {}
                 yield from self.walk(val, path + [key])
                 yield path, f"</{key}>"
             elif isinstance(val, list):
                 for n, item in enumerate(val):
                     yield from self.walk(item, path + [key, n])
             else:
-                yield path, f"<{key}>{val}</{key}>"
+                yield path, f"<{key}{attrs}>{val}</{key}>"
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
         buf = buf or list()
-        context = self.template.copy()
+        context = copy.deepcopy(self.template)
         tree = context.pop("doc", dict())
         for path, text in self.walk(tree, context=context):
             print(path, file=sys.stderr)
