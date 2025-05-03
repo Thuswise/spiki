@@ -126,8 +126,11 @@ class Renderer:
 
         attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
 
-        if path and isinstance(path[-1], str):
-            yield f"<{path[-1]}{attrs}>"
+        try:
+            tag = next(i for i in reversed(path) if isinstance(i, str))
+            yield f"<{tag}{attrs}>"
+        except StopIteration:
+            pass
 
         pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
         for node, entry in pool:
@@ -142,8 +145,11 @@ class Renderer:
         for node, entry in pool:
             yield from self.walk(entry, path=path + [node], context=context)
 
-        if path and isinstance(path[-1], str):
-            yield f"</{path.pop(-1)}>"
+        try:
+            tag = next(i for i in reversed(path) if isinstance(i, str))
+            yield f"</{tag}>"
+        except StopIteration:
+            pass
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
