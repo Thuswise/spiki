@@ -28,6 +28,16 @@ from speechmark.spiki.renderer import Renderer
 
 class RendererTests(unittest.TestCase):
 
+    def test_config_option(self):
+        toml = textwrap.dedent("""
+        [doc]
+        config = {tag_mode = "invalid"}
+        """)
+        template = tomllib.loads(toml)
+        r = Renderer()
+        with self.assertWarns(UserWarning) as context:
+            r.serialize(template)
+
     def test_head(self):
         test = "Essential head content"
         goal = textwrap.dedent(f"""
@@ -38,7 +48,7 @@ class RendererTests(unittest.TestCase):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <head>
+        </head>
         </html>
         """).strip()
 

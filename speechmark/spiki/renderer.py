@@ -28,6 +28,7 @@ from collections import ChainMap
 from collections.abc import Generator
 import enum
 from types import SimpleNamespace
+import warnings
 
 from speechmark.speechmark import SpeechMark
 
@@ -41,47 +42,58 @@ class Renderer:
         self.template = template or dict()
         self.handlers = dict(
             attrib=self.handle_attrib,
-            blocks=self.handle_attrib,
-            config=self.handle_attrib,
+            blocks=self.handle_blocks,
+            config=self.handle_config,
         )
         self.state = SimpleNamespace(tag=None, attrib=None, config=ChainMap(config or dict()))
         self.sm = SpeechMark()
 
-    def handle_attrib(self, key: str, val: dict):
-        self.state.attrib = val
-        return None
+    @classmethod
+    def handle_attrib(cls, state, key: str, val: dict):
+        state.attrib = val
+        return state
 
-    def handle_blocks(self, key: str, val: list):
-        self.sm.reset()
-        return None
+    @classmethod
+    def handle_blocks(cls, state, key: str, val: list):
+        return state
 
-    def handle_config(self, key: str, val: dict):
-        self.state.config = self.state.config.new_child(val)
-        return None
+    @classmethod
+    def handle_config(cls, state, key: str, val: dict):
+        for option in cls.Options:
+            try:
+                if val[option.name] not in option.value:
+                    warnings.warn(f"{val[option.name]} is not one of {option.value}")
+            except KeyError:
+                continue
 
-    def handle_default(self, key: str, val: str):
-        self.state.tag = key
-        return val
+        state.config = state.config.new_child(val)
+        return state
 
     def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
         path = path or list()
         context = context or dict()
-        for key, val in (tree or dict()).items():
-            try:
-                handler = self.handlers.get(key.lower(), self.handle_default)
-            except AttributeError:
-                handler = self.handlers.get(key, self.handle_default)
 
+        for key in list(tree):
+            try:
+                handler = self.handlers[key.lower()]
+                val = tree.pop(key)
+            except KeyError:
+                continue
+            else:
+                self.state = handler(self.state, key, val)
+
+        for key, val in (tree or dict()).items():
             if isinstance(val, dict):
-                val = handler(key, val)
                 yield from self.walk(val, path[:] + [key])
             elif isinstance(val, list):
                 for n, item in enumerate(val):
-                    item = handler(key, item)
                     yield from self.walk(item, path[:] + [n])
             else:
-                entry = handler(key, val.format(**context))
-                yield path[:] + [key], f"<{self.state.tag}>{entry}</{self.state.tag}>"
+                yield path[:] + [key], f"<{key}>{val}</{key}>"
+                try:
+                    yield path, f"</{path[-1]}>"
+                except IndexError:
+                    pass
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
