@@ -28,6 +28,18 @@ https://stackoverflow.com/questions/61679282/create-web-server-using-only-standa
 https://html.spec.whatwg.org/multipage/
 """
 
+from collections import ChainMap
+import enum
+
+class Renderer:
+
+    class Options(enum.Enum):
+        tag_style = ["open", "pair", "void"]
+
+    def __init__(self, config: dict = None):
+        self.config = ChainMap(config or dict())
+
+
 class RendererTests(unittest.TestCase):
 
     def test_head(self):
@@ -46,9 +58,10 @@ class RendererTests(unittest.TestCase):
 
         toml = textwrap.dedent("""
         [doc]
+        config = {tag_style = "lead"}
+
         "!doctype" = "html"
 
-        [doc.config]
 
         [doc.html.head]
         title = ""
