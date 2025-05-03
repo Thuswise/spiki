@@ -126,25 +126,24 @@ class Renderer:
 
         attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
 
-        if path:
+        if path and isinstance(path[-1], str):
             yield f"<{path[-1]}{attrs}>"
 
-        pool = [(k, v) for k, v in tree.items() if isinstance(v, str)]
-        for k, v in pool:
-            pass
+        pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
+        for node, entry in pool:
+            yield f"<{node}{attrs}>{entry}</{node}>"
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, list)]
-        for k, v in pool:
-            for item in v:
-                yield from self.walk(item, path=path, context=context)
+        for node, entry in pool:
+            for n, item in enumerate(entry):
+                yield from self.walk(item, path=path + [node, n], context=context)
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, dict)]
-        for k, v in pool:
-            path.append(k)
-            yield from self.walk(v, path=path, context=context)
+        for node, entry in pool:
+            yield from self.walk(entry, path=path + [node], context=context)
 
-        if path:
-            yield f"</{path[-1]}>"
+        if path and isinstance(path[-1], str):
+            yield f"</{path.pop(-1)}>"
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
