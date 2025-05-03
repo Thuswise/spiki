@@ -19,6 +19,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 # USA
 
+import textwrap
+import tomllib
 import unittest
 
 """
@@ -27,6 +29,32 @@ https://html.spec.whatwg.org/multipage/
 """
 
 class RendererTests(unittest.TestCase):
+
+    def test_head(self):
+        test = "Essential head content"
+        goal = textwrap.dedent(f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{test}</title>
+        <head>
+        </html>
+        """).strip()
+
+        toml = textwrap.dedent("""
+        [doc]
+
+        [doc.html.head]
+        title = ""
+
+        [[doc.html.head.meta]]
+        """)
+
+        template = tomllib.loads(toml)
+        self.fail(goal)
 
     def test_doc_01(self):
         self.fail()
