@@ -31,7 +31,7 @@ class RendererTests(unittest.TestCase):
     def test_head(self):
         test = "Essential head content"
         goal = textwrap.dedent(f"""
-        <!DOCTYPE html>
+        <!doctype html>
         <html lang="en">
         <head>
         <title>{test}</title>

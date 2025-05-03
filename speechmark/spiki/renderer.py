@@ -27,6 +27,9 @@ https://html.spec.whatwg.org/multipage/
 from collections import ChainMap
 from collections.abc import Generator
 import enum
+from types import SimpleNamespace
+
+from speechmark.speechmark import SpeechMark
 
 
 class Renderer:
@@ -36,24 +39,29 @@ class Renderer:
 
     def __init__(self, template: dict = None, *, config: dict = None):
         self.template = template or dict()
-        self.config = ChainMap(config or dict())
         self.handlers = dict(
             attrib=self.handle_attrib,
             blocks=self.handle_attrib,
             config=self.handle_attrib,
         )
+        self.state = SimpleNamespace(tag=None, attrib=None, config=ChainMap(config or dict()))
+        self.sm = SpeechMark()
 
-    def handle_attrib(self, val: dict):
-        pass
+    def handle_attrib(self, key: str, val: dict):
+        self.state.attrib = val
+        return None
 
-    def handle_blocks(self, val: list):
-        pass
+    def handle_blocks(self, key: str, val: list):
+        self.sm.reset()
+        return None
 
-    def handle_config(self, val: dict):
-        pass
+    def handle_config(self, key: str, val: dict):
+        self.state.config = self.state.config.new_child(val)
+        return None
 
-    def handle_default(self, val: dict):
-        pass
+    def handle_default(self, key: str, val: str):
+        self.state.tag = key
+        return val
 
     def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
         path = path or list()
@@ -65,15 +73,15 @@ class Renderer:
                 handler = self.handlers.get(key, self.handle_default)
 
             if isinstance(val, dict):
-                val = handler(val)
+                val = handler(key, val)
                 yield from self.walk(val, path[:] + [key])
             elif isinstance(val, list):
                 for n, item in enumerate(val):
-                    item = handler(item)
+                    item = handler(key, item)
                     yield from self.walk(item, path[:] + [n])
             else:
-                entry = handler(val.format(**context))
-                yield path[:] + [key], entry
+                entry = handler(key, val.format(**context))
+                yield path[:] + [key], f"<{self.state.tag}>{entry}</{self.state.tag}>"
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
