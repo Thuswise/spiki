@@ -46,6 +46,9 @@ class RendererTests(unittest.TestCase):
 
         toml = textwrap.dedent("""
         [doc]
+        "!doctype" = "html"
+
+        [doc.config]
 
         [doc.html.head]
         title = ""
