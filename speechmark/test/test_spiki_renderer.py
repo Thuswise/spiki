@@ -23,21 +23,7 @@ import textwrap
 import tomllib
 import unittest
 
-"""
-https://stackoverflow.com/questions/61679282/create-web-server-using-only-standard-library
-https://html.spec.whatwg.org/multipage/
-"""
-
-from collections import ChainMap
-import enum
-
-class Renderer:
-
-    class Options(enum.Enum):
-        tag_style = ["open", "pair", "void"]
-
-    def __init__(self, config: dict = None):
-        self.config = ChainMap(config or dict())
+from speechmark.spiki.renderer import Renderer
 
 
 class RendererTests(unittest.TestCase):
@@ -48,25 +34,26 @@ class RendererTests(unittest.TestCase):
         <!DOCTYPE html>
         <html lang="en">
         <head>
+        <title>{test}</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>{test}</title>
         <head>
         </html>
         """).strip()
 
         toml = textwrap.dedent("""
         [doc]
-        config = {tag_style = "lead"}
+        config = {tag_mode = "open"}
 
         "!doctype" = "html"
 
-
         [doc.html.head]
+        config = {tag_mode = "pair"}
         title = ""
 
         [[doc.html.head.meta]]
+        config = {tag_mode = "void"}
         """)
 
         template = tomllib.loads(toml)
