@@ -69,7 +69,7 @@ class RendererTests(unittest.TestCase):
         template = tomllib.loads(toml)
         template["doc"]["html"]["head"]["title"] = test
         rv = Renderer().serialize(template)
-        self.assertEqual(rv, goal)
+        self.assertEqual(rv, goal, template)
 
     def test_doc_01(self):
         self.fail()

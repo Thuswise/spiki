@@ -88,15 +88,12 @@ class Renderer:
                 # TODO: attrtibs
                 yield path, f"<{key}>"
                 yield from self.walk(val, path + [key])
+                yield path, f"</{key}>"
             elif isinstance(val, list):
                 for n, item in enumerate(val):
                     yield from self.walk(item, path + [key, n])
             else:
                 yield path, f"<{key}>{val}</{key}>"
-                try:
-                    yield path, f"</{path[-1]}>"
-                except IndexError:
-                    pass
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
@@ -106,4 +103,4 @@ class Renderer:
         for path, text in self.walk(tree, context=context):
             print(path, file=sys.stderr)
             buf.append(text)
-        return "".join(filter(None, buf))
+        return "\n".join(filter(None, buf))
