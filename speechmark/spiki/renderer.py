@@ -25,6 +25,7 @@ https://html.spec.whatwg.org/multipage/
 """
 
 from collections import ChainMap
+from collections.abc import Generator
 import enum
 
 
@@ -33,7 +34,40 @@ class Renderer:
     class Options(enum.Enum):
         tag_mode = ["open", "pair", "void"]
 
-    def __init__(self, config: dict = None):
+    def __init__(self, template: dict = None, *, config: dict = None):
+        self.template = template or dict()
         self.config = ChainMap(config or dict())
+        self.handlers = dict(
+            attrib=self.handle_attrib,
+            blocks=self.handle_attrib,
+            config=self.handle_attrib,
+        )
 
+    def handle_attrib(self, val: dict):
+        pass
 
+    def handle_blocks(self, val: list):
+        pass
+
+    def handle_config(self, val: dict):
+        pass
+
+    def handle_default(self, val: dict):
+        pass
+
+    def walk(self, tree: dict, path: list = None) -> Generator[str]:
+        path = path or list()
+        for key, val in tree.items():
+            if isinstance(val, dict):
+                yield from self.walk(val, path[:] + [key])
+            elif isinstance(val, list):
+                for n, item in enumerate(val):
+                    yield from self.walk(item, path[:] + [n])
+            else:
+                yield path[:] + [key], val
+
+    def serialize(self, template: dict = None) -> str:
+        self.template.update(template or dict())
+        for node in self.walk(template):
+            print(f"{node=}")
+        return ""

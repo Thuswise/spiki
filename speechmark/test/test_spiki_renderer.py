@@ -46,7 +46,7 @@ class RendererTests(unittest.TestCase):
         [doc]
         config = {tag_mode = "open"}
 
-        "!doctype" = "html"
+        "!doctype html" = ""
 
         [doc.html.head]
         config = {tag_mode = "pair"}
@@ -57,7 +57,9 @@ class RendererTests(unittest.TestCase):
         """)
 
         template = tomllib.loads(toml)
-        self.fail(goal)
+        template["doc"]["html"]["head"]["title"] = test
+        rv = Renderer().serialize(template)
+        self.assertEqual(rv, goal)
 
     def test_doc_01(self):
         self.fail()
