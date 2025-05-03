@@ -27,6 +27,7 @@ https://html.spec.whatwg.org/multipage/
 from collections import ChainMap
 from collections.abc import Generator
 import enum
+import sys
 from types import SimpleNamespace
 import warnings
 
@@ -84,12 +85,14 @@ class Renderer:
 
         for key, val in (tree or dict()).items():
             if isinstance(val, dict):
-                yield from self.walk(val, path[:] + [key])
+                # TODO: attrtibs
+                yield path, f"<{key}>"
+                yield from self.walk(val, path + [key])
             elif isinstance(val, list):
                 for n, item in enumerate(val):
-                    yield from self.walk(item, path[:] + [n])
+                    yield from self.walk(item, path + [key, n])
             else:
-                yield path[:] + [key], f"<{key}>{val}</{key}>"
+                yield path, f"<{key}>{val}</{key}>"
                 try:
                     yield path, f"</{path[-1]}>"
                 except IndexError:
@@ -101,5 +104,6 @@ class Renderer:
         context = self.template.copy()
         tree = context.pop("doc", dict())
         for path, text in self.walk(tree, context=context):
+            print(path, file=sys.stderr)
             buf.append(text)
         return "".join(filter(None, buf))
