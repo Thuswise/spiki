@@ -86,13 +86,16 @@ class RendererTests(unittest.TestCase):
         rv = Renderer().serialize(template)
         self.assertEqual(rv, goal, template)
 
-    def test_blocks(self):
+    def test_block(self):
         test = "Single speech block"
-        toml = textwrap.dedent(f"""
+        toml = textwrap.dedent("""
         [doc]
 
+        [doc.html]
+        config = {tag_mode = "pair"}
+
         [doc.html.head]
-        title = "{test}"
+        title = ""
 
         [doc.html.body]
         blocks = [
@@ -109,4 +112,36 @@ class RendererTests(unittest.TestCase):
         template = tomllib.loads(toml)
         template["doc"]["html"]["head"]["title"] = test
         rv = Renderer().serialize(template)
-        self.fail(rv)
+        self.assertTrue(rv.startswith("<html>"))
+        self.assertTrue(rv.endswith("</html>"))
+        self.assertIn("<body>", rv)
+        self.assertIn("</body>", rv)
+        block = rv[rv.index("<blockquote"):rv.index("</blockquote>")]
+        for tag in [
+            "<cite", "</cite>", "<ol", '<li id="1"', '<li id="2"', '<li id="3"', "</ol>",
+        ]:
+            self.assertIn(tag, block)
+
+    def test_context(self):
+        test = "Test context & substitution"
+        toml = textwrap.dedent("""
+        [metadata]
+
+        [doc]
+
+        [doc.html]
+        config = {tag_mode = "pair"}
+
+        [doc.html.head]
+        title = "{metadata[title]}"
+
+        """)
+        template = tomllib.loads(toml)
+        template["metadata"]["title"] = test
+        rv = Renderer().serialize(template)
+        self.assertTrue(rv.startswith("<html>"))
+        self.assertTrue(rv.endswith("</html>"))
+        self.assertIn("<head>", rv)
+        self.assertIn("</head>", rv)
+        self.assertIn("<title>Test context &amp; substitution</title>", rv)
+

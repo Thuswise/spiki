@@ -80,8 +80,13 @@ class Renderer:
         except StopIteration:
             pass
 
+        for block in self.state.blocks:
+            yield from self.sm.feed(block.strip(), terminate=True)
+            self.sm.reset()
+
         pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
         for node, entry in pool:
+            entry = html.escape(entry.format(**context))
             if tag_mode == "open":
                 yield f"<{node}{attrs}>"
             elif tag_mode == "pair":
