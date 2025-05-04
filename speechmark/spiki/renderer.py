@@ -64,14 +64,6 @@ class Renderer:
         path = path or list()
         context = context or dict()
 
-        # For each table:
-        # + Pop config
-        # + Pop attrib
-        # + Pop blocks
-        # For each remaining item:
-        #   + Render all string values
-        #   + Recurse over dict values
-        #   + Recurse for each entry in list values
         self.state.attrib = tree.pop("attrib", {})
         self.state.blocks = tree.pop("blocks", [])
         self.state.config = self.state.config.new_child(self.check_config(tree.pop("config", {}), self.Options))
@@ -81,7 +73,6 @@ class Renderer:
 
         try:
             tag = next(i for i in reversed(path) if isinstance(i, str))
-            print(path, tag, tag_mode)
             if tag_mode in ["open", "pair"]:
                 yield f"<{tag}{attrs}>"
             elif tag_mode == "void":

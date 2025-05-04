@@ -74,6 +74,11 @@ class RendererTests(unittest.TestCase):
         [[doc.html.head.meta]]
         config = {tag_mode = "void"}
         attrib = {name = "viewport", content = "width=device-width, initial-scale=1.0"}
+
+        [[doc.html.head.meta]]
+        config = {tag_mode = "open"}
+        attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
+
         """)
 
         template = tomllib.loads(toml)
@@ -81,5 +86,5 @@ class RendererTests(unittest.TestCase):
         rv = Renderer().serialize(template)
         self.assertEqual(rv, goal, template)
 
-    def test_doc_01(self):
+    def test_blocks(self):
         self.fail()
