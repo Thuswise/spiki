@@ -46,20 +46,18 @@ class Renderer:
         self.state = SimpleNamespace(attrib={}, blocks=[], config=ChainMap(config or dict()))
         self.sm = SpeechMark()
 
-    @classmethod
-    def handle_config(cls, state, key: str, val: dict):
-        for option in cls.Options:
+    @staticmethod
+    def check_config(config: dict, options: enum.Enum):
+        for option in options:
             try:
-                if val[option.name] not in option.value:
-                    warnings.warn(f"{val[option.name]} is not one of {option.value}")
+                if config[option.name] not in option.value:
+                    warnings.warn(f"{config[option.name]} is not one of {option.value}")
             except KeyError:
                 continue
-
-        state.config = state.config.new_child(val)
-        return state
+        return config
 
     def get_option(self, option: "Option"):
-        rv = self.state.config[option.name]
+        rv = self.state.config.get(option.name, None)
         return rv in option.value and rv
 
     def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
@@ -76,7 +74,7 @@ class Renderer:
         #   + Recurse for each entry in list values
         self.state.attrib = tree.pop("attrib", {})
         self.state.blocks = tree.pop("blocks", [])
-        self.state.config = self.state.config.new_child(tree.pop("config", {}))
+        self.state.config = self.state.config.new_child(self.check_config(tree.pop("config", {}), self.Options))
 
         attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
         tag_mode = self.get_option(self.Options.tag_mode)
