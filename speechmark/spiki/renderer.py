@@ -81,6 +81,10 @@ class Renderer:
     def handle_list(cls, state, key: str, val: list):
         return state
 
+    def get_option(self, option: "Option"):
+        rv = self.state.config[option.name]
+        return rv in option.value and rv
+
     def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
         path = path or list()
         context = context or dict()
@@ -119,12 +123,13 @@ class Renderer:
         #   + Render all string values
         #   + Recurse over dict values
         #   + Recurse for each entry in list values
-        print(f"{tree=}", file=sys.stderr)
         self.state.attrib = tree.pop("attrib", {})
         self.state.blocks = tree.pop("blocks", [])
         self.state.config = self.state.config.new_child(tree.pop("config", {}))
 
         attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
+        tag_mode = self.get_option(self.Options.tag_mode)
+        print(f"{tag_mode=}", file=sys.stderr)
 
         try:
             tag = next(i for i in reversed(path) if isinstance(i, str))
