@@ -59,10 +59,10 @@ class RendererTests(unittest.TestCase):
         "!doctype html" = ""
 
         [doc.html]
+        config = {tag_mode = "pair"}
         attrib = {lang = "en"}
 
         [doc.html.head]
-        config = {tag_mode = "pair"}
         title = ""
 
         [[doc.html.head.meta]]

@@ -43,22 +43,8 @@ class Renderer:
 
     def __init__(self, template: dict = None, *, config: dict = None):
         self.template = template or dict()
-        self.handlers = dict(
-            attrib=self.handle_attrib,
-            blocks=self.handle_blocks,
-            config=self.handle_config,
-        )
         self.state = SimpleNamespace(attrib={}, blocks=[], config=ChainMap(config or dict()))
         self.sm = SpeechMark()
-
-    @classmethod
-    def handle_attrib(cls, state, key: str, val: dict):
-        state.attrib = val
-        return state
-
-    @classmethod
-    def handle_blocks(cls, state, key: str, val: list):
-        return state
 
     @classmethod
     def handle_config(cls, state, key: str, val: dict):
@@ -72,44 +58,9 @@ class Renderer:
         state.config = state.config.new_child(val)
         return state
 
-    @classmethod
-    def handle_dict(cls, state, key: str, val: dict):
-        state.attrib = val
-        return state
-
-    @classmethod
-    def handle_list(cls, state, key: str, val: list):
-        return state
-
     def get_option(self, option: "Option"):
         rv = self.state.config[option.name]
         return rv in option.value and rv
-
-    def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
-        path = path or list()
-        context = context or dict()
-
-        for key in list(tree):
-            try:
-                handler = self.handlers[key.lower()]
-                val = tree.pop(key)
-            except KeyError:
-                continue
-            else:
-                self.state = handler(self.state, key, val)
-
-        attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
-        for key, val in (tree or dict()).items():
-            if isinstance(val, dict):
-                yield path, f"<{key}{attrs}>"
-                self.state.attrib = {}
-                yield from self.walk(val, path + [key])
-                yield path, f"</{key}>"
-            elif isinstance(val, list):
-                for n, item in enumerate(val):
-                    yield from self.walk(item, path + [key, n])
-            else:
-                yield path, f"<{key}{attrs}>{val}</{key}>"
 
     def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
         path = path or list()
@@ -129,17 +80,23 @@ class Renderer:
 
         attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
         tag_mode = self.get_option(self.Options.tag_mode)
-        print(f"{tag_mode=}", file=sys.stderr)
 
         try:
             tag = next(i for i in reversed(path) if isinstance(i, str))
-            yield f"<{tag}{attrs}>"
+            print(path, tag, tag_mode)
+            if tag_mode in ["open", "pair"]:
+                yield f"<{tag}{attrs}>"
         except StopIteration:
             pass
 
         pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
         for node, entry in pool:
-            yield f"<{node}{attrs}>{entry}</{node}>"
+            if tag_mode == "open":
+                yield f"<{node}{attrs}>"
+            elif tag_mode == "pair":
+                yield f"<{node}{attrs}>{entry}</{node}>"
+            elif tag_mode == "void":
+                yield f"<{node}{attrs} />"
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, list)]
         for node, entry in pool:
@@ -152,15 +109,18 @@ class Renderer:
 
         try:
             tag = next(i for i in reversed(path) if isinstance(i, str))
-            yield f"</{tag}>"
+            if tag_mode == "pair":
+                yield f"</{tag}>"
         except StopIteration:
             pass
+
+        self.state.config.maps.pop(0)
 
     def serialize(self, template: dict = None, buf: list = None) -> str:
         self.template.update(template or dict())
         buf = buf or list()
         context = copy.deepcopy(self.template)
         tree = context.pop("doc", dict())
-        for text in self.walk(tree, context=context):
+        for text in self.walk(tree, path=[], context=context):
             buf.append(text)
         return "\n".join(filter(None, buf))
