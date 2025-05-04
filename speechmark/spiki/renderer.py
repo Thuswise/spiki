@@ -81,6 +81,7 @@ class Renderer:
             pass
 
         for block in self.state.blocks:
+            block = block.format(**context)
             yield from self.sm.feed(block.strip(), terminate=True)
             self.sm.reset()
 

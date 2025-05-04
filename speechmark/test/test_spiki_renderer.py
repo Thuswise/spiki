@@ -123,7 +123,7 @@ class RendererTests(unittest.TestCase):
             self.assertIn(tag, block)
 
     def test_context(self):
-        test = "Test context & substitution"
+        test = "Test variable substitution & escaping"
         toml = textwrap.dedent("""
         [metadata]
 
@@ -135,6 +135,9 @@ class RendererTests(unittest.TestCase):
         [doc.html.head]
         title = "{metadata[title]}"
 
+        [doc.html.body]
+        blocks = ["It's vital to {metadata[title]}."]
+
         """)
         template = tomllib.loads(toml)
         template["metadata"]["title"] = test
@@ -143,5 +146,5 @@ class RendererTests(unittest.TestCase):
         self.assertTrue(rv.endswith("</html>"))
         self.assertIn("<head>", rv)
         self.assertIn("</head>", rv)
-        self.assertIn("<title>Test context &amp; substitution</title>", rv)
-
+        self.assertIn("<title>Test variable substitution &amp; escaping</title>", rv)
+        self.assertIn("It's vital to Test variable substitution &amp; escaping.", rv)
