@@ -87,4 +87,26 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(rv, goal, template)
 
     def test_blocks(self):
-        self.fail()
+        test = "Single speech block"
+        toml = textwrap.dedent(f"""
+        [doc]
+
+        [doc.html.head]
+        title = "{test}"
+
+        [doc.html.body]
+        blocks = [
+            '''
+            <STAFF.suggesting#3> What would you like sir? We have some very good fish today.
+                1. Order the Beef Wellington
+                2. Go for the Cottage Pie
+                3. Try the Dover Sole
+
+            '''
+        ]
+
+        """)
+        template = tomllib.loads(toml)
+        template["doc"]["html"]["head"]["title"] = test
+        rv = Renderer().serialize(template)
+        self.fail(rv)
