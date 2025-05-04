@@ -51,7 +51,7 @@ class Renderer:
         for option in options:
             try:
                 if config[option.name] not in option.value:
-                    warnings.warn(f"{config[option.name]} is not one of {option.value}")
+                    warnings.warn(f"'{config[option.name]}' is not one of {option.value}")
             except KeyError:
                 continue
         return config

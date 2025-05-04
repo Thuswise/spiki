@@ -36,7 +36,9 @@ class RendererTests(unittest.TestCase):
         template = tomllib.loads(toml)
         r = Renderer()
         with self.assertWarns(UserWarning) as context:
-            r.serialize(template)
+            rv = r.serialize(template)
+        self.assertFalse(rv)
+        self.assertIn("invalid", format(context.warning))
 
     def test_head(self):
         test = "Essential head content"
@@ -67,6 +69,7 @@ class RendererTests(unittest.TestCase):
 
         [[doc.html.head.meta]]
         config = {tag_mode = "void"}
+        attrib = {charset = "UTF-8"}
         """)
 
         template = tomllib.loads(toml)
