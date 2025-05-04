@@ -76,7 +76,7 @@ class Renderer:
         self.state.blocks = tree.pop("blocks", [])
         self.state.config = self.state.config.new_child(self.check_config(tree.pop("config", {}), self.Options))
 
-        attrs =  (" " + ";".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
+        attrs =  (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
         tag_mode = self.get_option(self.Options.tag_mode)
 
         try:
@@ -84,6 +84,8 @@ class Renderer:
             print(path, tag, tag_mode)
             if tag_mode in ["open", "pair"]:
                 yield f"<{tag}{attrs}>"
+            elif tag_mode == "void":
+                yield f"<{tag}{attrs} />"
         except StopIteration:
             pass
 

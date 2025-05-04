@@ -48,7 +48,7 @@ class RendererTests(unittest.TestCase):
         <head>
         <title>{test}</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         </head>
         </html>
@@ -68,8 +68,12 @@ class RendererTests(unittest.TestCase):
         title = ""
 
         [[doc.html.head.meta]]
-        config = {tag_mode = "void"}
+        config = {tag_mode = "open"}
         attrib = {charset = "UTF-8"}
+
+        [[doc.html.head.meta]]
+        config = {tag_mode = "void"}
+        attrib = {name = "viewport", content = "width=device-width, initial-scale=1.0"}
         """)
 
         template = tomllib.loads(toml)
