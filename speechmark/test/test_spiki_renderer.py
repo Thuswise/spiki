@@ -86,7 +86,7 @@ class RendererTests(unittest.TestCase):
         rv = Renderer().serialize(template)
         self.assertEqual(rv, goal, template)
 
-    def test_block(self):
+    def test_blocks(self):
         test = "Single speech block"
         toml = textwrap.dedent("""
         [doc]
@@ -100,11 +100,17 @@ class RendererTests(unittest.TestCase):
         [doc.html.body]
         blocks = [
             '''
-            <STAFF.suggesting#3> What would you like sir? We have some very good fish today.
+            <STAFF.proposing#3> What would you like sir? We have some very good fish today.
                 1. Order the Beef Wellington
                 2. Go for the Cottage Pie
                 3. Try the Dover Sole
 
+            ''',
+            '''
+            <GUEST.offering> Give me a another minute or two, would you?
+            ''',
+            '''
+            <STAFF.clarifying> Certainly, sir.
             '''
         ]
 
@@ -116,6 +122,8 @@ class RendererTests(unittest.TestCase):
         self.assertTrue(rv.endswith("</html>"))
         self.assertIn("<body>", rv)
         self.assertIn("</body>", rv)
+        self.assertEqual(rv.count("<blockquote"), 3)
+        self.assertEqual(rv.count("</blockquote>"), 3)
         block = rv[rv.index("<blockquote"):rv.index("</blockquote>")]
         for tag in [
             "<cite", "</cite>", "<ol", '<li id="1"', '<li id="2"', '<li id="3"', "</ol>",
