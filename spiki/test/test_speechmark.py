@@ -18,14 +18,14 @@
 import html
 import re
 import textwrap
+import tomllib
 import unittest
 
-import speechmark
-from speechmark import SpeechMark
-from speechmark import tomllib
+import spiki
+from spiki.speechmark import SpeechMark
 
 __doc__ = f"""
-:Version: {speechmark.__version__}
+:Version: {spiki.__version__}
 :Author: D E Haynes
 :Licence: `CC BY-NC-ND <https://creativecommons.org/licenses/by-nc-nd/4.0/>`_ Attribution-NonCommercial-NoDerivs
 
@@ -132,7 +132,7 @@ class Syntax(unittest.TestCase):
     Hyperlinks have two components; the label and the URL.
     The label appears first within square brackets, followed by the URL in parentheses::
 
-        [SpeechMark](https://github.com/tundish/speechmark)
+        [SpeechMark](https://github.com/thuswise/spiki)
 
     Comments
     --------

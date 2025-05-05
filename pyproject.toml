@@ -1,14 +1,14 @@
 # For possible options see https://peps.python.org/pep-0621/
  
 [project]
-name = "speechmark"
-version = "0.10.0"
-description = "A markup language for Speech and Dialogue."
+name = "spiki"
+dynamic = ["version"]
+description = "A Wiki for Speech."
 readme = "README.rst"
 requires-python = ">=3.11"
-keywords = ["markup"]
+keywords = ["wiki", "markup", "speechmark", "template"]
 authors = [
-    {name = "Tundish", email = "tundish@gigeconomy.org.uk"}
+    {name = "D E Haynes"},
 ]
 maintainers = [
     {name = "Tundish", email = "tundish@gigeconomy.org.uk"}
@@ -20,6 +20,7 @@ classifiers = [
     "Environment :: Web Environment",
     "Programming Language :: Python :: 3 :: Only",
 ]
+requires-python = ">=3.11"
 dependencies = [
 ]
 
@@ -28,7 +29,19 @@ dependencies = [
 [project.scripts]
 speechmark = "speechmark.main:run"
 
-[tool.black]
-line-length = 96
-target-version = ["py311"]
+[build-system]
+requires = ["setuptools>=75.0.0"]
+build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+packages = [
+    "spiki",
+    "spiki.test",
+]
+
+[tool.setuptools.package-data]
+spiki = [
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "spiki.__version__"}

@@ -19,7 +19,7 @@ import textwrap
 import tomllib
 import unittest
 
-from speechmark.spiki.renderer import Renderer
+from spiki.renderer import Renderer
 
 
 class RendererTests(unittest.TestCase):

@@ -29,7 +29,7 @@ import sys
 from types import SimpleNamespace
 import warnings
 
-from speechmark.speechmark import SpeechMark
+from spiki.speechmark import SpeechMark
 
 
 class Renderer:
