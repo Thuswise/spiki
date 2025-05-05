@@ -77,7 +77,7 @@ class SpeechMark:
         noescape="!\"',-;{}~",
     ):
         self.cue_matcher = re.compile(
-            """
+            r"""
         ^<                              # Opening bracket
         (?P<role>[^\.:\\?# >]*)         # Role
         (?P<directives>[^\:\\?# >]*)    # Directives
@@ -90,7 +90,7 @@ class SpeechMark:
         )
 
         self.list_matcher = re.compile(
-            """
+            r"""
         ^\s*                            # Leading space
         (?P<ordinal>\+|\d+\.)           # Digits and a dot
         """,
@@ -98,7 +98,7 @@ class SpeechMark:
         )
 
         self.tag_matcher = re.compile(
-            """
+            r"""
         (?P<tag>[`*_])(?P<text>.*?)(?P=tag) # Non-greedy pair
         """,
             re.VERBOSE,
@@ -106,9 +106,9 @@ class SpeechMark:
         self.tagging = {"`": "code", "_": "strong", "*": "em"}
 
         self.link_matcher = re.compile(
-            """
-        \\[(?P<label>[^\\]]*?)\\]       # Non-greedy, permissive
-        \\((?P<link>[^\\)]*?)\\)        # Non-greedy, permissive
+            r"""
+        \[(?P<label>[^\]]*?)\]          # Non-greedy, permissive
+        \((?P<link>[^\)]*?)\)           # Non-greedy, permissive
         """,
             re.VERBOSE,
         )
