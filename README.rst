@@ -1,7 +1,7 @@
 
-:Version: 0.10.0
+:Version: 0.11.0
 :Author: D E Haynes
-
+:Licence: `CC BY-NC-ND <https://creativecommons.org/licenses/by-nc-nd/4.0/>`_ Attribution-NonCommercial-NoDerivs
 
 SpeechMark
 ##########
@@ -15,7 +15,7 @@ Python library
 
 From the command line::
 
-    echo "Hello, World!" | python -m speechmark
+    echo "Hello, World!" | python -m spiki.speechmark
 
     <blockquote>
     <p>
@@ -25,7 +25,7 @@ From the command line::
 
 Parsing text programmatically::
 
-    from speechmark import SpeechMark
+    from spiki.speechmark import SpeechMark
 
     text = '''
     <PHONE.announcing@GUEST,STAFF> Ring riiing!
@@ -56,8 +56,7 @@ SpeechMark takes inspiration from other markup systems already in common use, eg
 * `reStructuredText <https://docutils.sourceforge.io/rst.html>`_
 
 I tried both these systems prior to creating SpeechMark. I found I needed some features which
-Markdown didn't have. RST proved to be overkill for this particular purpose, and the document model
-became an encumbrance.
+Markdown didn't have. On the hand, RST proved to be overkill for my particular purpose.
 
 Philosophy
 ==========
@@ -107,7 +106,7 @@ Hyperlinks
 Hyperlinks have two components; the label and the URL.
 The label appears first within square brackets, followed by the URL in parentheses::
 
-    [SpeechMark](https://github.com/tundish/speechmark)
+    [SpeechMark](https://github.com/thuswise/spiki)
 
 Comments
 --------
@@ -311,10 +310,10 @@ Single instance::
 
 HTML5 output::
 
-            <blockquote>
-            <p><em>Definitely!</em></p>
-            </blockquote>
-        
+    <blockquote>
+    <p><em>Definitely!</em></p>
+    </blockquote>
+
 
 2.02
 ````
@@ -328,10 +327,10 @@ Multiple instances::
 
 HTML5 output::
 
-            <blockquote>
-            <p><em>Definitely</em> <em>Definitely!</em></p>
-            </blockquote>
-        
+    <blockquote>
+    <p><em>Definitely</em> <em>Definitely!</em></p>
+    </blockquote>
+
 
 2.03
 ````
@@ -345,10 +344,10 @@ Single instance::
 
 HTML5 output::
 
-            <blockquote>
-            <p><strong>Warning!</strong></p>
-            </blockquote>
-        
+    <blockquote>
+    <p><strong>Warning!</strong></p>
+    </blockquote>
+
 
 2.04
 ````
@@ -362,10 +361,10 @@ Multiple instances::
 
 HTML5 output::
 
-            <blockquote>
-            <p><strong>Warning</strong> <strong>Warning</strong>!</p>
-            </blockquote>
-        
+    <blockquote>
+    <p><strong>Warning</strong> <strong>Warning</strong>!</p>
+    </blockquote>
+
 
 2.05
 ````
@@ -379,10 +378,10 @@ Single instance::
 
 HTML5 output::
 
-            <blockquote>
-            <p><code>git log</code></p>
-            </blockquote>
-        
+    <blockquote>
+    <p><code>git log</code></p>
+    </blockquote>
+
 
 2.06
 ````
@@ -396,10 +395,10 @@ Multiple instances::
 
 HTML5 output::
 
-            <blockquote>
-            <p><code>git</code> <code>log</code></p>
-            </blockquote>
-        
+    <blockquote>
+    <p><code>git</code> <code>log</code></p>
+    </blockquote>
+
 
 
 3. Hyperlinks
@@ -420,10 +419,10 @@ Single instance::
 
 HTML5 output::
 
-            <blockquote>
-            <p><a href="https://python.org">Python</a></p>
-            </blockquote>
-        
+    <blockquote>
+    <p><a href="https://python.org">Python</a></p>
+    </blockquote>
+
 
 3.02
 ````
@@ -437,10 +436,10 @@ Multiple instances::
 
 HTML5 output::
 
-            <blockquote>
-            <p><a href="https://python.org">Python</a> <a href="https://pypi.org">PyPI</a></p>
-            </blockquote>
-        
+    <blockquote>
+    <p><a href="https://python.org">Python</a> <a href="https://pypi.org">PyPI</a></p>
+    </blockquote>
+
 
 
 4. Comments
@@ -460,10 +459,10 @@ Single instance::
 
 HTML5 output::
 
-            <blockquote>
-            <!-- # TODO -->
-            </blockquote>
-        
+    <blockquote>
+    <!-- # TODO -->
+    </blockquote>
+
 
 
 5. Lists
@@ -479,19 +478,19 @@ item in an unordered list.
 
 Single list::
 
-            + Hat
-            + Gloves
-        
+    + Hat
+    + Gloves
+
 
 HTML5 output::
 
-            <blockquote>
-            <ul>
-            <li><p>Hat</p></li>
-            <li><p>Gloves</p></li>
-            </ul>
-            </blockquote>
-        
+    <blockquote>
+    <ul>
+    <li><p>Hat</p></li>
+    <li><p>Gloves</p></li>
+    </ul>
+    </blockquote>
+
 
 5.02
 ````
@@ -501,19 +500,19 @@ Ordered lists have lines which begin with one or more digits. Then a dot, and at
 
 Single list::
 
-            1. Hat
-            2. Gloves
-        
+    1. Hat
+    2. Gloves
+
 
 HTML5 output::
 
-            <blockquote>
-            <ol>
-            <li id="1"><p>Hat</p></li>
-            <li id="2"><p>Gloves</p></li>
-            </ol>
-            </blockquote>
-        
+    <blockquote>
+    <ol>
+    <li id="1"><p>Hat</p></li>
+    <li id="2"><p>Gloves</p></li>
+    </ol>
+    </blockquote>
+
 
 5.03
 ````
@@ -523,19 +522,19 @@ Ordered list numbering is exactly as declared. No normalization is performed.
 
 Single list::
 
-            01. Hat
-            02. Gloves
-        
+    01. Hat
+    02. Gloves
+
 
 HTML5 output::
 
-            <blockquote>
-            <ol>
-            <li id="01"><p>Hat</p></li>
-            <li id="02"><p>Gloves</p></li>
-            </ol>
-            </blockquote>
-        
+    <blockquote>
+    <ol>
+    <li id="01"><p>Hat</p></li>
+    <li id="02"><p>Gloves</p></li>
+    </ol>
+    </blockquote>
+
 
 
 6. Cues
@@ -563,10 +562,10 @@ Anonymous cue::
 
 HTML5 output::
 
-            <blockquote cite="&lt;&gt;">
-            <p>Once upon a time, far, far away...</p>
-            </blockquote>
-        
+    <blockquote cite="&lt;&gt;">
+    <p>Once upon a time, far, far away...</p>
+    </blockquote>
+
 
 6.03
 ````
@@ -583,11 +582,11 @@ Role only::
 
 HTML5 output::
 
-            <blockquote cite="&lt;PHONE&gt;">
-            <cite data-role="PHONE">PHONE</cite>
-            <p>Ring riiing!</p>
-            </blockquote>
-        
+    <blockquote cite="&lt;PHONE&gt;">
+    <cite data-role="PHONE">PHONE</cite>
+    <p>Ring riiing!</p>
+    </blockquote>
+
 
 6.04
 ````
@@ -605,11 +604,11 @@ Role with mode::
 
 HTML5 output::
 
-            <blockquote cite="&lt;GUEST:thinks&gt;">
-            <cite data-role="GUEST" data-mode=":thinks">GUEST</cite>
-            <p>I wonder if anyone is going to answer that phone.</p>
-            </blockquote>
-        
+    <blockquote cite="&lt;GUEST:thinks&gt;">
+    <cite data-role="GUEST" data-mode=":thinks">GUEST</cite>
+    <p>I wonder if anyone is going to answer that phone.</p>
+    </blockquote>
+
 
 6.05
 ````
@@ -627,11 +626,11 @@ Role with directive::
 
 HTML5 output::
 
-            <blockquote cite="&lt;PHONE.announcing&gt;">
-            <cite data-role="PHONE" data-directives=".announcing">PHONE</cite>
-            <p>Ring riiing!</p>
-            </blockquote>
-        
+    <blockquote cite="&lt;PHONE.announcing&gt;">
+    <cite data-role="PHONE" data-directives=".announcing">PHONE</cite>
+    <p>Ring riiing!</p>
+    </blockquote>
+
 
 6.06
 ````
@@ -649,11 +648,11 @@ Role with directive and recipients::
 
 HTML5 output::
 
-            <blockquote cite="&lt;PHONE.announcing@GUEST,STAFF&gt;">
-            <cite data-role="PHONE" data-directives=".announcing@GUEST,STAFF">PHONE</cite>
-            <p>Ring riiing!</p>
-            </blockquote>
-        
+    <blockquote cite="&lt;PHONE.announcing@GUEST,STAFF&gt;">
+    <cite data-role="PHONE" data-directives=".announcing@GUEST,STAFF">PHONE</cite>
+    <p>Ring riiing!</p>
+    </blockquote>
+
 
 6.07
 ````
@@ -670,11 +669,11 @@ Parameters only::
 
 HTML5 output::
 
-            <blockquote cite="&lt;?pause=3&amp;dwell=0.4&gt;">
-            <cite data-parameters="?pause=3&amp;dwell=0.4"></cite>
-            <p>Above, there is the sound of footsteps.</p>
-            </blockquote>
-        
+    <blockquote cite="&lt;?pause=3&amp;dwell=0.4&gt;">
+    <cite data-parameters="?pause=3&amp;dwell=0.4"></cite>
+    <p>Above, there is the sound of footsteps.</p>
+    </blockquote>
+
 
 6.08
 ````
@@ -688,21 +687,22 @@ They retain all delimiters. The fragments value must be appropriately escaped.
 
 Role with directive and fragment::
 
-            <STAFF.proposing#3> What will you have, sir? The special is fish today.
-                1. Order the Beef Wellington
-                2. Go for the Shepherd's Pie
-                3. Try the Dover Sole
-        
+    <STAFF.proposing#3> What will you have, sir? The special is fish today.
+        1. Order the Beef Wellington
+        2. Go for the Shepherd's Pie
+        3. Try the Dover Sole
+
 
 HTML5 output::
 
-            <blockquote cite="&lt;STAFF.proposing#3&gt;">
-            <cite data-role="STAFF" data-directives=".proposing" data-fragments="#3">STAFF</cite>
-            <p>What will you have, sir? The special is fish today.</p>
-            <ol>
-            <li id="1"><p>Order the Beef Wellington</p></li>
-            <li id="2"><p>Go for the Shepherd's Pie</p></li>
-            <li id="3"><p>Try the Dover Sole</p></li>
-            </ol>
-            </blockquote>
+    <blockquote cite="&lt;STAFF.proposing#3&gt;">
+    <cite data-role="STAFF" data-directives=".proposing" data-fragments="#3">STAFF</cite>
+    <p>What will you have, sir? The special is fish today.</p>
+    <ol>
+    <li id="1"><p>Order the Beef Wellington</p></li>
+    <li id="2"><p>Go for the Shepherd's Pie</p></li>
+    <li id="3"><p>Try the Dover Sole</p></li>
+    </ol>
+    </blockquote>
+
 

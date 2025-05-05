@@ -5,7 +5,6 @@ name = "spiki"
 dynamic = ["version"]
 description = "A Wiki for Speech."
 readme = "README.rst"
-requires-python = ">=3.11"
 keywords = ["wiki", "markup", "speechmark", "template"]
 authors = [
     {name = "D E Haynes"},
