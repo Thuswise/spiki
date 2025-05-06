@@ -1,10 +1,30 @@
 import argparse
+from collections import ChainMap
+from collections.abc import Generator
+import decimal
 import pathlib
 import sys
+import tomllib
+
+
+def walk(*paths: list[pathlib.Path]) -> Generator[tuple]:
+    for path in paths:
+        yield from path.resolve().walk()
 
 
 def main(args):
-    print(f"{args=}")
+    index_filename = "index.toml"
+    print(*list(walk(*args.paths)), sep="\n")
+    for node, dirnames, filenames in walk(*args.paths):
+        try:
+            filenames.remove(index_filename)
+            index_path = node.joinpath(index_filename)
+            index_text = index_path.read_text()
+            index = tomllib.loads(index_text, parse_float=decimal.Decimal)
+            index.setdefault("metadata", {})["node"] = index_path
+            print(index)
+        except ValueError:
+            pass
     return 0
 
 

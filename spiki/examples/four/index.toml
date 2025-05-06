@@ -1,9 +1,12 @@
-[doc]
+# Base is a template structure applied to each node doc
+[base]
 "!doctype" = "html"
 
+[base.html.head]
+title = "{metadata[title]}"
+
+[[base.html.head.meta]]
+
+# Doc is the index template itself
 [doc.html.head]
-title = ""
-
-[[doc.html.head.meta]]
-
-[[doc.html.body.section]]
+title = "{metadata[node].parent}"
