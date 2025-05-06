@@ -2,35 +2,41 @@ import argparse
 from collections import ChainMap
 from collections.abc import Generator
 import decimal
-import pathlib
+from pathlib import Path
 import sys
 import tomllib
+import warnings
 
 
-def walk(*paths: list[pathlib.Path]) -> Generator[tuple]:
+def build_index(parent: Path, dirnames: list[str], filenames: list[str], index_name="index.toml"):
+    try:
+        filenames.remove(index_name)
+        index_path = parent.joinpath(index_name)
+        index_text = index_path.read_text()
+        index = tomllib.loads(index_text, parse_float=decimal.Decimal)
+        index.setdefault("metadata", {})["node"] = index_path
+        return index
+    except tomllib.TOMLDecodeError as error:
+        warnings.warn(f"{index_path}: {error}")
+    except ValueError:
+        pass
+
+
+def walk(*paths: list[Path]) -> Generator[tuple]:
     for path in paths:
         yield from path.resolve().walk()
 
 
 def main(args):
-    index_filename = "index.toml"
-    print(*list(walk(*args.paths)), sep="\n")
-    for node, dirnames, filenames in walk(*args.paths):
-        try:
-            filenames.remove(index_filename)
-            index_path = node.joinpath(index_filename)
-            index_text = index_path.read_text()
-            index = tomllib.loads(index_text, parse_float=decimal.Decimal)
-            index.setdefault("metadata", {})["node"] = index_path
-            print(index)
-        except ValueError:
-            pass
+    for parent, dirnames, filenames in walk(*args.paths):
+        index = build_index(parent, dirnames, filenames)
+        print(index)
     return 0
 
 
 def parser():
     rv = argparse.ArgumentParser(usage=__doc__)
-    rv.add_argument("paths", nargs="+", type=pathlib.Path, help="Specify file paths")
+    rv.add_argument("paths", nargs="+", type=Path, help="Specify file paths")
     return rv
 
 
