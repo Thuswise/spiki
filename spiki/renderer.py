@@ -36,6 +36,7 @@ class Renderer:
 
     class Options(enum.Enum):
         tag_mode = ["open", "pair", "void"]
+        block_wrap = ["div", "section", "none"]
 
     def __init__(self, template: dict = None, *, config: dict = None):
         self.template = template or dict()
@@ -66,6 +67,7 @@ class Renderer:
 
         attrs =  (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
         tag_mode = self.get_option(self.Options.tag_mode)
+        block_wrap = self.get_option(self.Options.block_wrap)
 
         try:
             tag = next(i for i in reversed(path) if isinstance(i, str))
@@ -76,10 +78,15 @@ class Renderer:
         except StopIteration:
             pass
 
-        for block in self.state.blocks:
+        for n, block in enumerate(self.state.blocks):
+            if block_wrap:
+                yield f'<{block_wrap} id="{n:02d}">'
             block = block.format(**context)
-            yield from self.sm.feed(block.strip(), terminate=True)
+            for line in self.sm.feed(block.strip(), terminate=True):
+                yield line.replace('<li id="', f'<li id="{n:02d}-')
             self.sm.reset()
+            if block_wrap:
+                yield f"</{block_wrap}>"
 
         pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
         for node, entry in pool:

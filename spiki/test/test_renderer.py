@@ -83,7 +83,7 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(rv, goal, template)
 
     def test_blocks(self):
-        test = "Single speech block"
+        test = "Multiple speech blocks"
         toml = textwrap.dedent("""
         [doc]
 
@@ -122,7 +122,54 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(rv.count("</blockquote>"), 3)
         block = rv[rv.index("<blockquote"):rv.index("</blockquote>")]
         for tag in [
-            "<cite", "</cite>", "<ol", '<li id="1"', '<li id="2"', '<li id="3"', "</ol>",
+            "<cite", "</cite>", "<ol", '<li id="00-1"', '<li id="00-2"', '<li id="00-3"', "</ol>",
+        ]:
+            self.assertIn(tag, block)
+
+    def test_block_wrap(self):
+        test = "Div-wrapped speech blocks"
+        toml = textwrap.dedent("""
+        [doc]
+
+        [doc.html]
+        config = {tag_mode = "pair"}
+
+        [doc.html.head]
+        title = ""
+
+        [doc.html.body]
+        config = {tag_mode = "pair", block_wrap = "div"}
+        blocks = [
+            '''
+            <STAFF.proposing#3> What would you like sir? We have some very good fish today.
+                1. Order the Beef Wellington
+                2. Go for the Cottage Pie
+                3. Try the Dover Sole
+
+            ''',
+            '''
+            <GUEST.offering> Give me a another minute or two, would you?
+            ''',
+            '''
+            <STAFF.clarifying> Certainly, sir.
+            '''
+        ]
+
+        """)
+        template = tomllib.loads(toml)
+        template["doc"]["html"]["head"]["title"] = test
+        rv = Renderer().serialize(template)
+        self.assertTrue(rv.startswith("<html>"))
+        self.assertTrue(rv.endswith("</html>"))
+        self.assertIn("<body>", rv)
+        self.assertIn("</body>", rv)
+        self.assertEqual(rv.count("<div"), 3)
+        self.assertEqual(rv.count("</div>"), 3)
+        self.assertEqual(rv.count("<blockquote"), 3)
+        self.assertEqual(rv.count("</blockquote>"), 3)
+        block = rv[rv.index("<div"):rv.index("</div>")]
+        for tag in [
+            "<cite", "</cite>", "<ol", '<li id="00-1"', '<li id="00-2"', '<li id="00-3"', "</ol>",
         ]:
             self.assertIn(tag, block)
 
