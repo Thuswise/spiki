@@ -71,10 +71,11 @@ class Renderer:
 
         try:
             tag = next(i for i in reversed(path) if isinstance(i, str))
+            params = "" if isinstance(path[-1], int) and tree else attrs
             if tag_mode in ["open", "pair"]:
-                yield f"<{tag}{attrs}>"
+                yield f"<{tag}{params}>"
             elif tag_mode == "void":
-                yield f"<{tag}{attrs} />"
+                yield f"<{tag}{params} />"
         except StopIteration:
             pass
 

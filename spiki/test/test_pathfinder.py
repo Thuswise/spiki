@@ -47,3 +47,5 @@ class PathfinderTests(unittest.TestCase):
         # template = Pathfinder.merge(index, node)
         template = dict(doc=index["base"])
         rv = Renderer().serialize(template)
+        self.assertEqual(rv.count("href"), 1)
+        print(rv)
