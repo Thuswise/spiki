@@ -19,9 +19,31 @@ import textwrap
 import tomllib
 import unittest
 
+from spiki.renderer import Renderer
+
 
 class PathfinderTests(unittest.TestCase):
 
     def test_merge_base(self):
-        self.fail()
+        index_toml = textwrap.dedent("""
+        [base]
+        config = {tag_mode = "pair"}
 
+        [[base.html.body.nav.ul.li]]
+        attrib = {href = "/"}
+        a = "Home"
+
+        """)
+        index = tomllib.loads(index_toml)
+
+        node_toml = textwrap.dedent("""
+        [[doc.html.body.nav.ul.li]]
+        attrib = {href = "/faq.html"}
+        a = "FAQ"
+
+        """)
+        node = tomllib.loads(node_toml)
+
+        # template = Pathfinder.merge(index, node)
+        template = dict(doc=index["base"])
+        rv = Renderer().serialize(template)
