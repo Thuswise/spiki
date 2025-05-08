@@ -11,9 +11,6 @@ import warnings
 
 class Pathfinder:
 
-    def __init__(self, *paths: tuple[Path]):
-        self.state = defaultdict(ChainMap)
-
     @staticmethod
     def build_index(parent: Path, dirnames: list[str], filenames: list[str], index_name="index.toml"):
         try:
@@ -29,9 +26,18 @@ class Pathfinder:
             pass
 
     @staticmethod
+    def merge(*args: tuple[dict]) -> dict:
+        bases = [i.get("base", {}) for i in args]
+        docs = [i.get("docs", {}) for i in args]
+        return base
+
+    @staticmethod
     def walk(*paths: list[Path]) -> Generator[tuple]:
         for path in paths:
             yield from path.resolve().walk()
+
+    def __init__(self, *paths: tuple[Path]):
+        self.state = defaultdict(ChainMap)
 
 
 def main(args):

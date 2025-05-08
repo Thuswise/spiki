@@ -19,6 +19,7 @@ import textwrap
 import tomllib
 import unittest
 
+from spiki.pathfinder import Pathfinder
 from spiki.renderer import Renderer
 
 
@@ -44,8 +45,6 @@ class PathfinderTests(unittest.TestCase):
         """)
         node = tomllib.loads(node_toml)
 
-        # template = Pathfinder.merge(index, node)
-        template = dict(doc=index["base"])
+        template = Pathfinder.merge(index, node)
         rv = Renderer().serialize(template)
         self.assertEqual(rv.count("href"), 2)
-        print(rv)
