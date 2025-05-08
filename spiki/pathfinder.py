@@ -1,5 +1,6 @@
 import argparse
 from collections import ChainMap
+from collections import defaultdict
 from collections.abc import Generator
 import decimal
 from pathlib import Path
@@ -8,28 +9,34 @@ import tomllib
 import warnings
 
 
-def build_index(parent: Path, dirnames: list[str], filenames: list[str], index_name="index.toml"):
-    try:
-        filenames.remove(index_name)
-        index_path = parent.joinpath(index_name)
-        index_text = index_path.read_text()
-        index = tomllib.loads(index_text, parse_float=decimal.Decimal)
-        index.setdefault("metadata", {})["node"] = index_path
-        return index
-    except tomllib.TOMLDecodeError as error:
-        warnings.warn(f"{index_path}: {error}")
-    except ValueError:
-        pass
+class Pathfinder:
 
+    def __init__(self, *paths: tuple[Path]):
+        self.state = defaultdict(ChainMap)
 
-def walk(*paths: list[Path]) -> Generator[tuple]:
-    for path in paths:
-        yield from path.resolve().walk()
+    @staticmethod
+    def build_index(parent: Path, dirnames: list[str], filenames: list[str], index_name="index.toml"):
+        try:
+            filenames.remove(index_name)
+            index_path = parent.joinpath(index_name)
+            index_text = index_path.read_text()
+            index = tomllib.loads(index_text, parse_float=decimal.Decimal)
+            index.setdefault("metadata", {})["node"] = index_path
+            return index
+        except tomllib.TOMLDecodeError as error:
+            warnings.warn(f"{index_path}: {error}")
+        except ValueError:
+            pass
+
+    @staticmethod
+    def walk(*paths: list[Path]) -> Generator[tuple]:
+        for path in paths:
+            yield from path.resolve().walk()
 
 
 def main(args):
-    for parent, dirnames, filenames in walk(*args.paths):
-        index = build_index(parent, dirnames, filenames)
+    for parent, dirnames, filenames in Pathfinder.walk(*args.paths):
+        index = Pathfinder.build_index(parent, dirnames, filenames)
         print(index)
     return 0
 
