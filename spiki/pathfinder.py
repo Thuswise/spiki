@@ -3,6 +3,8 @@ from collections import ChainMap
 from collections import defaultdict
 from collections.abc import Generator
 import decimal
+import functools
+import operator
 from pathlib import Path
 import sys
 import tomllib
@@ -26,10 +28,16 @@ class Pathfinder:
             pass
 
     @staticmethod
+    def update(base: dict, node: dict) -> dict:
+        print(f"{base=}")
+        print(f"{node=}")
+        return base | node
+
+    @staticmethod
     def merge(*args: tuple[dict]) -> dict:
-        bases = [i.get("base", {}) for i in args]
-        docs = [i.get("docs", {}) for i in args]
-        return base
+        bases = [dict(doc=i.get("base", {})) for i in args if "base" in i]
+        end = (args or {}) and args[-1]
+        return functools.reduce(Pathfinder.update, bases + [end])
 
     @staticmethod
     def walk(*paths: list[Path]) -> Generator[tuple]:
