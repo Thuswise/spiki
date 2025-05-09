@@ -29,6 +29,15 @@ class PathfinderTests(unittest.TestCase):
         rv = Pathfinder().merge()
         self.assertEqual(rv, {})
 
+    def test_update(self):
+        lhs = dict(a=dict(b=1, c=2), b=[dict(d=3, e=4), dict(f=5, g=6)])
+        rhs = dict(a=dict(b=10), b=[dict(d=30, e=40)])
+        rv = Pathfinder().update(lhs, rhs)
+        self.assertIs(rv, rhs)
+        self.assertEqual(rv["a"]["b"], 10)
+        self.assertEqual(rv["a"]["c"], 2)
+        self.assertEqual(len(rv["b"]), 3)
+
     def test_merge_base(self):
         index_toml = textwrap.dedent("""
         [base]
@@ -49,7 +58,7 @@ class PathfinderTests(unittest.TestCase):
         """)
         node = tomllib.loads(node_toml)
 
-        template = list(Pathfinder().merge(index, node))
-        print(template)
+        template = Pathfinder().merge(index, node)
+        self.assertEqual(template["doc"]["config"]["tag_mode"], "pair")
         rv = Renderer().serialize(template)
         self.assertEqual(rv.count("href"), 2, rv)

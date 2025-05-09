@@ -28,6 +28,7 @@ class Pathfinder:
             pass
 
     def update(self, lhs: dict, rhs: dict) -> dict:
+        "Use lhs as a base to update rhs"
         for k, v in lhs.items():
             try:
                 node = rhs[k]
@@ -41,7 +42,7 @@ class Pathfinder:
 
     def merge(self, *args: tuple[dict]) -> dict:
         bases = [dict(doc=i.get("base", {})) for i in args if "base" in i]
-        end = (args or {}) and args[-1]
+        end = (args or [{}])[-1]
         return functools.reduce(self.update, bases + [end])
 
     @staticmethod
