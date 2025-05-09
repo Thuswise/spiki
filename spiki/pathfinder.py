@@ -27,17 +27,22 @@ class Pathfinder:
         except ValueError:
             pass
 
-    @staticmethod
-    def update(base: dict, node: dict) -> dict:
-        print(f"{base=}")
-        print(f"{node=}")
-        return base | node
+    def update(self, lhs: dict, rhs: dict) -> dict:
+        for k, v in lhs.items():
+            try:
+                node = rhs[k]
+                if isinstance(node, dict):
+                    rhs[k] = self.update(v, node)
+                elif isinstance(node, list):
+                    rhs[k].extend(v)
+            except KeyError:
+                rhs[k] = v
+        return rhs
 
-    @staticmethod
-    def merge(*args: tuple[dict]) -> dict:
+    def merge(self, *args: tuple[dict]) -> dict:
         bases = [dict(doc=i.get("base", {})) for i in args if "base" in i]
         end = (args or {}) and args[-1]
-        return functools.reduce(Pathfinder.update, bases + [end])
+        return functools.reduce(self.update, bases + [end])
 
     @staticmethod
     def walk(*paths: list[Path]) -> Generator[tuple]:

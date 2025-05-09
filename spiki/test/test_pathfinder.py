@@ -26,7 +26,7 @@ from spiki.renderer import Renderer
 class PathfinderTests(unittest.TestCase):
 
     def test_merge_null(self):
-        rv = Pathfinder.merge()
+        rv = Pathfinder().merge()
         self.assertEqual(rv, {})
 
     def test_merge_base(self):
@@ -49,7 +49,7 @@ class PathfinderTests(unittest.TestCase):
         """)
         node = tomllib.loads(node_toml)
 
-        template = Pathfinder.merge(index, node)
+        template = list(Pathfinder().merge(index, node))
         print(template)
         rv = Renderer().serialize(template)
         self.assertEqual(rv.count("href"), 2, rv)
