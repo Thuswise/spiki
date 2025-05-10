@@ -1,0 +1,17 @@
+[doc.html.body]
+blocks = [
+    '''
+    <GUARD:intercom> We apologize for the change to our schedule.
+    Due to an incident near Oxford, this train will now terminate at Didcot Parkway.
+    ''',
+    '''
+    <SUIT> Oh for crying out loud.
+    ''',
+    '''
+    <WOMAN> Do you mind, I trying to...
+    ''',
+    '''
+    <GUARD:intercom> Passengers for Evesham, Pershore and Worcester should change at Didcot to complete their onward journey.
+    We are sorry for any inconvenience today. This is due to a Police Incident near Oxford.
+    ''',
+]
