@@ -1,0 +1,9 @@
+[doc.html.body]
+blocks = [
+    '''
+    <GUARD:intercom> Good afternoon and welcome to the delayed 14:24 service to Didcot Parkway.
+    ''',
+    '''
+    <MAN:thinks> This is supposed to be the Worcester train.
+    ''',
+]
