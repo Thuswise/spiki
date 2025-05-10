@@ -1,1 +1,12 @@
-# Challenge goes here
+[doc.html.body]
+blocks = [
+    '''
+    <WOMAN> So what's happening now?
+    ''',
+    '''
+    <MAN> We'll stop at Didcot. Have to wait for the next train.
+    ''',
+    '''
+    <WOMAN> Are we going to be very late?
+    ''',
+]
