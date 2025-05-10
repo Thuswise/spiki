@@ -5,6 +5,7 @@ from collections.abc import Generator
 import decimal
 import functools
 import operator
+import os.path
 from pathlib import Path
 import sys
 import tomllib
@@ -55,9 +56,13 @@ class Pathfinder:
 
 
 def main(args):
-    for parent, dirnames, filenames in Pathfinder.walk(*args.paths):
+    paths = [i.resolve() for i in args.paths]
+    root = Path(os.path.commonprefix(paths))
+    for parent, dirnames, filenames in Pathfinder.walk(*paths):
         index = Pathfinder.build_index(parent, dirnames, filenames)
-        print(index)
+        if index:
+            index.setdefault("registry", {})["root"] = root
+            print(index)
     return 0
 
 
