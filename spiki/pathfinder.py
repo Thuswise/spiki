@@ -20,7 +20,7 @@ class Pathfinder:
             index_path = parent.joinpath(index_name)
             index_text = index_path.read_text()
             index = tomllib.loads(index_text, parse_float=decimal.Decimal)
-            index.setdefault("metadata", {})["node"] = index_path
+            index.setdefault("registry", {})["node"] = index_path
             return index
         except tomllib.TOMLDecodeError as error:
             warnings.warn(f"{index_path}: {error}")

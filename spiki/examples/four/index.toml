@@ -9,4 +9,4 @@ title = "{metadata[title]}"
 
 # Doc is the index template itself
 [doc.html.head]
-title = "{metadata[node].parent}"
+title = "{registry[node].parent}"
