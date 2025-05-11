@@ -1,4 +1,52 @@
-from .speechmark import run
+#!/usr/bin/env python
+#   encoding: utf-8
 
-run()
+# Copyright (C) 2025 D E Haynes
+# This file is part of spiki.
 
+# Spiki is free software: you can redistribute it and/or modify it under the terms of the
+# GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# Spiki is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+# the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with spiki.
+# If not, see <https://www.gnu.org/licenses/>.
+
+
+import argparse
+from pathlib import Path
+import sys
+
+from spiki.pathfinder import Pathfinder
+from spiki.renderer import Renderer
+
+
+def main(args):
+    paths = [i.resolve() for i in args.paths]
+    root = Path(os.path.commonprefix(paths))
+    for parent, dirnames, filenames in Pathfinder.walk(*paths):
+        index = Pathfinder.build_index(parent, dirnames, filenames)
+        if index:
+            index.setdefault("registry", {})["root"] = root
+            print(index)
+    return 0
+
+
+def parser():
+    rv = argparse.ArgumentParser(usage=__doc__)
+    rv.add_argument("paths", nargs="+", type=Path, help="Specify file paths")
+    return rv
+
+
+def run():
+    p = parser()
+    args = p.parse_args()
+    rv = main(args)
+    sys.exit(rv)
+
+
+if __name__ == "__main__":
+    run()
