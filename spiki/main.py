@@ -17,6 +17,7 @@
 
 
 import argparse
+import os.path
 from pathlib import Path
 import sys
 
@@ -27,11 +28,14 @@ from spiki.renderer import Renderer
 def main(args):
     paths = [i.resolve() for i in args.paths]
     root = Path(os.path.commonprefix(paths))
-    for parent, dirnames, filenames in Pathfinder.walk(*paths):
-        index = Pathfinder.build_index(parent, dirnames, filenames)
-        if index:
-            index.setdefault("registry", {})["root"] = root
-            print(index)
+
+    with Pathfinder() as pathfinder:
+        for parent, dirnames, filenames in pathfinder.walk(*paths):
+            index = pathfinder.build_index(parent, dirnames, filenames)
+            if index:
+                index.setdefault("registry", {})["root"] = root
+                print(pathfinder.space)
+                print(index)
     return 0
 
 

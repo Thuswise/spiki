@@ -24,7 +24,9 @@ import functools
 import operator
 import os.path
 from pathlib import Path
+import shutil
 import sys
+import tempfile
 import tomllib
 import warnings
 
@@ -70,7 +72,15 @@ class Pathfinder:
 
     def __init__(self, *paths: tuple[Path]):
         self.state = defaultdict(ChainMap)
+        self.space = None
 
+    def __enter__(self):
+        self.space = Path(tempfile.mkdtemp()).resolve()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        shutil.rmtree(self.space, ignore_errors=True)
+        return self.space.exists()
 
 def main(args):
     paths = [i.resolve() for i in args.paths]
