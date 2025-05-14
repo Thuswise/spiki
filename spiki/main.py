@@ -28,14 +28,19 @@ from spiki.renderer import Renderer
 def main(args):
     paths = [i.resolve() for i in args.paths]
     root = Path(os.path.commonprefix(paths))
+    print(f"{root=}")
 
     with Pathfinder() as pathfinder:
-        for parent, dirnames, filenames in pathfinder.walk(*paths):
-            index = pathfinder.build_index(parent, dirnames, filenames)
-            if index:
+        print(pathfinder.space)
+        for path in pathfinder.walk(*paths):
+            if path.name == "index.toml":
+                parts = path.relative_to(root).parts
+                print(f"{parts=}")
+                index = pathfinder.build_index(path)
                 index.setdefault("registry", {})["root"] = root
-                print(pathfinder.space)
-                print(index)
+                print(f"{index=}")
+            else:
+                print(path)
     return 0
 
 

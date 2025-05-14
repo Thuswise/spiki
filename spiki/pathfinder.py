@@ -34,18 +34,14 @@ import warnings
 class Pathfinder:
 
     @staticmethod
-    def build_index(parent: Path, dirnames: list[str], filenames: list[str], index_name="index.toml"):
+    def build_index(path: Path):
         try:
-            filenames.remove(index_name)
-            index_path = parent.joinpath(index_name)
-            index_text = index_path.read_text()
-            index = tomllib.loads(index_text, parse_float=decimal.Decimal)
-            index.setdefault("registry", {})["node"] = index_path
+            text = path.read_text()
+            index = tomllib.loads(text, parse_float=decimal.Decimal)
+            index.setdefault("registry", {})["node"] = path
             return index
         except tomllib.TOMLDecodeError as error:
-            warnings.warn(f"{index_path}: {error}")
-        except ValueError:
-            pass
+            warnings.warn(f"{path}: {error}")
 
     def update(self, lhs: dict, rhs: dict) -> dict:
         "Use lhs as a base to update rhs"
@@ -68,7 +64,9 @@ class Pathfinder:
     @staticmethod
     def walk(*paths: list[Path]) -> Generator[tuple]:
         for path in paths:
-            yield from path.resolve().walk()
+            for parent, dirnames, filenames in path.resolve().walk():
+                for name in filenames:
+                    yield parent.joinpath(name)
 
     def __init__(self, *paths: tuple[Path]):
         self.state = defaultdict(ChainMap)
