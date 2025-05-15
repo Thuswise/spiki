@@ -25,7 +25,6 @@ from collections.abc import Generator
 import copy
 import enum
 import html
-import string
 import sys
 from types import SimpleNamespace
 import warnings
@@ -43,13 +42,6 @@ class Renderer:
         self.template = template or dict()
         self.state = SimpleNamespace(attrib={}, blocks=[], config=ChainMap(config or dict()))
         self.sm = SpeechMark()
-
-    @staticmethod
-    def slugify(text, table="".maketrans({i: i for i in string.ascii_letters + string.digits + "_-"})):
-        mapping = {ord(i): None for i in text}
-        mapping.update(table)
-        mapping[ord(" ")] = "-"
-        return text.translate(mapping).lower()
 
     @staticmethod
     def check_config(config: dict, options: enum.Enum):

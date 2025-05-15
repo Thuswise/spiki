@@ -26,21 +26,10 @@ from spiki.renderer import Renderer
 
 
 def main(args):
-    paths = [i.resolve() for i in args.paths]
-    root = Path(os.path.commonprefix(paths))
-    print(f"{root=}")
-
     with Pathfinder() as pathfinder:
-        print(pathfinder.space)
-        for path in pathfinder.walk(*paths):
-            if path.name == "index.toml":
-                parts = path.relative_to(root).parts
-                print(f"{parts=}")
-                index = pathfinder.build_index(path)
-                index.setdefault("registry", {})["root"] = root
-                print(f"{index=}")
-            else:
-                print(path)
+        for node in pathfinder.walk(*args.paths):
+            print(node)
+    print(f"{pathfinder.indexes=}")
     return 0
 
 

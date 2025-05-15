@@ -24,11 +24,6 @@ from spiki.renderer import Renderer
 
 class RendererTests(unittest.TestCase):
 
-    def test_slug(self):
-        text = "ABab234$%^&*-_ "
-        rv = Renderer.slugify(text)
-        self.assertEqual("abab234-_-", rv)
-
     def test_config_option(self):
         toml = textwrap.dedent("""
         [doc]

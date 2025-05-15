@@ -19,12 +19,14 @@ import argparse
 from collections import ChainMap
 from collections import defaultdict
 from collections.abc import Generator
+import datetime
 import decimal
 import functools
 import operator
 import os.path
 from pathlib import Path
 import shutil
+import string
 import sys
 import tempfile
 import tomllib
@@ -34,14 +36,34 @@ import warnings
 class Pathfinder:
 
     @staticmethod
-    def build_index(path: Path):
+    def build_index(path: Path, root: Path = None):
+        node = Pathfinder.build_node(path, root=root)
+        return node
+
+    @staticmethod
+    def build_node(path: Path, root: Path = None):
         try:
             text = path.read_text()
-            index = tomllib.loads(text, parse_float=decimal.Decimal)
-            index.setdefault("registry", {})["node"] = path
-            return index
+            node = tomllib.loads(text, parse_float=decimal.Decimal)
         except tomllib.TOMLDecodeError as error:
             warnings.warn(f"{path}: {error}")
+
+        node.setdefault("registry", {})["node"] = path
+        node["registry"]["root"] = root
+        node["registry"]["time"] = datetime.datetime.now(tz=datetime.timezone.utc)
+
+        node.setdefault("metadata", {})["slug"] = (
+            node.get("metadata", {}).get("slug") or
+            Pathfinder.slugify("_".join(path.relative_to(root).with_suffix("").parts))
+        )
+        return node
+
+    @staticmethod
+    def slugify(text: str, table="".maketrans({i: i for i in string.ascii_letters + string.digits + "_-"})):
+        mapping = {ord(i): None for i in text}
+        mapping.update(table)
+        mapping[ord(" ")] = "-"
+        return text.translate(mapping).lower()
 
     def update(self, lhs: dict, rhs: dict) -> dict:
         "Use lhs as a base to update rhs"
@@ -61,15 +83,25 @@ class Pathfinder:
         end = (args or [{}])[-1]
         return functools.reduce(self.update, bases + [end])
 
-    @staticmethod
-    def walk(*paths: list[Path]) -> Generator[tuple]:
-        for path in paths:
-            for parent, dirnames, filenames in path.resolve().walk():
+    def walk(self, *paths: list[Path], index_name="index.toml") -> Generator[tuple]:
+        paths = [i.resolve() for i in paths]
+        root = Path(os.path.commonprefix(paths))
+        for p in paths:
+            for parent, dirnames, filenames in p.resolve().walk():
+                key = parent.relative_to(root).parts
                 for name in filenames:
-                    yield parent.joinpath(name)
+                    path = parent.joinpath(name)
+                    if path.name == index_name:
+                        parts = path.relative_to(root).parts
+                        node = self.build_index(path, root=root)
+                        self.indexes[key] = node
+                    else:
+                        node = self.build_node(path, root=root)
+
+                    yield node
 
     def __init__(self, *paths: tuple[Path]):
-        self.state = defaultdict(ChainMap)
+        self.indexes = dict()
         self.space = None
 
     def __enter__(self):
@@ -79,30 +111,3 @@ class Pathfinder:
     def __exit__(self, exc_type, exc_val, exc_tb):
         shutil.rmtree(self.space, ignore_errors=True)
         return self.space.exists()
-
-def main(args):
-    paths = [i.resolve() for i in args.paths]
-    root = Path(os.path.commonprefix(paths))
-    for parent, dirnames, filenames in Pathfinder.walk(*paths):
-        index = Pathfinder.build_index(parent, dirnames, filenames)
-        if index:
-            index.setdefault("registry", {})["root"] = root
-            print(index)
-    return 0
-
-
-def parser():
-    rv = argparse.ArgumentParser(usage=__doc__)
-    rv.add_argument("paths", nargs="+", type=Path, help="Specify file paths")
-    return rv
-
-
-def run():
-    p = parser()
-    args = p.parse_args()
-    rv = main(args)
-    sys.exit(rv)
-
-
-if __name__ == "__main__":
-    run()

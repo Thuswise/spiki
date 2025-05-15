@@ -25,6 +25,11 @@ from spiki.renderer import Renderer
 
 class PathfinderTests(unittest.TestCase):
 
+    def test_slug(self):
+        text = "ABab234$%^&*-_ "
+        rv = Pathfinder.slugify(text)
+        self.assertEqual("abab234-_-", rv)
+
     def test_merge_null(self):
         rv = Pathfinder().merge()
         self.assertEqual(rv, {})
