@@ -32,6 +32,8 @@ import tempfile
 import tomllib
 import warnings
 
+from spiki.renderer import Renderer
+
 
 class Pathfinder:
 
@@ -73,6 +75,7 @@ class Pathfinder:
             node.get("metadata", {}).get("slug") or
             Pathfinder.slugify("_".join(path.relative_to(root).with_suffix("").parts))
         )
+        node["metadata"]["title"] = node["metadata"].get("title", path.name)
         return node
 
     def merge(self, *args: tuple[dict]) -> dict:
@@ -108,4 +111,7 @@ class Pathfinder:
                     else:
                         node = self.build_node(path, root=root)
 
-                    yield node
+                    renderer = Renderer()
+                    stack = [self.indexes.get(key[:n], {}) for n in range(len(key))] + [node]
+                    template = self.merge(*stack)
+                    yield path, renderer.serialize(template)

@@ -27,9 +27,9 @@ from spiki.renderer import Renderer
 
 def main(args):
     with Pathfinder() as pathfinder:
-        for node in pathfinder.walk(*args.paths):
-            print(node)
-    print(f"{pathfinder.indexes=}")
+        for node, doc in pathfinder.walk(*args.paths):
+            print(node, file=sys.stderr)
+            print(doc, file=sys.stdout)
     return 0
 
 
