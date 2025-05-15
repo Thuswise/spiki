@@ -36,12 +36,29 @@ import warnings
 class Pathfinder:
 
     @staticmethod
-    def build_index(path: Path, root: Path = None):
-        node = Pathfinder.build_node(path, root=root)
+    def slugify(text: str, table="".maketrans({i: i for i in string.ascii_letters + string.digits + "_-"})):
+        mapping = {ord(i): None for i in text}
+        mapping.update(table)
+        mapping[ord(" ")] = "-"
+        return text.translate(mapping).lower()
+
+    def __init__(self, *paths: tuple[Path]):
+        self.indexes = dict()
+        self.space = None
+
+    def __enter__(self):
+        self.space = Path(tempfile.mkdtemp()).resolve()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        shutil.rmtree(self.space, ignore_errors=True)
+        return self.space.exists()
+
+    def build_index(self, path: Path, root: Path = None):
+        node = self.build_node(path, root=root)
         return node
 
-    @staticmethod
-    def build_node(path: Path, root: Path = None):
+    def build_node(self, path: Path, root: Path = None):
         try:
             text = path.read_text()
             node = tomllib.loads(text, parse_float=decimal.Decimal)
@@ -58,12 +75,10 @@ class Pathfinder:
         )
         return node
 
-    @staticmethod
-    def slugify(text: str, table="".maketrans({i: i for i in string.ascii_letters + string.digits + "_-"})):
-        mapping = {ord(i): None for i in text}
-        mapping.update(table)
-        mapping[ord(" ")] = "-"
-        return text.translate(mapping).lower()
+    def merge(self, *args: tuple[dict]) -> dict:
+        bases = [dict(doc=i.get("base", {})) for i in args if "base" in i]
+        end = (args or [{}])[-1]
+        return functools.reduce(self.update, bases + [end])
 
     def update(self, lhs: dict, rhs: dict) -> dict:
         "Use lhs as a base to update rhs"
@@ -77,11 +92,6 @@ class Pathfinder:
             except KeyError:
                 rhs[k] = v
         return rhs
-
-    def merge(self, *args: tuple[dict]) -> dict:
-        bases = [dict(doc=i.get("base", {})) for i in args if "base" in i]
-        end = (args or [{}])[-1]
-        return functools.reduce(self.update, bases + [end])
 
     def walk(self, *paths: list[Path], index_name="index.toml") -> Generator[tuple]:
         paths = [i.resolve() for i in paths]
@@ -99,15 +109,3 @@ class Pathfinder:
                         node = self.build_node(path, root=root)
 
                     yield node
-
-    def __init__(self, *paths: tuple[Path]):
-        self.indexes = dict()
-        self.space = None
-
-    def __enter__(self):
-        self.space = Path(tempfile.mkdtemp()).resolve()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        shutil.rmtree(self.space, ignore_errors=True)
-        return self.space.exists()
