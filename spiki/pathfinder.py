@@ -84,6 +84,7 @@ class Pathfinder(contextlib.ExitStack):
             node = tomllib.loads(text, parse_float=decimal.Decimal)
         except tomllib.TOMLDecodeError as error:
             warnings.warn(f"{path}: {error}")
+            raise
 
         node.setdefault("registry", {})["node"] = path
         node["registry"]["root"] = root
@@ -143,11 +144,15 @@ class Pathfinder(contextlib.ExitStack):
                     if index:
                         template["registry"]["index"] = index
                         index["registry"].setdefault("nodes", []).append(node)
+                        text = f"""
+                        [doc.html.body]
+                        config = {{tag_mode = "pair"}}
+                        [[doc.html.body.nav.ul.li]]
+                        attrib = {{href = "{node['metadata']['slug']}"}}
+                        a = "{node['metadata']['title']}"
                         """
-                        index["doc"]["html"]["body"]["nav"]["dl"].append(
-                            dict(dt=node.title, dd=dict(a="Link text", attrib=dict(href=node.slug)))
-                        )
-                        """
+                        data = tomllib.loads(text)
+                        rhs = self.update(data, index)
 
                     renderer = Renderer()
                     yield path, template, renderer.serialize(template)
