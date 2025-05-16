@@ -27,16 +27,22 @@ from spiki.pathfinder import Pathfinder
 from spiki.renderer import Renderer
 
 
-def main(args):
-    fmtr = logging.Formatter(
-        fmt="{asctime:>16}|{levelname:>14}|{message}",
-        datefmt=None, style='{',
-        defaults=None
-    )
+def setup_logger():
     logging.basicConfig(level=logging.INFO)
+    root_logger = logging.getLogger()
+    for handler in root_logger.handlers:
+        handler.setFormatter(
+            logging.Formatter(
+                fmt="{asctime:>8}|{levelname:>14}|{message}",
+                datefmt=None, style='{',
+                defaults=None
+            )
+        )
+
+
+def main(args):
+    setup_logger()
     logger = logging.getLogger()
-    for handler in logger.handlers:
-        handler.setFormatter(fmtr)
     args.output.mkdir(parents=True, exist_ok=True)
     with Pathfinder() as pathfinder:
         for n, (p, template, doc) in enumerate(pathfinder.walk(*args.paths)):

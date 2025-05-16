@@ -138,12 +138,17 @@ class Pathfinder(contextlib.ExitStack):
                     stack = list(filter(None, (self.indexes.get(i) for i in self.slices(key))))
                     template = self.merge(*stack + [node])
 
+                    # TODO: call plugins
                     index = next((i for i in reversed(stack)), None)
                     if index:
                         template["registry"]["index"] = index
-                        # TODO: notify index of node
+                        index["registry"].setdefault("nodes", []).append(node)
+                        """
+                        index["doc"]["html"]["body"]["nav"]["dl"].append(
+                            dict(dt=node.title, dd=dict(a="Link text", attrib=dict(href=node.slug)))
+                        )
+                        """
 
-                    # TODO: call plugins
                     renderer = Renderer()
                     yield path, template, renderer.serialize(template)
 
