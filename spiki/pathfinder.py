@@ -141,6 +141,7 @@ class Pathfinder(contextlib.ExitStack):
                     index = next((i for i in reversed(stack)), None)
                     if index:
                         template["registry"]["index"] = index
+                        # TODO: notify index of node
 
                     # TODO: call plugins
                     renderer = Renderer()

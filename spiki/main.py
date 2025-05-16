@@ -28,8 +28,15 @@ from spiki.renderer import Renderer
 
 
 def main(args):
+    fmtr = logging.Formatter(
+        fmt="{asctime:>16}|{levelname:>14}|{message}",
+        datefmt=None, style='{',
+        defaults=None
+    )
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger()
+    for handler in logger.handlers:
+        handler.setFormatter(fmtr)
     args.output.mkdir(parents=True, exist_ok=True)
     with Pathfinder() as pathfinder:
         for n, (p, template, doc) in enumerate(pathfinder.walk(*args.paths)):
