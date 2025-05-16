@@ -30,6 +30,15 @@ class PathfinderTests(unittest.TestCase):
         rv = Pathfinder.slugify(text)
         self.assertEqual("abab234-_-", rv)
 
+    def test_stack(self):
+        parts = tuple()
+        slices = Pathfinder.slices(parts)
+        self.assertEqual(slices, [(),])
+
+        parts = (1, 2, 3, 4)
+        slices = Pathfinder.slices(parts)
+        self.assertEqual(slices, [(), (1,), (1, 2), (1, 2, 3), (1, 2, 3, 4)])
+
     def test_merge_null(self):
         rv = Pathfinder().merge()
         self.assertEqual(rv, {})

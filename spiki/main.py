@@ -17,8 +17,10 @@
 
 
 import argparse
+import logging
 import os.path
 from pathlib import Path
+import shutil
 import sys
 
 from spiki.pathfinder import Pathfinder
@@ -26,16 +28,28 @@ from spiki.renderer import Renderer
 
 
 def main(args):
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger()
+    args.output.mkdir(parents=True, exist_ok=True)
     with Pathfinder() as pathfinder:
-        for node, doc in pathfinder.walk(*args.paths):
-            print(node, file=sys.stderr)
-            print(doc, file=sys.stdout)
+        for n, (p, template, doc) in enumerate(pathfinder.walk(*args.paths)):
+            destination = pathfinder.location_of(template).relative_to(template["registry"]["root"]).parent
+            parent = pathfinder.space.joinpath(destination).resolve()
+            parent.mkdir(parents=True, exist_ok=True)
+            slug = template["metadata"]["slug"]
+            path = parent.joinpath(slug).with_suffix(".html")
+            path.write_text(doc)
+            
+        shutil.copytree(pathfinder.space, args.output, dirs_exist_ok=True)
+    logger.info(f"Processed {n} nodes")
     return 0
 
 
 def parser():
+    default_path = Path.cwd().joinpath("output").resolve()
     rv = argparse.ArgumentParser(usage=__doc__)
     rv.add_argument("paths", nargs="+", type=Path, help="Specify file paths")
+    rv.add_argument("-O", "--output", type=Path, default=default_path, help=f"Specify output directory [{default_path}]")
     return rv
 
 

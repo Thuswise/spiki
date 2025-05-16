@@ -18,7 +18,9 @@
 import argparse
 from collections import ChainMap
 from collections import defaultdict
+from collections.abc import Callable
 from collections.abc import Generator
+import contextlib
 import datetime
 import decimal
 import functools
@@ -35,7 +37,7 @@ import warnings
 from spiki.renderer import Renderer
 
 
-class Pathfinder:
+class Pathfinder(contextlib.ExitStack):
 
     @staticmethod
     def slugify(text: str, table="".maketrans({i: i for i in string.ascii_letters + string.digits + "_-"})):
@@ -44,17 +46,33 @@ class Pathfinder:
         mapping[ord(" ")] = "-"
         return text.translate(mapping).lower()
 
-    def __init__(self, *paths: tuple[Path]):
+    @staticmethod
+    def slices(parts: tuple):
+        return [tuple()] if not parts else [parts[:n] for n in range(len(parts) + 1)]
+
+    @staticmethod
+    def location_of(node: dict) -> Path:
+        try:
+            return node["registry"]["index"]["registry"]["node"].resolve()
+        except (AttributeError, KeyError, TypeError):
+            return node["registry"]["node"].resolve()
+
+    def __init__(self, *plugins: tuple[Callable], **kwargs):
+        super().__init__()
         self.indexes = dict()
+        self.plugins = plugins
+        self.running = None
         self.space = None
 
     def __enter__(self):
         self.space = Path(tempfile.mkdtemp()).resolve()
+        self.running = [self.enter_context(p) for p in self.plugins]
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        rv = super().__exit__(self, exc_type, exc_val, exc_tb)
         shutil.rmtree(self.space, ignore_errors=True)
-        return self.space.exists()
+        return rv
 
     def build_index(self, path: Path, root: Path = None):
         node = self.build_node(path, root=root)
@@ -96,22 +114,49 @@ class Pathfinder:
                 rhs[k] = v
         return rhs
 
-    def walk(self, *paths: list[Path], index_name="index.toml") -> Generator[tuple]:
+    def walk(self, *paths: list[Path], index_name="index.toml") -> Generator[tuple[Path, dict, str]]:
         paths = [i.resolve() for i in paths]
         root = Path(os.path.commonprefix(paths))
         for p in paths:
             for parent, dirnames, filenames in p.resolve().walk():
                 key = parent.relative_to(root).parts
                 for name in filenames:
-                    path = parent.joinpath(name)
-                    if path.name == index_name:
-                        parts = path.relative_to(root).parts
+                    if name == index_name:
+                        path = parent.joinpath(name)
                         node = self.build_index(path, root=root)
                         self.indexes[key] = node
+
+            for parent, dirnames, filenames in p.resolve().walk():
+                key = parent.relative_to(root).parts
+                for name in filenames:
+                    if name == index_name:
+                        node = self.indexes[key]
                     else:
+                        path = parent.joinpath(name)
                         node = self.build_node(path, root=root)
 
+                    stack = list(filter(None, (self.indexes.get(i) for i in self.slices(key))))
+                    template = self.merge(*stack + [node])
+
+                    index = next((i for i in reversed(stack)), None)
+                    if index:
+                        template["registry"]["index"] = index
+
+                    # TODO: call plugins
                     renderer = Renderer()
-                    stack = [self.indexes.get(key[:n], {}) for n in range(len(key))] + [node]
-                    template = self.merge(*stack)
-                    yield path, renderer.serialize(template)
+                    yield path, template, renderer.serialize(template)
+
+import argparse
+class Plugin:
+
+    def __init__(self, args: argparse.Namespace = None):
+        self.args = args or argparse.Namespace()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+    def __call__(self, node: dict, *args, **kwargs):
+        return True
