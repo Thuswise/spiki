@@ -15,25 +15,21 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
-import argparse
-from collections import ChainMap
-from collections import defaultdict
 from collections.abc import Callable
 from collections.abc import Generator
 import contextlib
 import datetime
 import decimal
 import functools
-import operator
 import os.path
 from pathlib import Path
 import shutil
 import string
-import sys
 import tempfile
 import tomllib
 import warnings
 
+from spiki.plugin import Phase
 from spiki.renderer import Renderer
 
 
@@ -125,6 +121,8 @@ class Pathfinder(contextlib.ExitStack):
                     if name == index_name:
                         path = parent.joinpath(name)
                         node = self.build_index(path, root=root)
+                        for plugin in self.running:
+                            plugin(node, phase=Phase.SURVEY)
                         self.indexes[key] = node
 
             for parent, dirnames, filenames in p.resolve().walk():

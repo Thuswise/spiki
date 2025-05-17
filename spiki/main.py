@@ -26,6 +26,9 @@ import sys
 from spiki.pathfinder import Pathfinder
 from spiki.renderer import Renderer
 
+from spiki.plugin import Phase
+from spiki.plugins.indexer import Indexer
+
 
 def setup_logger():
     logging.basicConfig(level=logging.INFO)
@@ -33,18 +36,22 @@ def setup_logger():
     for handler in root_logger.handlers:
         handler.setFormatter(
             logging.Formatter(
-                fmt="{asctime:>8}|{levelname:>14}|{message}",
+                fmt="{asctime}|{levelname:>8}|{phase.name:^8}| {name:<16}| {message}",
                 datefmt=None, style='{',
-                defaults=None
+                defaults=dict(phase=Phase.CONFIG)
             )
         )
 
 
 def main(args):
     setup_logger()
-    logger = logging.getLogger()
+    logger = logging.getLogger("spiki")
     args.output.mkdir(parents=True, exist_ok=True)
-    with Pathfinder() as pathfinder:
+
+    plugins = [
+        Indexer(args),
+    ]
+    with Pathfinder(*plugins) as pathfinder:
         for n, (p, template, doc) in enumerate(pathfinder.walk(*args.paths)):
             destination = pathfinder.location_of(template).relative_to(template["registry"]["root"]).parent
             parent = pathfinder.space.joinpath(destination).resolve()
@@ -54,7 +61,7 @@ def main(args):
             path.write_text(doc)
             
         shutil.copytree(pathfinder.space, args.output, dirs_exist_ok=True)
-    logger.info(f"Processed {n} nodes")
+    logger.info(f"Processed {n} nodes", extra=dict(phase=Phase.REPORT))
     return 0
 
 

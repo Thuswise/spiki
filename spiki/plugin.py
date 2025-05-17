@@ -21,10 +21,12 @@ import enum
 
 
 class Phase(enum.Enum):
+    CONFIG = "Configuring processors"
     SURVEY = "Discovering topology"
     ASSETS = "Identifying media"
     ENRICH = "Attaching metadata"
     RENDER = "Generating document"
+    REPORT = "Summary output"
 
 
 class Plugin:
