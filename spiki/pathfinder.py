@@ -21,6 +21,7 @@ import contextlib
 import datetime
 import decimal
 import functools
+import logging
 import os.path
 from pathlib import Path
 import shutil
@@ -59,6 +60,7 @@ class Pathfinder(contextlib.ExitStack):
         self.plugins = plugins
         self.running = None
         self.space = None
+        self.logger = logging.getLogger("pathfinder")
 
     def __enter__(self):
         self.space = Path(tempfile.mkdtemp()).resolve()
@@ -66,7 +68,7 @@ class Pathfinder(contextlib.ExitStack):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        rv = super().__exit__(self, exc_type, exc_val, exc_tb)
+        rv = super().__exit__(exc_type, exc_val, exc_tb)
         shutil.rmtree(self.space, ignore_errors=True)
         return rv
 
@@ -121,8 +123,11 @@ class Pathfinder(contextlib.ExitStack):
                     if name == index_name:
                         path = parent.joinpath(name)
                         node = self.build_index(path, root=root)
-                        for plugin in self.running:
-                            touch = plugin(node, phase=Phase.SURVEY)
+                        touch = [plugin(node, phase=Phase.SURVEY) for plugin in self.running]
+                        self.logger.info(
+                            f"{sum(touch)} edit" + ("" if sum(touch) == 1 else "s"),
+                            extra=dict(phase=Phase.SURVEY, path=path.relative_to(root).as_posix())
+                        )
                         self.indexes[key] = node
 
             for parent, dirnames, filenames in p.resolve().walk():

@@ -36,9 +36,9 @@ def setup_logger():
     for handler in root_logger.handlers:
         handler.setFormatter(
             logging.Formatter(
-                fmt="{asctime}|{levelname:>8}|{phase.name:^8}| {name:<16}| {message}",
+                fmt="{asctime}|{levelname:>8}|{phase.name:^8}| {name:<16}| {path:<32}| {message}",
                 datefmt=None, style='{',
-                defaults=dict(phase=Phase.CONFIG)
+                defaults=dict(phase=Phase.CONFIG, path="")
             )
         )
 
