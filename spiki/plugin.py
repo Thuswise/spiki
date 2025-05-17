@@ -22,12 +22,13 @@ from pathlib import Path
 
 
 class Phase(enum.Enum):
-    CONFIG = "Configuring processors"
+    CONFIG = "Configuring framework"
     SURVEY = "Discovering topology"
-    ASSETS = "Identifying media"
     ENRICH = "Attaching metadata"
-    RENDER = "Generating document"
-    REPORT = "Summary output"
+    ASSETS = "Preparing media"
+    RENDER = "Generating content"
+    EXPORT = "Finalizing output"
+    REPORT = "Summary"
 
 
 class Plugin:
