@@ -60,7 +60,7 @@ def main(args):
             path = parent.joinpath(slug).with_suffix(".html")
             path.write_text(doc)
 
-        touch = [plugin(template, phase=Phase.REPORT) for plugin in pathfinder.running]
+        touch = [plugin(Phase.REPORT) for plugin in pathfinder.running]
         shutil.copytree(pathfinder.space, args.output, dirs_exist_ok=True)
     logger.info(f"Processed {n} nodes", extra=dict(phase=Phase.REPORT))
     return 0

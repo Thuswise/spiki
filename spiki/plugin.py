@@ -18,6 +18,7 @@
 
 import argparse
 import enum
+from pathlib import Path
 
 
 class Phase(enum.Enum):
@@ -40,5 +41,5 @@ class Plugin:
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
-    def __call__(self, node: dict, phase: Phase, **kwargs) -> bool:
+    def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         return True

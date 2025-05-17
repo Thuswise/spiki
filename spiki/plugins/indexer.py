@@ -18,6 +18,7 @@
 import argparse
 from collections import defaultdict
 import logging
+from pathlib import Path
 
 from spiki.plugin import Phase
 from spiki.plugin import Plugin
@@ -29,10 +30,10 @@ class Indexer(Plugin):
         super().__init__(args)
         self.indexes = {}
 
-    def __call__(self, node: dict, phase: Phase, **kwargs) -> bool:
+    def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         logger = logging.getLogger("indexer")
-        logger.info(node["registry"]["path"], extra=dict(phase=phase))
         if phase == Phase.SURVEY:
+            logger.info(node["registry"]["path"], extra=dict(phase=phase))
             key = node["registry"]["node"]
             self.indexes[key] = node
             return True
