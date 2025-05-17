@@ -50,9 +50,9 @@ class Pathfinder(contextlib.ExitStack):
     @staticmethod
     def location_of(node: dict) -> Path:
         try:
-            return node["registry"]["index"]["registry"]["node"].resolve()
+            return node["registry"]["index"]["registry"]["path"].resolve()
         except (AttributeError, KeyError, TypeError):
-            return node["registry"]["node"].resolve()
+            return node["registry"]["path"].resolve()
 
     def __init__(self, *plugins: tuple[Callable], **kwargs):
         super().__init__()
@@ -81,11 +81,12 @@ class Pathfinder(contextlib.ExitStack):
             text = path.read_text()
             node = tomllib.loads(text, parse_float=decimal.Decimal)
         except tomllib.TOMLDecodeError as error:
-            warnings.warn(f"{path}: {error}")
+            self.logger.warning(f"{path}: {error}")
             raise
 
-        node.setdefault("registry", {})["node"] = path
+        node.setdefault("registry", {})["path"] = path
         node["registry"]["root"] = root
+        node["registry"]["node"] = path.parent.relative_to(root).parts
         node["registry"]["time"] = datetime.datetime.now(tz=datetime.timezone.utc)
 
         node.setdefault("metadata", {})["slug"] = (

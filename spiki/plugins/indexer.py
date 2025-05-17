@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import argparse
+from collections import defaultdict
 import logging
 
 from spiki.plugin import Phase
@@ -23,7 +25,18 @@ from spiki.plugin import Plugin
 
 class Indexer(Plugin):
 
+    def __init__(self, args: argparse.Namespace = None):
+        super().__init__(args)
+        self.indexes = {}
+
     def __call__(self, node: dict, phase: Phase, **kwargs) -> bool:
         logger = logging.getLogger("indexer")
-        logger.info(node["registry"]["node"], extra=dict(phase=phase))
+        logger.info(node["registry"]["path"], extra=dict(phase=phase))
+        if phase == Phase.SURVEY:
+            key = node["registry"]["node"]
+            self.indexes[key] = node
+            return False
+        elif phase == Phase.REPORT:
+            logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
+            return False
         return False
