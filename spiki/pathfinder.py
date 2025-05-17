@@ -122,7 +122,7 @@ class Pathfinder(contextlib.ExitStack):
                         path = parent.joinpath(name)
                         node = self.build_index(path, root=root)
                         for plugin in self.running:
-                            plugin(node, phase=Phase.SURVEY)
+                            touch = plugin(node, phase=Phase.SURVEY)
                         self.indexes[key] = node
 
             for parent, dirnames, filenames in p.resolve().walk():

@@ -23,7 +23,7 @@ from spiki.plugin import Plugin
 
 class Indexer(Plugin):
 
-    def __call__(self, node: dict, phase: Phase, **kwargs):
+    def __call__(self, node: dict, phase: Phase, **kwargs) -> bool:
         logger = logging.getLogger("indexer")
         logger.info(node["registry"]["node"], extra=dict(phase=phase))
         return False

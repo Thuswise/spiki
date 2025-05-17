@@ -40,5 +40,5 @@ class Plugin:
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
-    def __call__(self, node: dict, phase: Phase, **kwargs):
+    def __call__(self, node: dict, phase: Phase, **kwargs) -> bool:
         return True
