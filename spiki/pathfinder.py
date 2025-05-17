@@ -156,18 +156,3 @@ class Pathfinder(contextlib.ExitStack):
 
                     renderer = Renderer()
                     yield path, template, renderer.serialize(template)
-
-import argparse
-class Plugin:
-
-    def __init__(self, args: argparse.Namespace = None):
-        self.args = args or argparse.Namespace()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-    def __call__(self, node: dict, *args, **kwargs):
-        return True
