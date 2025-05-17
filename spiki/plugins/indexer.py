@@ -35,7 +35,7 @@ class Indexer(Plugin):
         if phase == Phase.SURVEY:
             key = node["registry"]["node"]
             self.indexes[key] = node
-            return False
+            return True
         elif phase == Phase.REPORT:
             logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
             return False

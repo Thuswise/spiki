@@ -126,7 +126,7 @@ class Pathfinder(contextlib.ExitStack):
                         node = self.build_index(path, root=root)
                         touch = [plugin(node, phase=Phase.SURVEY) for plugin in self.running]
                         self.logger.info(
-                            f"{sum(touch)} edit" + ("" if sum(touch) == 1 else "s"),
+                            f"{sum(touch)} memo" + ("" if sum(touch) == 1 else "s"),
                             extra=dict(phase=Phase.SURVEY, path=path.relative_to(root).as_posix())
                         )
                         self.indexes[key] = node
