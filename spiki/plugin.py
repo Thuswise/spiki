@@ -20,7 +20,7 @@ import argparse
 import enum
 
 
-class Event(enum.Enum):
+class Phase(enum.Enum):
     SURVEY = "Discovering topology"
     ASSETS = "Identifying media"
     ENRICH = "Attaching metadata"
@@ -38,5 +38,5 @@ class Plugin:
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
-    def __call__(self, node: dict, event: Event, **kwargs):
+    def __call__(self, node: dict, phase: Phase, **kwargs):
         return True
