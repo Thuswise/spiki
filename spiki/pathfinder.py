@@ -56,7 +56,7 @@ class Pathfinder(contextlib.ExitStack):
 
     def __init__(self, *plugins: tuple[Callable], **kwargs):
         super().__init__()
-        self.indexes = dict()
+        self.nodes = dict()
         self.plugins = plugins
         self.running = None
         self.space = None
@@ -71,10 +71,6 @@ class Pathfinder(contextlib.ExitStack):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         shutil.rmtree(self.space, ignore_errors=True)
         return rv
-
-    def build_index(self, path: Path, root: Path = None):
-        node = self.build_node(path, root=root)
-        return node
 
     def build_node(self, path: Path, root: Path = None):
         try:
@@ -123,24 +119,30 @@ class Pathfinder(contextlib.ExitStack):
                 for name in filenames:
                     if name == index_name:
                         path = parent.joinpath(name)
-                        node = self.build_index(path, root=root)
+                        node = self.build_node(path, root=root)
                         touch = [plugin(Phase.SURVEY, path=path, node=node) for plugin in self.running]
                         self.logger.info(
                             f"{sum(touch)} memo" + ("" if sum(touch) == 1 else "s"),
                             extra=dict(phase=Phase.SURVEY, path=path.relative_to(root).as_posix())
                         )
-                        self.indexes[key] = node
+                        self.nodes[path] = node
 
             for parent, dirnames, filenames in p.resolve().walk():
                 key = parent.relative_to(root).parts
                 for name in filenames:
+                    path = parent.joinpath(name)
                     if name == index_name:
-                        node = self.indexes[key]
+                        node = self.nodes[path]
                     else:
-                        path = parent.joinpath(name)
                         node = self.build_node(path, root=root)
 
-                    stack = list(filter(None, (self.indexes.get(i) for i in self.slices(key))))
+                    indexes = sorted(
+                        (p for p in self.nodes
+                         if parent.is_relative_to(p.parent) and p.name == index_name
+                        ),
+                        key=lambda x: len(format(x))
+                    )
+                    stack = [self.nodes[i] for i in indexes]
                     template = self.merge(*stack + [node])
 
                     # TODO: call plugins
