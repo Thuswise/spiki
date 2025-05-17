@@ -72,6 +72,15 @@ class Pathfinder(contextlib.ExitStack):
         shutil.rmtree(self.space, ignore_errors=True)
         return rv
 
+    def ancestors(self, path: Path, index_name: str) -> list[Path]:
+        return sorted(
+            (p for p in self.nodes
+             if path.is_relative_to(p.parent)
+             and p.name == index_name
+            ),
+            key=lambda x: len(format(x))
+        )
+
     def build_node(self, path: Path, root: Path = None):
         try:
             text = path.read_text()
@@ -136,12 +145,7 @@ class Pathfinder(contextlib.ExitStack):
                     else:
                         node = self.build_node(path, root=root)
 
-                    indexes = sorted(
-                        (p for p in self.nodes
-                         if parent.is_relative_to(p.parent) and p.name == index_name
-                        ),
-                        key=lambda x: len(format(x))
-                    )
+                    indexes = self.ancestors(path, index_name)
                     stack = [self.nodes[i] for i in indexes]
                     template = self.merge(*stack + [node])
 
