@@ -153,20 +153,10 @@ class Pathfinder(contextlib.ExitStack):
             stack = [self.nodes[i] for i in indexes]
             template = self.merge(*stack + [node])
 
-            # TODO: call plugins
-            index = next((i for i in reversed(stack)), None)
-            if index:
-                template["registry"]["index"] = index
-                index["registry"].setdefault("nodes", []).append(node)
-                text = f"""
-                [doc.html.body]
-                config = {{tag_mode = "pair"}}
-                [[doc.html.body.nav.ul.li]]
-                attrib = {{href = "{node['metadata']['slug']}"}}
-                a = "{node['metadata']['title']}"
-                """
-                data = tomllib.loads(text)
-                rhs = self.update(data, index)
-
+            touch = [plugin(Phase.ENRICH, path=path, node=template) for plugin in self.running]
+            self.logger.info(
+                f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),
+                extra=dict(phase=Phase.ENRICH, path=path.relative_to(root).as_posix())
+            )
             renderer = Renderer()
             yield path, template, renderer.serialize(template)
