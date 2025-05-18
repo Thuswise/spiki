@@ -53,7 +53,7 @@ class Indexer(Plugin):
                 node["registry"]["index"] = index
                 index["registry"].setdefault("nodes", []).append(node)
                 text = f"""
-                [doc.html.body]
+                [doc.html.body.nav]
                 config = {{tag_mode = "pair"}}
                 [[doc.html.body.nav.ul.li]]
                 attrib = {{href = "{node['metadata']['slug']}"}}
@@ -61,9 +61,9 @@ class Indexer(Plugin):
                 """
                 data = tomllib.loads(text)
                 rhs = self.visitor.update(data, index)
+                return True
             except (KeyError, StopIteration) as error:
                 return False
-            return True
         elif phase == Phase.REPORT:
             logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
             return False
