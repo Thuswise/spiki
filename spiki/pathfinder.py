@@ -136,7 +136,6 @@ class Pathfinder(contextlib.ExitStack):
         root = Path(os.path.commonprefix(paths))
         for p in paths:
             for parent, dirnames, filenames in p.resolve().walk():
-                key = parent.relative_to(root).parts
                 for name in filenames:
                     path = parent.joinpath(name)
                     node = self.build_node(path, root=root)
@@ -147,34 +146,27 @@ class Pathfinder(contextlib.ExitStack):
                     )
                     self.nodes[path] = node
 
-            for parent, dirnames, filenames in p.resolve().walk():
-                key = parent.relative_to(root).parts
-                for name in filenames:
-                    path = parent.joinpath(name)
-                    if name == self.index_name:
-                        node = self.nodes[path]
-                    else:
-                        node = self.build_node(path, root=root)
+        for path, node in self.nodes.items():
 
-                    # Create a template from this node and all its ancestor indexes
-                    indexes = self.ancestors(path)
-                    stack = [self.nodes[i] for i in indexes]
-                    template = self.merge(*stack + [node])
+            # Create a template from this node and all its ancestor indexes
+            indexes = self.ancestors(path)
+            stack = [self.nodes[i] for i in indexes]
+            template = self.merge(*stack + [node])
 
-                    # TODO: call plugins
-                    index = next((i for i in reversed(stack)), None)
-                    if index:
-                        template["registry"]["index"] = index
-                        index["registry"].setdefault("nodes", []).append(node)
-                        text = f"""
-                        [doc.html.body]
-                        config = {{tag_mode = "pair"}}
-                        [[doc.html.body.nav.ul.li]]
-                        attrib = {{href = "{node['metadata']['slug']}"}}
-                        a = "{node['metadata']['title']}"
-                        """
-                        data = tomllib.loads(text)
-                        rhs = self.update(data, index)
+            # TODO: call plugins
+            index = next((i for i in reversed(stack)), None)
+            if index:
+                template["registry"]["index"] = index
+                index["registry"].setdefault("nodes", []).append(node)
+                text = f"""
+                [doc.html.body]
+                config = {{tag_mode = "pair"}}
+                [[doc.html.body.nav.ul.li]]
+                attrib = {{href = "{node['metadata']['slug']}"}}
+                a = "{node['metadata']['title']}"
+                """
+                data = tomllib.loads(text)
+                rhs = self.update(data, index)
 
-                    renderer = Renderer()
-                    yield path, template, renderer.serialize(template)
+            renderer = Renderer()
+            yield path, template, renderer.serialize(template)
