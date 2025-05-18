@@ -75,7 +75,7 @@ def parser():
 
 def run():
     p = parser()
-    args = p.parse_args()
+    args, res = p.parse_known_args()
     rv = main(args)
     sys.exit(rv)
 
