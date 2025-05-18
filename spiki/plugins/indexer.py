@@ -19,6 +19,7 @@ import argparse
 from collections import defaultdict
 import logging
 from pathlib import Path
+import tomllib
 
 from spiki.plugin import Phase
 from spiki.plugin import Plugin
@@ -40,10 +41,11 @@ class Indexer(Plugin):
     ) -> bool:
         logger = logging.getLogger("indexer")
         if phase == Phase.SURVEY:
-            logger.info(node["registry"]["path"], extra=dict(phase=phase))
-            key = node["registry"]["node"]
-            self.indexes[key] = node
-            return True
+            if path.name == self.visitor.index_name:
+                logger.info(node["registry"]["path"], extra=dict(phase=phase))
+                key = node["registry"]["node"]
+                self.indexes[key] = node
+                return True
         elif phase == Phase.ENRICH:
             return True
         elif phase == Phase.REPORT:

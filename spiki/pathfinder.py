@@ -138,15 +138,14 @@ class Pathfinder(contextlib.ExitStack):
             for parent, dirnames, filenames in p.resolve().walk():
                 key = parent.relative_to(root).parts
                 for name in filenames:
-                    if name == self.index_name:
-                        path = parent.joinpath(name)
-                        node = self.build_node(path, root=root)
-                        touch = [plugin(Phase.SURVEY, path=path, node=node) for plugin in self.running]
-                        self.logger.info(
-                            f"{sum(touch)} memo" + ("" if sum(touch) == 1 else "s"),
-                            extra=dict(phase=Phase.SURVEY, path=path.relative_to(root).as_posix())
-                        )
-                        self.nodes[path] = node
+                    path = parent.joinpath(name)
+                    node = self.build_node(path, root=root)
+                    touch = [plugin(Phase.SURVEY, path=path, node=node) for plugin in self.running]
+                    self.logger.info(
+                        f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),
+                        extra=dict(phase=Phase.SURVEY, path=path.relative_to(root).as_posix())
+                    )
+                    self.nodes[path] = node
 
             for parent, dirnames, filenames in p.resolve().walk():
                 key = parent.relative_to(root).parts
