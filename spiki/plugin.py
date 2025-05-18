@@ -16,7 +16,6 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
-import argparse
 import enum
 from pathlib import Path
 
@@ -33,8 +32,8 @@ class Phase(enum.Enum):
 
 class Plugin:
 
-    def __init__(self, args: argparse.Namespace = None):
-        self.args = args or argparse.Namespace()
+    def __init__(self, visitor: "Pathfinder" = None):
+        self.visitor = visitor
 
     def __enter__(self):
         return self
@@ -44,3 +43,7 @@ class Plugin:
 
     def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         return True
+
+    def register(self, visitor: "Pathfinder"):
+        self.visitor = visitor
+        return self

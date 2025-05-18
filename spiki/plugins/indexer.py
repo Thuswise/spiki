@@ -26,16 +26,25 @@ from spiki.plugin import Plugin
 
 class Indexer(Plugin):
 
-    def __init__(self, args: argparse.Namespace = None):
-        super().__init__(args)
+    def __init__(self, visitor):
+        super().__init__(visitor)
         self.indexes = {}
 
-    def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def __call__(
+        self,
+        phase: Phase, *,
+        path: Path = None,
+        node: dict = None,
+        doc: str = None,
+        **kwargs
+    ) -> bool:
         logger = logging.getLogger("indexer")
         if phase == Phase.SURVEY:
             logger.info(node["registry"]["path"], extra=dict(phase=phase))
             key = node["registry"]["node"]
             self.indexes[key] = node
+            return True
+        elif phase == Phase.ENRICH:
             return True
         elif phase == Phase.REPORT:
             logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))

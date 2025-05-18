@@ -27,7 +27,6 @@ from spiki.pathfinder import Pathfinder
 from spiki.renderer import Renderer
 
 from spiki.plugin import Phase
-from spiki.plugins.indexer import Indexer
 
 
 def setup_logger():
@@ -48,10 +47,10 @@ def main(args):
     logger = logging.getLogger("spiki")
     args.output.mkdir(parents=True, exist_ok=True)
 
-    plugins = [
-        Indexer(args),
+    plugin_types = [
+        "spiki.plugins.indexer:Indexer",
     ]
-    with Pathfinder(*plugins) as pathfinder:
+    with Pathfinder(*plugin_types) as pathfinder:
         for n, (p, template, doc) in enumerate(pathfinder.walk(*args.paths)):
             destination = pathfinder.location_of(template).relative_to(template["registry"]["root"]).parent
             parent = pathfinder.space.joinpath(destination).resolve()

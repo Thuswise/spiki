@@ -24,6 +24,7 @@ import functools
 import logging
 import os.path
 from pathlib import Path
+import pkgutil
 import shutil
 import string
 import tempfile
@@ -54,13 +55,14 @@ class Pathfinder(contextlib.ExitStack):
         except (AttributeError, KeyError, TypeError):
             return node["registry"]["path"].resolve()
 
-    def __init__(self, *plugins: tuple[Callable], **kwargs):
+    def __init__(self, *plugin_types: tuple[Callable], **kwargs):
         super().__init__()
+        self.index_name = "index.toml"
         self.nodes = dict()
-        self.plugins = plugins
         self.running = None
         self.space = None
         self.logger = logging.getLogger("pathfinder")
+        self.plugins = list(filter(None, (self.init_plugin(i) for i in plugin_types)))
 
     def __enter__(self):
         self.space = Path(tempfile.mkdtemp()).resolve()
@@ -72,11 +74,21 @@ class Pathfinder(contextlib.ExitStack):
         shutil.rmtree(self.space, ignore_errors=True)
         return rv
 
-    def ancestors(self, path: Path, index_name: str) -> list[Path]:
+    def init_plugin(self, type_name: str):
+        try:
+            cls = pkgutil.resolve_name(type_name)
+        except (AttributeError, ModuleNotFoundError) as error:
+            self.logger.warning(f"'{type_name}' not resolved. Plugin not loaded.")
+            return None
+
+        plugin = cls(self)
+        return plugin
+
+    def ancestors(self, path: Path) -> list[Path]:
         return sorted(
             (p for p in self.nodes
              if path.is_relative_to(p.parent)
-             and p.name == index_name
+             and p.name == self.index_name
             ),
             key=lambda x: len(format(x))
         )
@@ -119,14 +131,14 @@ class Pathfinder(contextlib.ExitStack):
                 rhs[k] = v
         return rhs
 
-    def walk(self, *paths: list[Path], index_name="index.toml") -> Generator[tuple[Path, dict, str]]:
+    def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
         paths = [i.resolve() for i in paths]
         root = Path(os.path.commonprefix(paths))
         for p in paths:
             for parent, dirnames, filenames in p.resolve().walk():
                 key = parent.relative_to(root).parts
                 for name in filenames:
-                    if name == index_name:
+                    if name == self.index_name:
                         path = parent.joinpath(name)
                         node = self.build_node(path, root=root)
                         touch = [plugin(Phase.SURVEY, path=path, node=node) for plugin in self.running]
@@ -140,12 +152,13 @@ class Pathfinder(contextlib.ExitStack):
                 key = parent.relative_to(root).parts
                 for name in filenames:
                     path = parent.joinpath(name)
-                    if name == index_name:
+                    if name == self.index_name:
                         node = self.nodes[path]
                     else:
                         node = self.build_node(path, root=root)
 
-                    indexes = self.ancestors(path, index_name)
+                    # Create a template from this node and all its ancestor indexes
+                    indexes = self.ancestors(path)
                     stack = [self.nodes[i] for i in indexes]
                     template = self.merge(*stack + [node])
 
