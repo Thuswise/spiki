@@ -29,6 +29,11 @@ from spiki.renderer import Renderer
 from spiki.plugin import Phase
 
 
+default_plugin_types = [
+    "spiki.plugins.indexer:Indexer",
+]
+
+
 def setup_logger():
     logging.basicConfig(level=logging.INFO)
     root_logger = logging.getLogger()
@@ -47,9 +52,7 @@ def main(args):
     logger = logging.getLogger("spiki")
     args.output.mkdir(parents=True, exist_ok=True)
 
-    plugin_types = [
-        "spiki.plugins.indexer:Indexer",
-    ]
+    plugin_types = args.plugin or default_plugin_types
     with Pathfinder(*plugin_types) as pathfinder:
         for n, (p, template, doc) in enumerate(pathfinder.walk(*args.paths)):
             destination = pathfinder.location_of(template).relative_to(template["registry"]["root"]).parent
@@ -67,9 +70,11 @@ def main(args):
 
 def parser():
     default_path = Path.cwd().joinpath("output").resolve()
-    rv = argparse.ArgumentParser(usage=__doc__)
+    rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
     rv.add_argument("paths", nargs="+", type=Path, help="Specify file paths")
     rv.add_argument("-O", "--output", type=Path, default=default_path, help=f"Specify output directory [{default_path}]")
+    rv.add_argument("--plugin", action="append", help=f"Specify plugin list {default_plugin_types}")
+    rv.convert_arg_line_to_args = lambda x: x.split()
     return rv
 
 
