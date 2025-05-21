@@ -52,11 +52,12 @@ class Indexer(Plugin):
                 index = self.visitor.nodes[index_path]
                 node["registry"]["index"] = index
                 index["registry"].setdefault("nodes", []).append(node)
+                # TODO: nav.header and nav.footer inside nav
                 text = f"""
                 [doc.html.body.nav]
                 config = {{tag_mode = "pair"}}
-                [[doc.html.body.nav.ul.li]]
-                attrib = {{href = "{node['metadata']['slug']}"}}
+                [[doc.html.body.nav.header.ul.li]]
+                attrib = {{href = "{node['metadata']['slug']}.html"}}
                 a = "{node['metadata']['title']}"
                 """
                 data = tomllib.loads(text)
