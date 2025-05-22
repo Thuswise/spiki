@@ -21,6 +21,7 @@ import logging
 from pathlib import Path
 import tomllib
 
+from spiki.pathfinder import Pathfinder
 from spiki.plugin import Phase
 from spiki.plugin import Plugin
 
@@ -50,8 +51,9 @@ class Indexer(Plugin):
             try:
                 # root
                 root_index = self.indexes[next(iter(sorted(self.indexes)))]
-                print(root_index["registry"]["path"])
+                ancestors = self.visitor.ancestors(path)
                 # home
+                home_index = ancestors[-1]
                 # back
                 # here
                 # down
@@ -59,18 +61,20 @@ class Indexer(Plugin):
                 index = self.visitor.nodes[index_path]
                 node["registry"]["index"] = index
                 index["registry"].setdefault("nodes", []).append(node)
+                url = self.visitor.url_of(node)
                 # TODO: nav.header and nav.footer inside nav
                 text = f"""
                 [doc.html.body.nav]
                 config = {{tag_mode = "pair"}}
                 [[doc.html.body.nav.header.ul.li]]
-                attrib = {{href = "{node['metadata']['slug']}.html"}}
+                attrib = {{href = "/{url}"}}
                 a = "{node['metadata']['title']}"
                 """
                 data = tomllib.loads(text)
                 rhs = self.visitor.combine(data, index)
                 return True
             except (KeyError, StopIteration) as error:
+                raise
                 return False
         elif phase == Phase.REPORT:
             logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))

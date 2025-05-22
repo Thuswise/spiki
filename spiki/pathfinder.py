@@ -55,6 +55,12 @@ class Pathfinder(contextlib.ExitStack):
         except (AttributeError, KeyError, TypeError):
             return node["registry"]["path"].resolve()
 
+    @staticmethod
+    def url_of(node: dict) -> str:
+        root = node["registry"]["root"]
+        parent = Pathfinder.location_of(node).relative_to(root).parent
+        return parent.joinpath(node["metadata"]["slug"]).with_suffix(".html").as_posix()
+
     def __init__(self, *plugin_types: tuple[Callable], **kwargs):
         super().__init__()
         self.index_name = "index.toml"
