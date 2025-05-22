@@ -48,6 +48,13 @@ class Indexer(Plugin):
                 return True
         elif phase == Phase.ENRICH:
             try:
+                # root
+                root_index = self.indexes[next(iter(sorted(self.indexes)))]
+                print(root_index["registry"]["path"])
+                # home
+                # back
+                # here
+                # down
                 index_path = next(reversed(self.visitor.ancestors(path)))
                 index = self.visitor.nodes[index_path]
                 node["registry"]["index"] = index
