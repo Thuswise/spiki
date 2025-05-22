@@ -151,6 +151,8 @@ class Pathfinder(contextlib.ExitStack):
                         extra=dict(phase=Phase.SURVEY, path=path.relative_to(root).as_posix())
                     )
                     self.nodes[path] = node
+        else:
+            touch = [plugin(Phase.SURVEY) for plugin in self.running]
 
         for path, node in self.nodes.items():
 
@@ -166,3 +168,5 @@ class Pathfinder(contextlib.ExitStack):
             )
             renderer = Renderer()
             yield path, template, renderer.serialize(template)
+        else:
+            touch = [plugin(Phase.ENRICH) for plugin in self.running]

@@ -42,12 +42,20 @@ class Indexer(Plugin):
     ) -> bool:
         logger = logging.getLogger("indexer")
         if phase == Phase.SURVEY:
+            if path is None:
+                # End of phase
+                return False
+
             if path.name == self.visitor.index_name:
                 logger.info(node["registry"]["path"], extra=dict(phase=phase))
                 key = node["registry"]["node"]
                 self.indexes[key] = node
                 return True
         elif phase == Phase.ENRICH:
+            if path is None:
+                # End of phase
+                return False
+
             try:
                 # root
                 root_index = self.indexes[next(iter(sorted(self.indexes)))]
@@ -77,6 +85,10 @@ class Indexer(Plugin):
                 raise
                 return False
         elif phase == Phase.REPORT:
+            if path is None:
+                # End of phase
+                return False
+
             logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
             return False
         return False
