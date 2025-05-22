@@ -43,10 +43,10 @@ class PathfinderTests(unittest.TestCase):
         rv = Pathfinder().merge()
         self.assertEqual(rv, {})
 
-    def test_update(self):
+    def test_combine(self):
         lhs = dict(a=dict(b=1, c=2), b=[dict(d=3, e=4), dict(f=5, g=6)])
         rhs = dict(a=dict(b=10), b=[dict(d=30, e=40)])
-        rv = Pathfinder().update(lhs, rhs)
+        rv = Pathfinder().combine(lhs, rhs)
         self.assertIs(rv, rhs)
         self.assertEqual(rv["a"]["b"], 10)
         self.assertEqual(rv["a"]["c"], 2)

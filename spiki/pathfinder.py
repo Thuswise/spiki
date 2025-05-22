@@ -116,15 +116,15 @@ class Pathfinder(contextlib.ExitStack):
     def merge(self, *args: tuple[dict]) -> dict:
         bases = [dict(doc=i.get("base", {})) for i in args if "base" in i]
         end = (args or [{}])[-1]
-        return functools.reduce(self.update, bases + [end])
+        return functools.reduce(self.combine, bases + [end])
 
-    def update(self, lhs: dict, rhs: dict) -> dict:
+    def combine(self, lhs: dict, rhs: dict) -> dict:
         "Use lhs as a base to update rhs"
         for k, v in lhs.items():
             try:
                 node = rhs[k]
                 if isinstance(node, dict):
-                    rhs[k] = self.update(v, node)
+                    rhs[k] = self.combine(v, node)
                 elif isinstance(node, list):
                     rhs[k].extend(v)
             except KeyError:

@@ -68,7 +68,7 @@ class Indexer(Plugin):
                 a = "{node['metadata']['title']}"
                 """
                 data = tomllib.loads(text)
-                rhs = self.visitor.update(data, index)
+                rhs = self.visitor.combine(data, index)
                 return True
             except (KeyError, StopIteration) as error:
                 return False
