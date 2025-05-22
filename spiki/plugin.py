@@ -42,7 +42,15 @@ class Plugin:
         return False
 
     def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
-        return True
+        if path is None:
+            method = getattr(self, f"end_{phase.name.lower()}", None)
+        else:
+            method = getattr(self, f"do_{phase.name.lower()}", None)
+
+        if method:
+            return method(phase, path=path, node=node, doc=doc, **kwargs)
+        else:
+            return False
 
     def register(self, visitor: "Pathfinder"):
         self.visitor = visitor

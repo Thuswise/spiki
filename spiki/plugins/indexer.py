@@ -30,65 +30,56 @@ class Indexer(Plugin):
 
     def __init__(self, visitor):
         super().__init__(visitor)
+        self.logger = logging.getLogger("indexer")
         self.indexes = {}
 
-    def __call__(
-        self,
-        phase: Phase, *,
-        path: Path = None,
-        node: dict = None,
-        doc: str = None,
-        **kwargs
-    ) -> bool:
-        logger = logging.getLogger("indexer")
-        if phase == Phase.SURVEY:
-            if path is None:
-                # End of phase
-                return False
-
-            if path.name == self.visitor.index_name:
-                logger.info(node["registry"]["path"], extra=dict(phase=phase))
-                key = node["registry"]["node"]
-                self.indexes[key] = node
-                return True
-        elif phase == Phase.ENRICH:
-            if path is None:
-                # End of phase
-                return False
-
-            try:
-                # root
-                root_index = self.indexes[next(iter(sorted(self.indexes)))]
-                ancestors = self.visitor.ancestors(path)
-                # home
-                home_index = ancestors[-1]
-                # back
-                # here
-                # down
-                index_path = next(reversed(self.visitor.ancestors(path)))
-                index = self.visitor.nodes[index_path]
-                node["registry"]["index"] = index
-                index["registry"].setdefault("nodes", []).append(node)
-                url = self.visitor.url_of(node)
-                # TODO: nav.header and nav.footer inside nav
-                text = f"""
-                [doc.html.body.nav]
-                config = {{tag_mode = "pair"}}
-                [[doc.html.body.nav.header.ul.li]]
-                attrib = {{href = "/{url}"}}
-                a = "{node['metadata']['title']}"
-                """
-                data = tomllib.loads(text)
-                rhs = self.visitor.combine(data, index)
-                return True
-            except (KeyError, StopIteration) as error:
-                raise
-                return False
-        elif phase == Phase.REPORT:
-            if path is None:
-                # End of phase
-                return False
-
-            logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
+    def do_survey(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        if path.name == self.visitor.index_name:
+            self.logger.info(node["registry"]["path"], extra=dict(phase=phase))
+            key = node["registry"]["node"]
+            self.indexes[key] = node
+            return True
+        else:
             return False
+
+    def end_survey(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        return False
+
+    def do_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        try:
+            # root
+            root_index = self.indexes[next(iter(sorted(self.indexes)))]
+            ancestors = self.visitor.ancestors(path)
+            # home
+            home_index = ancestors[-1]
+            # back
+            # here
+            # down
+            index_path = next(reversed(self.visitor.ancestors(path)))
+            index = self.visitor.nodes[index_path]
+            node["registry"]["index"] = index
+            index["registry"].setdefault("nodes", []).append(node)
+            url = self.visitor.url_of(node)
+            # TODO: nav.header and nav.footer inside nav
+            text = f"""
+            [doc.html.body.nav]
+            config = {{tag_mode = "pair"}}
+            [[doc.html.body.nav.header.ul.li]]
+            attrib = {{href = "/{url}"}}
+            a = "{node['metadata']['title']}"
+            """
+            data = tomllib.loads(text)
+            rhs = self.visitor.combine(data, index)
+            return True
+        except (KeyError, StopIteration) as error:
+            return False
+
+    def end_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        return False
+
+    def do_report(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
+        return False
+
+    def end_report(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         return False
