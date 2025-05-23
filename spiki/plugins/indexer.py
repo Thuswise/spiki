@@ -17,6 +17,7 @@
 
 import argparse
 from collections import defaultdict
+import itertools
 import logging
 from pathlib import Path
 import tomllib
@@ -46,20 +47,27 @@ class Indexer(Plugin):
         return False
 
     def do_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
-        index_path = next(reversed(self.visitor.ancestors(path)))
+        ancestors = self.visitor.ancestors(path)
+        root_path = ancestors[0]
+        home_path = ancestors[-1]
 
-        if index_path == path:
+        if home_path == path:
             return False
 
         try:
-            index_node = self.visitor.nodes[index_path]
-            home_url = self.visitor.url_of(index_node)
+            root_node = self.visitor.nodes[root_path]
+            root_url = self.visitor.url_of(root_node)
+            home_node = self.visitor.nodes[home_path]
+            home_url = self.visitor.url_of(home_node)
             text = f"""
             [doc.html.body.nav]
             config = {{tag_mode = "pair"}}
             [[doc.html.body.nav.header.ul.li]]
+            attrib = {{class = "spiki root", href = "/{root_url}"}}
+            a = "{root_node['metadata']['title']}"
+            [[doc.html.body.nav.header.ul.li]]
             attrib = {{class = "spiki home", href = "/{home_url}"}}
-            a = "{index_node['metadata']['title']}"
+            a = "{home_node['metadata']['title']}"
             """
             data = tomllib.loads(text)
             self.visitor.nodes[path] = self.visitor.combine(data, node)
@@ -69,26 +77,35 @@ class Indexer(Plugin):
 
     def end_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         rv = False
-        for path, node in self.visitor.nodes.items():
-            index_path = next(reversed(self.visitor.ancestors(path)))
-            if index_path == path:
-                continue
 
-            try:
-                index_node = self.visitor.nodes[index_path]
-                down_url = self.visitor.url_of(node)
-                text = f"""
-                [doc.html.body.nav]
-                config = {{tag_mode = "pair"}}
-                [[doc.html.body.nav.footer.ul.li]]
-                attrib = {{class = "spiki down", href = "/{down_url}"}}
-                a = "{node['metadata']['title']}"
-                """
-                data = tomllib.loads(text)
-                self.visitor.nodes[index_path] = self.visitor.combine(data, index_node)
-                rv = True
-            except (KeyError, StopIteration) as error:
-                self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
+        def key(node):
+            "Sort nodes by path parts"
+            return node["registry"]["node"]
+
+        for k, group in itertools.groupby(sorted(self.visitor.nodes.values(), key=key), key=key):
+            siblings = list(group)
+            for n, node in enumerate(siblings):
+                path = node["registry"]["path"]
+
+                index_path = next(reversed(self.visitor.ancestors(path)))
+                if index_path == path:
+                    continue
+
+                try:
+                    index_node = self.visitor.nodes[index_path]
+                    down_url = self.visitor.url_of(node)
+                    text = f"""
+                    [doc.html.body.nav]
+                    config = {{tag_mode = "pair"}}
+                    [[doc.html.body.nav.footer.ul.li]]
+                    attrib = {{class = "spiki down", href = "/{down_url}"}}
+                    a = "{node['metadata']['title']}"
+                    """
+                    data = tomllib.loads(text)
+                    self.visitor.nodes[index_path] = self.visitor.combine(data, index_node)
+                    rv = True
+                except (KeyError, StopIteration) as error:
+                    self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
         return rv
 
         try:
