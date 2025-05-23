@@ -18,6 +18,7 @@
 from collections.abc import Callable
 from collections.abc import Generator
 import contextlib
+import copy
 import datetime
 import decimal
 import functools
@@ -158,15 +159,15 @@ class Pathfinder(contextlib.ExitStack):
 
             # Create a template from this node and all its ancestor indexes
             indexes = self.ancestors(path)
-            stack = [self.nodes[i] for i in indexes]
-            template = self.merge(*stack + [node])
+            stack = [copy.deepcopy(self.nodes[i]) for i in indexes]
+            template = self.merge(*stack + [copy.deepcopy(node)])
 
             touch = [plugin(Phase.ENRICH, path=path, node=template) for plugin in self.running]
             self.logger.info(
                 f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),
                 extra=dict(phase=Phase.ENRICH, path=path.relative_to(root).as_posix())
             )
-            renderer = Renderer()
-            yield path, template, renderer.serialize(template)
         else:
             touch = [plugin(Phase.ENRICH) for plugin in self.running]
+
+        yield from ((path, node, Renderer(node).serialize()) for path, node in self.nodes.items())

@@ -46,6 +46,51 @@ class Indexer(Plugin):
         return False
 
     def do_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        index_path = next(reversed(self.visitor.ancestors(path)))
+
+        if index_path == path:
+            return False
+
+        try:
+            index_node = self.visitor.nodes[index_path]
+            home_url = self.visitor.url_of(index_node)
+            text = f"""
+            [doc.html.body.nav]
+            config = {{tag_mode = "pair"}}
+            [[doc.html.body.nav.header.ul.li]]
+            attrib = {{class = "spiki home", href = "/{home_url}"}}
+            a = "{index_node['metadata']['title']}"
+            """
+            data = tomllib.loads(text)
+            self.visitor.nodes[path] = self.visitor.combine(data, node)
+            return True
+        except (KeyError, StopIteration) as error:
+            return False
+
+    def end_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        rv = False
+        for path, node in self.visitor.nodes.items():
+            index_path = next(reversed(self.visitor.ancestors(path)))
+            if index_path == path:
+                continue
+
+            try:
+                index_node = self.visitor.nodes[index_path]
+                down_url = self.visitor.url_of(node)
+                text = f"""
+                [doc.html.body.nav]
+                config = {{tag_mode = "pair"}}
+                [[doc.html.body.nav.footer.ul.li]]
+                attrib = {{class = "spiki down", href = "/{down_url}"}}
+                a = "{node['metadata']['title']}"
+                """
+                data = tomllib.loads(text)
+                self.visitor.nodes[index_path] = self.visitor.combine(data, index_node)
+                rv = True
+            except (KeyError, StopIteration) as error:
+                self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
+        return rv
+
         try:
             # root
             root_index = self.indexes[next(iter(sorted(self.indexes)))]
@@ -72,9 +117,8 @@ class Indexer(Plugin):
             rhs = self.visitor.combine(data, index)
             return True
         except (KeyError, StopIteration) as error:
-            return False
+            self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
 
-    def end_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         return False
 
     def do_report(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
