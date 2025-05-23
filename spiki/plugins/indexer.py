@@ -82,27 +82,31 @@ class Indexer(Plugin):
             "Sort nodes by path parts"
             return node["registry"]["node"]
 
+        # TODO
+        # Inter-index links
+        # Sibling links
         for k, group in itertools.groupby(sorted(self.visitor.nodes.values(), key=key), key=key):
             siblings = list(group)
             for n, node in enumerate(siblings):
                 path = node["registry"]["path"]
 
-                index_path = next(reversed(self.visitor.ancestors(path)))
-                if index_path == path:
+                ancestors = self.visitor.ancestors(path)
+                back_path = ancestors[-1]
+                back_node = self.visitor.nodes[back_path]
+                if back_path == path:
                     continue
 
                 try:
-                    index_node = self.visitor.nodes[index_path]
-                    down_url = self.visitor.url_of(node)
+                    here_url = self.visitor.url_of(node)
                     text = f"""
                     [doc.html.body.nav]
                     config = {{tag_mode = "pair"}}
-                    [[doc.html.body.nav.footer.ul.li]]
-                    attrib = {{class = "spiki down", href = "/{down_url}"}}
+                    [[doc.html.body.nav.ul.li]]
+                    attrib = {{class = "spiki here", href = "/{here_url}"}}
                     a = "{node['metadata']['title']}"
                     """
                     data = tomllib.loads(text)
-                    self.visitor.nodes[index_path] = self.visitor.combine(data, index_node)
+                    self.visitor.nodes[back_path] = self.visitor.combine(data, back_node)
                     rv = True
                 except (KeyError, StopIteration) as error:
                     self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
