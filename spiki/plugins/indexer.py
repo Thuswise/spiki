@@ -86,9 +86,13 @@ class Indexer(Plugin):
         # Inter-index links
         # Sibling links
         for k, group in itertools.groupby(sorted(self.visitor.nodes.values(), key=key), key=key):
-            siblings = list(group)
+            siblings = [i for i in group if i["registry"]["path"].name != self.visitor.index_name]
             for n, node in enumerate(siblings):
                 path = node["registry"]["path"]
+                l_node = siblings[n - 1]
+                l_url = self.visitor.url_of(l_node)
+                r_node = siblings[(n + 1) % len(siblings)]
+                r_url = self.visitor.url_of(r_node)
 
                 ancestors = self.visitor.ancestors(path)
                 back_path = ancestors[-1]
@@ -96,6 +100,7 @@ class Indexer(Plugin):
                 if back_path == path:
                     continue
 
+                # Add node link to back index
                 try:
                     here_url = self.visitor.url_of(node)
                     text = f"""
@@ -107,6 +112,25 @@ class Indexer(Plugin):
                     """
                     data = tomllib.loads(text)
                     self.visitor.nodes[back_path] = self.visitor.combine(data, back_node)
+                    rv = True
+                except (KeyError, StopIteration) as error:
+                    self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
+
+                # Add sibling links to node
+                try:
+                    here_url = self.visitor.url_of(node)
+                    text = f"""
+                    [doc.html.body.nav]
+                    config = {{tag_mode = "pair"}}
+                    [[doc.html.body.nav.ul.li]]
+                    attrib = {{class = "spiki here", href = "/{l_url}"}}
+                    a = "{l_node['metadata']['title']}"
+                    [[doc.html.body.nav.ul.li]]
+                    attrib = {{class = "spiki here", href = "/{r_url}"}}
+                    a = "{r_node['metadata']['title']}"
+                    """
+                    data = tomllib.loads(text)
+                    self.visitor.nodes[path] = self.visitor.combine(data, node)
                     rv = True
                 except (KeyError, StopIteration) as error:
                     self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
