@@ -88,7 +88,7 @@ class Indexer(Plugin):
                 self.visitor.nodes[index_path] = self.visitor.combine(data, index_node)
                 rv = True
             except (KeyError, StopIteration) as error:
-                self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
+                self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
         return rv
 
         try:
