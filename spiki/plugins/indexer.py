@@ -51,9 +51,6 @@ class Indexer(Plugin):
         root_path = ancestors[0]
         home_path = ancestors[-1]
 
-        if home_path == path:
-            return False
-
         try:
             root_node = self.visitor.nodes[root_path]
             root_url = self.visitor.url_of(root_node)
