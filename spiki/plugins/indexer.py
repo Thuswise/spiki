@@ -62,6 +62,7 @@ class Indexer(Plugin):
             text = f"""
             [doc.html.body.nav]
             config = {{tag_mode = "pair"}}
+            [doc.html.body.nav.ul]
             [[doc.html.body.nav.header.ul.li]]
             attrib = {{class = "spiki root", href = "/{root_url}"}}
             a = "{root_node['metadata']['title']}"
@@ -86,23 +87,18 @@ class Indexer(Plugin):
         # Inter-index links
         # Sibling links
         for k, group in itertools.groupby(sorted(self.visitor.nodes.values(), key=key), key=key):
-            siblings = [i for i in group if i["registry"]["path"].name != self.visitor.index_name]
-            for n, node in enumerate(siblings):
+            siblings = {i["registry"]["path"].name: i for i in group}
+            index_node = siblings.pop(self.visitor.index_name, None)
+            for n, node in enumerate(siblings.values()):
                 path = node["registry"]["path"]
-                l_node = siblings[n - 1]
-                l_url = self.visitor.url_of(l_node)
-                r_node = siblings[(n + 1) % len(siblings)]
-                r_url = self.visitor.url_of(r_node)
 
                 ancestors = self.visitor.ancestors(path)
-                back_path = ancestors[-1]
-                back_node = self.visitor.nodes[back_path]
-                if back_path == path:
-                    continue
 
                 # Add node link to back index
                 try:
                     here_url = self.visitor.url_of(node)
+                    back_path = ancestors[-1]
+                    back_node = self.visitor.nodes[back_path]
                     text = f"""
                     [doc.html.body.nav]
                     config = {{tag_mode = "pair"}}
@@ -111,8 +107,9 @@ class Indexer(Plugin):
                     a = "{node['metadata']['title']}"
                     """
                     data = tomllib.loads(text)
-                    self.visitor.nodes[back_path] = self.visitor.combine(data, back_node)
-                    rv = True
+                    if back_path != path:
+                        self.visitor.nodes[back_path] = self.visitor.combine(data, back_node)
+                        rv = True
                 except (KeyError, StopIteration) as error:
                     self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
 
@@ -120,7 +117,10 @@ class Indexer(Plugin):
 
                 # Add sibling links to node
                 try:
-                    here_url = self.visitor.url_of(node)
+                    l_node = siblings[list(siblings)[n - 1]]
+                    l_url = self.visitor.url_of(l_node)
+                    r_node = siblings[list(siblings)[(n + 1) % len(siblings)]]
+                    r_url = self.visitor.url_of(r_node)
                     text = f"""
                     [doc.html.body.nav]
                     config = {{tag_mode = "pair"}}
@@ -136,41 +136,12 @@ class Indexer(Plugin):
                         a = "{r_node['metadata']['title']}"
                         """
                     data = tomllib.loads(text)
-                    self.visitor.nodes[path] = self.visitor.combine(data, node)
-                    rv = True
+                    if len(siblings) > 1:
+                        self.visitor.nodes[path] = self.visitor.combine(data, node)
+                        rv = True
                 except (KeyError, StopIteration) as error:
                     self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
         return rv
-
-        try:
-            # root
-            root_index = self.indexes[next(iter(sorted(self.indexes)))]
-            ancestors = self.visitor.ancestors(path)
-            # home
-            home_index = ancestors[-1]
-            # back
-            # here
-            # down
-            index_path = next(reversed(self.visitor.ancestors(path)))
-            index = self.visitor.nodes[index_path]
-            node["registry"]["index"] = index
-            index["registry"].setdefault("nodes", []).append(node)
-            url = self.visitor.url_of(node)
-            # TODO: nav.header and nav.footer inside nav
-            text = f"""
-            [doc.html.body.nav]
-            config = {{tag_mode = "pair"}}
-            [[doc.html.body.nav.header.ul.li]]
-            attrib = {{href = "/{url}"}}
-            a = "{node['metadata']['title']}"
-            """
-            data = tomllib.loads(text)
-            rhs = self.visitor.combine(data, index)
-            return True
-        except (KeyError, StopIteration) as error:
-            self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
-
-        return False
 
     def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
