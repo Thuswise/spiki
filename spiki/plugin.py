@@ -34,6 +34,7 @@ class Plugin:
 
     def __init__(self, visitor: "Pathfinder" = None):
         self.visitor = visitor
+        self.phase = None
 
     def __enter__(self):
         return self
@@ -42,13 +43,14 @@ class Plugin:
         return False
 
     def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        self.phase = phase
         if path is None:
             method = getattr(self, f"end_{phase.name.lower()}", None)
         else:
             method = getattr(self, f"do_{phase.name.lower()}", None)
 
         if method:
-            return method(phase, path=path, node=node, doc=doc, **kwargs)
+            return method(path=path, node=node, doc=doc, **kwargs)
         else:
             return False
 

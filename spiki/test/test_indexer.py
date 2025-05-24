@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from pathlib import Path
+import tempfile
 import textwrap
 import tomllib
 import unittest
@@ -25,7 +27,14 @@ from spiki.plugins.indexer import Indexer
 
 class IndexerTests(unittest.TestCase):
 
-    def test_urls(self):
-        pathfinder = Pathfinder()
-        indexer = Indexer(pathfinder)
-        self.fail(indexer)
+    def test_survey(self):
+        with tempfile.TemporaryDirectory() as src_name:
+            src = Path(src_name).resolve()
+            index = src.joinpath("index.toml")
+            index.write_text("")
+            pathfinder = Pathfinder()
+            with Indexer(pathfinder) as indexer:
+                index_node = pathfinder.nodes[index] = pathfinder.build_node(index, root=src)
+                indexer.do_survey(path=index, node=index_node)
+                self.assertTrue(indexer.indexes)
+                self.assertEqual(pathfinder.url_of(index_node), "index.html")

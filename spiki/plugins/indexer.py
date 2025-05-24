@@ -34,19 +34,19 @@ class Indexer(Plugin):
         self.logger = logging.getLogger("indexer")
         self.indexes = {}
 
-    def do_survey(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def do_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         if path.name == self.visitor.index_name:
-            self.logger.info(node["registry"]["path"], extra=dict(phase=phase))
+            self.logger.info(node["registry"]["path"], extra=dict(phase=self.phase))
             key = node["registry"]["node"]
             self.indexes[key] = node
             return True
         else:
             return False
 
-    def end_survey(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def end_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         return False
 
-    def do_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         ancestors = self.visitor.ancestors(path)
         root_path = ancestors[0]
         home_path = ancestors[-1]
@@ -75,7 +75,7 @@ class Indexer(Plugin):
         except (KeyError, StopIteration) as error:
             return False
 
-    def end_enrich(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def end_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         rv = False
 
         def key(node):
@@ -166,9 +166,9 @@ class Indexer(Plugin):
 
         return False
 
-    def do_report(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
         return False
 
-    def end_report(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
         return False
