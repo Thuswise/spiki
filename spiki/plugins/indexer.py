@@ -62,6 +62,7 @@ class Indexer(Plugin):
             text = f"""
             [doc.html.body.nav]
             config = {{tag_mode = "pair"}}
+            [doc.html.body.nav.header.ul]
             [[doc.html.body.nav.header.ul.li]]
             attrib = {{class = "spiki root", href = "/{root_url}"}}
             a = "{root_node['metadata']['title']}"
