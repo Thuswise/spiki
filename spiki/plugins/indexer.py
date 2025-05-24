@@ -62,13 +62,14 @@ class Indexer(Plugin):
             text = f"""
             [doc.html.body.nav]
             config = {{tag_mode = "pair"}}
-            [doc.html.body.nav.ul]
             [[doc.html.body.nav.header.ul.li]]
             attrib = {{class = "spiki root", href = "/{root_url}"}}
             a = "{root_node['metadata']['title']}"
             [[doc.html.body.nav.header.ul.li]]
             attrib = {{class = "spiki home", href = "/{home_url}"}}
             a = "{home_node['metadata']['title']}"
+            [doc.html.body.nav.ul]
+            [doc.html.body.nav.footer.ul]
             """
             data = tomllib.loads(text)
             self.visitor.nodes[path] = self.visitor.combine(data, node)
@@ -89,6 +90,35 @@ class Indexer(Plugin):
         for k, group in itertools.groupby(sorted(self.visitor.nodes.values(), key=key), key=key):
             siblings = {i["registry"]["path"].name: i for i in group}
             index_node = siblings.pop(self.visitor.index_name, None)
+
+            if index_node is not None:
+                # Add down link to ancestor of index node
+                try:
+                    down_url = self.visitor.url_of(index_node)
+                    path = index_node["registry"]["path"]
+                    ancestors = self.visitor.ancestors(path)
+                    back_path = ancestors[-2]
+                    back_node = self.visitor.nodes[back_path]
+                    back_url = self.visitor.url_of(back_node)
+                    text = f"""
+                    [doc.html.body.nav]
+                    config = {{tag_mode = "pair"}}
+                    [doc.html.body.nav.header.ul]
+                    [doc.html.body.nav.ul]
+                    [doc.html.body.nav.footer.ul]
+                    [[doc.html.body.nav.footer.ul.li]]
+                    attrib = {{class = "spiki down", href = "/{down_url}"}}
+                    a = "{index_node['metadata']['title']}"
+                    """
+                    data = tomllib.loads(text)
+                    self.visitor.nodes[back_path] = self.visitor.combine(data, back_node)
+                    rv = True
+                except IndexError:
+                    # No ancestor for index
+                    pass
+                except (KeyError, StopIteration) as error:
+                    self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
+
             for n, node in enumerate(siblings.values()):
                 path = node["registry"]["path"]
                 ancestors = self.visitor.ancestors(path)
@@ -136,34 +166,6 @@ class Indexer(Plugin):
                     if len(siblings) > 1:
                         self.visitor.nodes[path] = self.visitor.combine(data, node)
                         rv = True
-                except (KeyError, StopIteration) as error:
-                    self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
-
-            if index_node is not None:
-                # Add down link to ancestor of index node
-                try:
-                    down_url = self.visitor.url_of(index_node)
-                    path = index_node["registry"]["path"]
-                    ancestors = self.visitor.ancestors(path)
-                    back_path = ancestors[-2]
-                    back_node = self.visitor.nodes[back_path]
-                    back_url = self.visitor.url_of(back_node)
-                    text = f"""
-                    [doc.html.body.nav]
-                    config = {{tag_mode = "pair"}}
-                    [doc.html.body.nav.header.ul]
-                    [doc.html.body.nav.ul]
-                    [doc.html.body.nav.footer.ul]
-                    [[doc.html.body.nav.footer.ul.li]]
-                    attrib = {{class = "spiki down", href = "/{down_url}"}}
-                    a = "{index_node['metadata']['title']}"
-                    """
-                    data = tomllib.loads(text)
-                    self.visitor.nodes[back_path] = self.visitor.combine(data, back_node)
-                    rv = True
-                except IndexError:
-                    # No ancestor for index
-                    pass
                 except (KeyError, StopIteration) as error:
                     self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
 
