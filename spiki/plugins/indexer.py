@@ -116,6 +116,8 @@ class Indexer(Plugin):
                 except (KeyError, StopIteration) as error:
                     self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
 
+                # TODO Add down link from back node
+
                 # Add sibling links to node
                 try:
                     here_url = self.visitor.url_of(node)
