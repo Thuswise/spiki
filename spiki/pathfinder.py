@@ -107,6 +107,9 @@ class Pathfinder(contextlib.ExitStack):
         except tomllib.TOMLDecodeError as error:
             self.logger.warning(f"{path}: {error}")
             raise
+        except UnicodeDecodeError as error:
+            self.logger.warning(f"{path}: {error}")
+            return None
 
         node.setdefault("registry", {})["path"] = path
         node["registry"]["root"] = root
@@ -143,9 +146,11 @@ class Pathfinder(contextlib.ExitStack):
         root = Path(os.path.commonprefix(paths))
         for p in paths:
             for parent, dirnames, filenames in p.resolve().walk():
-                for name in filenames:
+                for name in sorted(filenames):
                     path = parent.joinpath(name)
                     node = self.build_node(path, root=root)
+                    if node is None:
+                        continue
                     touch = [plugin(Phase.SURVEY, path=path, node=node) for plugin in self.running]
                     self.logger.info(
                         f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),

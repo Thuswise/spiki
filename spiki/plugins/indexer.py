@@ -125,10 +125,14 @@ class Indexer(Plugin):
                     [[doc.html.body.nav.ul.li]]
                     attrib = {{class = "spiki here", href = "/{l_url}"}}
                     a = "{l_node['metadata']['title']}"
-                    [[doc.html.body.nav.ul.li]]
-                    attrib = {{class = "spiki here", href = "/{r_url}"}}
-                    a = "{r_node['metadata']['title']}"
                     """
+
+                    if l_url != r_url:
+                        text += f"""
+                        [[doc.html.body.nav.ul.li]]
+                        attrib = {{class = "spiki here", href = "/{r_url}"}}
+                        a = "{r_node['metadata']['title']}"
+                        """
                     data = tomllib.loads(text)
                     self.visitor.nodes[path] = self.visitor.combine(data, node)
                     rv = True
