@@ -23,6 +23,7 @@ import datetime
 import decimal
 import functools
 import logging
+from numbers import Number
 import os.path
 from pathlib import Path
 import pkgutil
@@ -134,7 +135,10 @@ class Pathfinder(contextlib.ExitStack):
             try:
                 node = rhs[k]
                 if isinstance(node, dict):
-                    rhs[k] = self.combine(v, node)
+                    rv = self.combine(v, node)
+                    lhs_keys = list(v)
+                    rhs_keys = [i for i in node if i not in set(lhs_keys)]
+                    rhs[k] = {k: rv[k] for k in lhs_keys + rhs_keys}
                 elif isinstance(node, list):
                     rhs[k].extend(v)
             except KeyError:
