@@ -64,12 +64,25 @@ class PathfinderTests(unittest.TestCase):
         [doc.two.one]
         n = 2
         """
+        d = f"""
+        [[doc.two.two]]
+        n = 3
+        [doc.two.one]
+        n = 3
+        """
+        # Test base defining defaults for doc
         args = [tomllib.loads(i) for i in (a, b, c)]
         rv = Pathfinder().merge(*args)
         self.assertEqual(list(rv["doc"]), ["one", "two"])
         self.assertEqual(list(rv["doc"]["two"]), ["one", "two"])
         self.assertEqual(rv["doc"]["two"]["one"]["n"], 2)
         self.assertEqual([i["n"] for i in rv["doc"]["two"]["two"]], [1, 2])
+
+        # Test doc overriding previous
+        arg = tomllib.loads(d)
+        rv = Pathfinder().merge(rv, arg)
+        self.assertEqual(list(rv["doc"]), ["two"])
+        self.assertEqual(list(rv["doc"]["two"]), ["two", "one"])
 
     def test_combine(self):
         lhs = dict(a=dict(b=1, c=2), b=[dict(d=3, e=4), dict(f=5, g=6)])
