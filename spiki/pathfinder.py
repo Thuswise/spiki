@@ -140,7 +140,7 @@ class Pathfinder(contextlib.ExitStack):
                     rhs_keys = [i for i in node if i not in set(lhs_keys)]
                     rhs[k] = {k: rv[k] for k in lhs_keys + rhs_keys}
                 elif isinstance(node, list):
-                    rhs[k].extend(v)
+                    rhs[k] = v + node
             except KeyError:
                 rhs[k] = v
         return rhs
