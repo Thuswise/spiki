@@ -51,31 +51,37 @@ class Indexer(Plugin):
         root_path = ancestors[0]
         home_path = ancestors[-1]
 
+        if path.name != self.visitor.index_name:
+            return False
+
         try:
             root_node = self.visitor.nodes[root_path]
             root_url = self.visitor.url_of(root_node)
             home_node = self.visitor.nodes[home_path]
             home_url = self.visitor.url_of(home_node)
             text = f"""
-            [doc.html.body.nav]
+            [base.html.head]
+            [base.html.body.nav]
             config = {{tag_mode = "pair"}}
-            [doc.html.body.nav.header.ul]
-            [[doc.html.body.nav.header.ul.li]]
+            [base.html.body.nav.header.ul]
+            [[base.html.body.nav.header.ul.li]]
             attrib = {{class = "spiki root", href = "/{root_url}"}}
             a = "{root_node['metadata']['title']}"
-            [[doc.html.body.nav.header.ul.li]]
+            [[base.html.body.nav.header.ul.li]]
             attrib = {{class = "spiki home", href = "/{home_url}"}}
             a = "{home_node['metadata']['title']}"
-            [doc.html.body.nav.ul]
-            [doc.html.body.nav.footer.ul]
+            [base.html.body.nav.ul]
+            [base.html.body.nav.footer.ul]
             """
             data = tomllib.loads(text)
-            self.visitor.nodes[path] = self.visitor.combine(data, node)
+            self.visitor.nodes[path] = self.visitor.merge(data, node)
             return True
         except (KeyError, StopIteration) as error:
             return False
 
     def end_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+        return False
+        # FIXME - completely broken!
         rv = False
 
         def key(node):
@@ -109,7 +115,7 @@ class Indexer(Plugin):
                     a = "{index_node['metadata']['title']}"
                     """
                     data = tomllib.loads(text)
-                    self.visitor.nodes[back_path] = self.visitor.combine(data, back_node)
+                    self.visitor.nodes[back_path] = self.visitor.merge(data, back_node)
                     rv = True
                 except IndexError:
                     # No ancestor for index

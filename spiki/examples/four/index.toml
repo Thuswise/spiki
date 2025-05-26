@@ -22,6 +22,7 @@ attrib = {name = "viewport", content = "width=device-width, initial-scale=1.0"}
 config = {tag_mode = "open"}
 attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
 
+[base.html.body]
 [base.html.body.nav]
 
 [doc]
