@@ -43,6 +43,34 @@ class PathfinderTests(unittest.TestCase):
         rv = Pathfinder().merge()
         self.assertEqual(rv, {})
 
+    def test_merge_bases(self):
+        a = f"""
+        [base.one.two]
+        n = 0
+        [base.two.one]
+        n = 0
+        """
+        b = f"""
+        [[base.two.two]]
+        n = 1
+        [base.two.one]
+        n = 1
+        [base.one.two]
+        n = 1
+        """
+        c = f"""
+        [[doc.two.two]]
+        n = 2
+        [doc.two.one]
+        n = 2
+        """
+        args = [tomllib.loads(i) for i in (a, b, c)]
+        rv = Pathfinder().merge(*args)
+        self.assertEqual(list(rv["doc"]), ["one", "two"])
+        self.assertEqual(list(rv["doc"]["two"]), ["one", "two"])
+        self.assertEqual(rv["doc"]["two"]["one"]["n"], 2)
+        self.assertEqual([i["n"] for i in rv["doc"]["two"]["two"]], [1, 2])
+
     def test_combine(self):
         lhs = dict(a=dict(b=1, c=2), b=[dict(d=3, e=4), dict(f=5, g=6)])
         rhs = dict(a=dict(b=10), b=[dict(d=30, e=40)])
