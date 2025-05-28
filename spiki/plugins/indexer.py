@@ -74,7 +74,8 @@ class Indexer(Plugin):
             [base.html.body.nav.footer.ul]
             """
             data = tomllib.loads(text)
-            self.visitor.nodes[path] = self.visitor.merge(data, node)
+            data = {} # FIXME
+            self.visitor.nodes[path] = self.visitor.combine(data, node)
             return True
         except (KeyError, StopIteration) as error:
             return False

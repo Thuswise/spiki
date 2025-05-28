@@ -15,10 +15,14 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import importlib.resources
+import pathlib
+import tempfile
 import textwrap
 import tomllib
 import unittest
 
+import spiki
 from spiki.pathfinder import Pathfinder
 from spiki.renderer import Renderer
 
@@ -117,3 +121,17 @@ class PathfinderTests(unittest.TestCase):
         self.assertEqual(template["doc"]["config"]["tag_mode"], "pair")
         rv = Renderer().serialize(template)
         self.assertEqual(rv.count("href"), 2, rv)
+
+    def test_example(self):
+        plugin_types = ["spiki.plugins.indexer:Indexer"]
+        with (
+            tempfile.TemporaryDirectory() as output_name,
+            importlib.resources.path(spiki, "examples") as examples,
+            Pathfinder(*plugin_types) as pathfinder,
+        ):
+            output = pathlib.Path(output_name).resolve()
+            source_paths = [examples.joinpath("atom")]
+
+            for n, (p, template, doc) in enumerate(pathfinder.walk(*source_paths)):
+                destination = pathfinder.location_of(template).relative_to(template["registry"]["root"]).parent
+                print(f"{destination=}")
