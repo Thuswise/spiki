@@ -124,9 +124,9 @@ class PathfinderTests(unittest.TestCase):
 
     def test_example(self):
         plugin_types = ["spiki.plugins.indexer:Indexer"]
+        examples = importlib.resources.files("spiki.examples.atom")
         with (
             tempfile.TemporaryDirectory() as output_name,
-            importlib.resources.path(spiki, "examples") as examples,
             Pathfinder(*plugin_types) as pathfinder,
         ):
             output = pathlib.Path(output_name).resolve()
