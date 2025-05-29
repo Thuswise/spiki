@@ -53,7 +53,7 @@ def main(args):
     args.output.mkdir(parents=True, exist_ok=True)
 
     plugin_types = args.plugin or default_plugin_types
-    with Pathfinder(*plugin_types) as pathfinder:
+    with Pathfinder(*plugin_types, **vars(args)) as pathfinder:
         for n, (p, template, doc) in enumerate(pathfinder.walk(*args.paths)):
             destination = pathfinder.location_of(template).relative_to(template["registry"]["root"]).parent
             parent = pathfinder.space.joinpath(destination).resolve()

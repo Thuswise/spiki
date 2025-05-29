@@ -71,6 +71,7 @@ class Pathfinder(contextlib.ExitStack):
         self.space = None
         self.logger = logging.getLogger("pathfinder")
         self.plugins = list(filter(None, (self.init_plugin(i) for i in plugin_types)))
+        self.options = kwargs
 
     def __enter__(self):
         self.space = Path(tempfile.mkdtemp()).resolve()
