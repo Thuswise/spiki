@@ -132,9 +132,13 @@ class PathfinderTests(unittest.TestCase):
             tempfile.TemporaryDirectory() as output_name,
             Pathfinder(*plugin_types) as pathfinder,
         ):
-            output = pathlib.Path(output_name).resolve()
-            source_paths = [examples.joinpath("atom")]
+            pathfinder.options = dict(
+                output=pathlib.Path(output_name).resolve(),
+                paths = [examples.joinpath("atom")]
+            )
 
-            for n, (p, template, doc) in enumerate(pathfinder.walk(*source_paths)):
+            for n, (phase, path, node) in enumerate(pathfinder.walk(*pathfinder.options["paths"])):
+                if path is None:
+                    continue
                 destination = pathfinder.location_of(template).relative_to(template["registry"]["root"]).parent
                 print(f"{destination=}")

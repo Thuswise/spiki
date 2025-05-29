@@ -83,6 +83,11 @@ class Pathfinder(contextlib.ExitStack):
         shutil.rmtree(self.space, ignore_errors=True)
         return rv
 
+    @property
+    def root(self) -> Path:
+        paths = [i.resolve() for i in self.options.get("paths", [])]
+        return Path(os.path.commonprefix(paths))
+
     def init_plugin(self, type_name: str):
         try:
             cls = pkgutil.resolve_name(type_name)
@@ -181,3 +186,17 @@ class Pathfinder(contextlib.ExitStack):
             touch = [plugin(Phase.ENRICH) for plugin in self.running]
 
         yield from ((path, node, Renderer(node).serialize()) for path, node in self.nodes.items())
+
+    def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
+        for phase in Phase:
+            for path in list(self.nodes):
+                node = self.nodes[path]
+                touch = [plugin(phase, path=path, node=node) for plugin in self.running]
+                self.logger.info(
+                    f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),
+                    extra=dict(phase=phase, path=path.relative_to(root).as_posix())
+                )
+                yield phase, path, node
+            else:
+                touch = [plugin(phase) for plugin in self.running]
+                yield phase, None, None
