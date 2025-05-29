@@ -16,6 +16,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+import dataclasses
 import enum
 from pathlib import Path
 
@@ -28,6 +29,14 @@ class Phase(enum.Enum):
     RENDER = "Generating content"
     EXPORT = "Finalizing output"
     REPORT = "Summary"
+
+
+@dataclasses.dataclass
+class State:
+    phase: Phase
+    path: Path      = None
+    node: dict      = None
+    doc: str        = None
 
 
 class Plugin:

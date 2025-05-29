@@ -134,11 +134,10 @@ class PathfinderTests(unittest.TestCase):
         ):
             pathfinder.options = dict(
                 output=pathlib.Path(output_name).resolve(),
-                paths = [examples.joinpath("atom")]
+                paths=[examples.joinpath("atom")],
             )
 
-            for n, (phase, path, node) in enumerate(pathfinder.walk(*pathfinder.options["paths"])):
-                if path is None:
-                    continue
-                destination = pathfinder.location_of(template).relative_to(template["registry"]["root"]).parent
-                print(f"{destination=}")
+            for n, state in enumerate(pathfinder.walk(*pathfinder.options["paths"])):
+                if state.node:
+                    destination = pathfinder.location_of(state.node).relative_to(state.node["registry"]["root"]).parent
+                    print(f"{destination=}")
