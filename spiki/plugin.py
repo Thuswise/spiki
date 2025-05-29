@@ -51,7 +51,7 @@ class Plugin:
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
-    def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         self.phase = phase
         if path is None:
             method = getattr(self, f"end_{phase.name.lower()}", None)

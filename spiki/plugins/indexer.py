@@ -24,6 +24,7 @@ import tomllib
 
 from spiki.pathfinder import Pathfinder
 from spiki.plugin import Phase
+from spiki.plugin import State
 from spiki.plugin import Plugin
 
 
@@ -34,7 +35,7 @@ class Indexer(Plugin):
         self.logger = logging.getLogger("indexer")
         self.indexes = {}
 
-    def do_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def do_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         if path.name == self.visitor.index_name:
             self.logger.info(node["registry"]["path"], extra=dict(phase=self.phase))
             key = node["registry"]["node"]
@@ -43,10 +44,10 @@ class Indexer(Plugin):
         else:
             return False
 
-    def end_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def end_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         return False
 
-    def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         ancestors = self.visitor.ancestors(path)
         root_path = ancestors[0]
         home_path = ancestors[-1]
@@ -80,7 +81,7 @@ class Indexer(Plugin):
         except (KeyError, StopIteration) as error:
             return False
 
-    def end_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def end_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         return False
         # FIXME - completely broken!
         rv = False
@@ -176,17 +177,17 @@ class Indexer(Plugin):
 
         return rv
 
-    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
         return False
 
-    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         return False
         return rv
 
-    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
         return False
 
-    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> bool:
+    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
         return False
