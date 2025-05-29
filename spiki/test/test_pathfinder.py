@@ -123,7 +123,10 @@ class PathfinderTests(unittest.TestCase):
         self.assertEqual(rv.count("href"), 2, rv)
 
     def test_example(self):
-        plugin_types = ["spiki.plugins.indexer:Indexer"]
+        plugin_types = [
+            "spiki.plugins.indexer:Indexer",
+            "spiki.plugins.writer:Writer",
+        ]
         examples = importlib.resources.files("spiki.examples.atom")
         with (
             tempfile.TemporaryDirectory() as output_name,
