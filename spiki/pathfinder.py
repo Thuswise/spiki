@@ -190,6 +190,7 @@ class Pathfinder(contextlib.ExitStack):
 
     def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
         for phase in Phase:
+            # for parent, dirnames, filenames in p.resolve().walk():
             for path in list(self.nodes):
                 node = self.nodes[path]
                 touch = [plugin(phase, path=path, node=node) for plugin in self.running]
