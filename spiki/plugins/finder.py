@@ -19,6 +19,7 @@ import logging
 from pathlib import Path
 
 from spiki.plugin import Plugin
+from spiki.plugin import State
 
 
 class Finder(Plugin):
@@ -33,4 +34,8 @@ class Finder(Plugin):
     def __exit__(self, exc_type, exc_val, exc_tb):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
+
+    def end_config(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> State:
+        print(f"{path=}")
+        return State(path)
 

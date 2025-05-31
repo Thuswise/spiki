@@ -109,6 +109,7 @@ class Pathfinder(contextlib.ExitStack):
         )
 
     def build_node(self, path: Path, root: Path = None):
+        # TODO: MOve to loader
         try:
             text = path.read_text()
             node = tomllib.loads(text, parse_float=decimal.Decimal)
