@@ -24,6 +24,7 @@ from pathlib import Path
 class Phase(enum.Enum):
     CONFIG = "Configuring framework"
     SURVEY = "Discovering topology"
+    FILTER = "Selecting sources"
     ENRICH = "Attaching metadata"
     ASSETS = "Preparing media"
     RENDER = "Generating content"

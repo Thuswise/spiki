@@ -190,7 +190,15 @@ class Pathfinder(contextlib.ExitStack):
         yield from ((path, node, Renderer(node).serialize()) for path, node in self.nodes.items())
 
     def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
-        for phase in Phase:
+        for phase in [Phase.CONFIG, Phase.SURVEY]:
+            for path in paths:
+                if False:
+                    break
+                touch = [plugin(phase, path=path) for plugin in self.running]
+            else:
+                touch = [plugin(phase) for plugin in self.running]
+
+        for phase in list(Phase)[2:]:
             # for parent, dirnames, filenames in p.resolve().walk():
             for path in list(self.nodes):
                 node = self.nodes[path]
