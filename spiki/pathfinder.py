@@ -192,9 +192,10 @@ class Pathfinder(contextlib.ExitStack):
     def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
         for phase in [Phase.CONFIG, Phase.SURVEY]:
             for path in paths:
-                if False:
+                try:
+                    touch = [plugin(phase, path=path) for plugin in self.running]
+                except ERxception as error:
                     break
-                touch = [plugin(phase, path=path) for plugin in self.running]
             else:
                 touch = [plugin(phase) for plugin in self.running]
 
