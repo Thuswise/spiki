@@ -64,7 +64,7 @@ class Plugin:
 
         if method:
             rv = method(path=path, node=node, doc=doc, **kwargs)
-            return rv or Event(self, phase=phase, path=path, node=node, doc=doc) 
+            return rv or Event(self, phase=phase, path=path, node=node, doc=doc)
         else:
             return None
 

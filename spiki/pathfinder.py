@@ -203,7 +203,6 @@ class Pathfinder(contextlib.ExitStack):
                     yield dataclasses.replace(event, phase=phase)
 
         for phase in list(Phase)[2:]:
-            # for parent, dirnames, filenames in p.resolve().walk():
             for path in list(self.nodes):
                 node = self.nodes[path]
                 events = [plugin(phase, path=path, node=node) for plugin in self.running]

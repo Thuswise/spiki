@@ -35,7 +35,8 @@ class Finder(Plugin):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
 
-    def end_config(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
-        self.logger.info(f"{path=}")
-        return Event(path)
+    def do_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+        for parent, dirnames, filenames in path.resolve().walk():
+            for name in sorted(filenames):
+                p = parent.joinpath(name)
 

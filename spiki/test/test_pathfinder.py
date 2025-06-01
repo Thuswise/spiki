@@ -129,7 +129,8 @@ class PathfinderTests(unittest.TestCase):
             "spiki.plugins.indexer:Indexer",
             "spiki.plugins.writer:Writer",
         ]
-        examples = importlib.resources.files("spiki.examples.atom")
+        examples = importlib.resources.files("spiki.examples")
+        witness = []
         with (
             tempfile.TemporaryDirectory() as output_name,
             Pathfinder(*plugin_types) as pathfinder,
@@ -139,7 +140,9 @@ class PathfinderTests(unittest.TestCase):
                 paths=[examples.joinpath("atom")],
             )
 
-            for n, state in enumerate(pathfinder.walk(*pathfinder.options["paths"])):
-                if state.node:
-                    destination = pathfinder.location_of(state.node).relative_to(state.node["registry"]["root"]).parent
+            for event in pathfinder.walk(*pathfinder.options["paths"]):
+                witness.append(event)
+                if event.node:
+                    destination = pathfinder.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
                     print(f"{destination=}")
+            print(*witness, sep="\n")
