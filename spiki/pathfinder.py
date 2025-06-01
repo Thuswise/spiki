@@ -33,8 +33,8 @@ import tempfile
 import tomllib
 import warnings
 
+from spiki.plugin import Event
 from spiki.plugin import Phase
-from spiki.plugin import State
 from spiki.renderer import Renderer
 
 
@@ -194,7 +194,7 @@ class Pathfinder(contextlib.ExitStack):
             for path in paths:
                 try:
                     touch = [plugin(phase, path=path) for plugin in self.running]
-                except ERxception as error:
+                except Exception as error:
                     break
             else:
                 touch = [plugin(phase) for plugin in self.running]
@@ -208,7 +208,7 @@ class Pathfinder(contextlib.ExitStack):
                     f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),
                     extra=dict(phase=phase, path=path.relative_to(root).as_posix())
                 )
-                yield State(phase, path, node)
+                yield Event(phase, path, node)
             else:
                 touch = [plugin(phase) for plugin in self.running]
-                yield State(phase)
+                yield Event(phase)
