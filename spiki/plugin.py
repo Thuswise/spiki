@@ -63,9 +63,10 @@ class Plugin:
             method = getattr(self, f"do_{phase.name.lower()}", None)
 
         if method:
-            return method(path=path, node=node, doc=doc, **kwargs)
+            rv = method(path=path, node=node, doc=doc, **kwargs)
+            return rv or Event(self, phase=phase, path=path, node=node, doc=doc) 
         else:
-            return False
+            return None
 
     def register(self, visitor: "Pathfinder"):
         self.visitor = visitor

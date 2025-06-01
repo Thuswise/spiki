@@ -194,19 +194,24 @@ class Pathfinder(contextlib.ExitStack):
         for phase in [Phase.CONFIG, Phase.SURVEY]:
             for path in paths:
                 try:
-                    for event in (plugin(phase, path=path) for plugin in self.running):
-                        yield dataclasses.replace(event, phase=phase)
+                    for event in filter(None, (plugin(phase, path=path) for plugin in self.running)):
+                        yield dataclasses.replace(event, phase=phase, path=path)
                 except Exception as error:
                     break
             else:
-                touch = [plugin(phase) for plugin in self.running]
+                for event in filter(None, (plugin(phase) for plugin in self.running)):
+                    yield dataclasses.replace(event, phase=phase)
 
         for phase in list(Phase)[2:]:
             # for parent, dirnames, filenames in p.resolve().walk():
             for path in list(self.nodes):
                 node = self.nodes[path]
                 events = [plugin(phase, path=path, node=node) for plugin in self.running]
-                yield from events
+                try:
+                    for event in filter(None, (plugin(phase, path=path) for plugin in self.running)):
+                        yield dataclasses.replace(event, phase=phase, path=path)
+                except Exception as error:
+                    break
             else:
-                touch = [plugin(phase) for plugin in self.running]
-                yield Event(phase)
+                for event in filter(None, (plugin(phase) for plugin in self.running)):
+                    yield dataclasses.replace(event, phase=phase)

@@ -36,6 +36,6 @@ class Finder(Plugin):
         return rv
 
     def end_config(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
-        print(f"{path=}")
+        self.logger.info(f"{path=}")
         return Event(path)
 
