@@ -39,4 +39,5 @@ class Finder(Plugin):
         for parent, dirnames, filenames in path.resolve().walk():
             for name in sorted(filenames):
                 p = parent.joinpath(name)
+                return Event(self, path=p, text=p.readtext())
 

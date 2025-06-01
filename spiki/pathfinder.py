@@ -69,6 +69,7 @@ class Pathfinder(contextlib.ExitStack):
         super().__init__()
         self.index_name = "index.toml"
         self.nodes = dict()
+        self.state = dict()
         self.running = None
         self.space = None
         self.logger = logging.getLogger("pathfinder")
@@ -204,8 +205,8 @@ class Pathfinder(contextlib.ExitStack):
 
         for phase in list(Phase)[2:]:
             for path in list(self.nodes):
-                node = self.nodes[path]
-                events = [plugin(phase, path=path, node=node) for plugin in self.running]
+                state = self.state[path]
+                events = [plugin(phase, path=path, node=state.node) for plugin in self.running]
                 try:
                     for event in filter(None, (plugin(phase, path=path) for plugin in self.running)):
                         yield dataclasses.replace(event, phase=phase, path=path)

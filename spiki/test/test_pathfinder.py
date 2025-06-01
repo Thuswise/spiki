@@ -140,9 +140,12 @@ class PathfinderTests(unittest.TestCase):
                 paths=[examples.joinpath("atom")],
             )
 
+            self.assertFalse(pathfinder.state)
             for event in pathfinder.walk(*pathfinder.options["paths"]):
                 witness.append(event)
                 if event.node:
                     destination = pathfinder.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
                     print(f"{destination=}")
+
             print(*witness, sep="\n")
+            self.assertTrue(pathfinder.state)

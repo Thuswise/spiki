@@ -38,7 +38,7 @@ class Event:
     phase:  Phase   = None
     path:   Path    = None
     text:   str     = None
-    node:   dict    = None
+    node:   dict    = dataclasses.field(default_factory=dict)
     doc:    str     = None
     edits:  int     = 0
 
