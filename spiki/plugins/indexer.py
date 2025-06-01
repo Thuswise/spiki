@@ -40,12 +40,12 @@ class Indexer(Plugin):
             self.logger.info(node["registry"]["path"], extra=dict(phase=self.phase))
             key = node["registry"]["node"]
             self.indexes[key] = node
-            return True
+            return Event(self, path=path, edits=1)
         else:
-            return False
+            return Event(self, path=path)
 
     def end_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
-        return False
+        return Event(self, path=path)
 
     def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
         ancestors = self.visitor.ancestors(path)
@@ -53,7 +53,7 @@ class Indexer(Plugin):
         home_path = ancestors[-1]
 
         if path.name != self.visitor.index_name:
-            return False
+            return Event(self, path=path)
 
         try:
             root_node = self.visitor.nodes[root_path]

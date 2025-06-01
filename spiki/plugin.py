@@ -34,11 +34,13 @@ class Phase(enum.Enum):
 
 @dataclasses.dataclass
 class Event:
-    phase:  Phase
+    object: object  = None
+    phase:  Phase   = None
     path:   Path    = None
     text:   str     = None
     node:   dict    = None
     doc:    str     = None
+    edits:  int     = 0
 
 
 class Plugin:

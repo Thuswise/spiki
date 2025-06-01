@@ -19,6 +19,7 @@ from collections.abc import Callable
 from collections.abc import Generator
 import contextlib
 import copy
+import dataclasses
 import datetime
 import decimal
 import functools
@@ -193,7 +194,8 @@ class Pathfinder(contextlib.ExitStack):
         for phase in [Phase.CONFIG, Phase.SURVEY]:
             for path in paths:
                 try:
-                    touch = [plugin(phase, path=path) for plugin in self.running]
+                    for event in (plugin(phase, path=path) for plugin in self.running):
+                        yield dataclasses.replace(event, phase=phase)
                 except Exception as error:
                     break
             else:
@@ -203,12 +205,8 @@ class Pathfinder(contextlib.ExitStack):
             # for parent, dirnames, filenames in p.resolve().walk():
             for path in list(self.nodes):
                 node = self.nodes[path]
-                touch = [plugin(phase, path=path, node=node) for plugin in self.running]
-                self.logger.info(
-                    f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),
-                    extra=dict(phase=phase, path=path.relative_to(root).as_posix())
-                )
-                yield Event(phase, path, node)
+                events = [plugin(phase, path=path, node=node) for plugin in self.running]
+                yield from events
             else:
                 touch = [plugin(phase) for plugin in self.running]
                 yield Event(phase)
