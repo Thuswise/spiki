@@ -196,11 +196,12 @@ class Pathfinder(contextlib.ExitStack):
             for path in paths:
                 try:
                     for event in filter(None, (plugin(phase, path=path) for plugin in self.running)):
-                        event = dataclasses.replace(event, phase=phase)
                         self.state[event.path] = dataclasses.replace(
                             self.state.setdefault(event.path, event),
+                            phase=phase,
                             text=event.text,
                         )
+                        yield self.state[event.path]
                 except Exception as error:
                     print(error)
                     break
