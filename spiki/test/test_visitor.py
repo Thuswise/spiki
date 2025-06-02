@@ -144,6 +144,7 @@ class VisitorTests(unittest.TestCase):
             for event in pathfinder.walk(*pathfinder.options["paths"]):
                 witness.append(event)
                 if event.node:
+                    print(f"{event.node=}")
                     destination = pathfinder.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
                     print(f"{destination=}")
 
