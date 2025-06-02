@@ -22,7 +22,6 @@ import logging
 from pathlib import Path
 import tomllib
 
-from spiki.pathfinder import Pathfinder
 from spiki.plugin import Event
 from spiki.plugin import Phase
 from spiki.plugin import Plugin

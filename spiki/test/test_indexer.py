@@ -21,7 +21,7 @@ import textwrap
 import tomllib
 import unittest
 
-from spiki.pathfinder import Pathfinder
+from spiki.visitor import Visitor
 from spiki.plugins.indexer import Indexer
 
 
@@ -32,9 +32,9 @@ class IndexerTests(unittest.TestCase):
             src = Path(src_name).resolve()
             index = src.joinpath("index.toml")
             index.write_text("")
-            pathfinder = Pathfinder()
-            with Indexer(pathfinder) as indexer:
-                index_node = pathfinder.nodes[index] = pathfinder.build_node(index, root=src)
+            visitor = Visitor()
+            with Indexer(visitor) as indexer:
+                index_node = visitor.nodes[index] = visitor.build_node(index, root=src)
                 indexer.do_survey(path=index, node=index_node)
                 self.assertTrue(indexer.indexes)
-                self.assertEqual(pathfinder.url_of(index_node), "index.html")
+                self.assertEqual(visitor.url_of(index_node), "index.html")

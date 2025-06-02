@@ -23,28 +23,28 @@ import tomllib
 import unittest
 
 import spiki
-from spiki.pathfinder import Pathfinder
 from spiki.renderer import Renderer
+from spiki.visitor import Visitor
 
 
-class PathfinderTests(unittest.TestCase):
+class VisitorTests(unittest.TestCase):
 
     def test_slug(self):
         text = "ABab234$%^&*-_ "
-        rv = Pathfinder.slugify(text)
+        rv = Visitor.slugify(text)
         self.assertEqual("abab234-_-", rv)
 
     def test_stack(self):
         parts = tuple()
-        slices = Pathfinder.slices(parts)
+        slices = Visitor.slices(parts)
         self.assertEqual(slices, [(),])
 
         parts = (1, 2, 3, 4)
-        slices = Pathfinder.slices(parts)
+        slices = Visitor.slices(parts)
         self.assertEqual(slices, [(), (1,), (1, 2), (1, 2, 3), (1, 2, 3, 4)])
 
     def test_merge_null(self):
-        rv = Pathfinder().merge()
+        rv = Visitor().merge()
         self.assertEqual(rv, {})
 
     def test_merge_bases(self):
@@ -76,7 +76,7 @@ class PathfinderTests(unittest.TestCase):
         """
         # Test base defining defaults for doc
         args = [tomllib.loads(i) for i in (a, b, c)]
-        rv = Pathfinder().merge(*args)
+        rv = Visitor().merge(*args)
         self.assertEqual(list(rv["doc"]), ["one", "two"])
         self.assertEqual(list(rv["doc"]["two"]), ["one", "two"])
         self.assertEqual(rv["doc"]["two"]["one"]["n"], 2)
@@ -84,14 +84,14 @@ class PathfinderTests(unittest.TestCase):
 
         # Test doc overriding previous
         arg = tomllib.loads(d)
-        rv = Pathfinder().merge(rv, arg)
+        rv = Visitor().merge(rv, arg)
         self.assertEqual(list(rv["doc"]), ["two"])
         self.assertEqual(list(rv["doc"]["two"]), ["two", "one"])
 
     def test_combine(self):
         lhs = dict(a=dict(b=1, c=2), b=[dict(d=3, e=4), dict(f=5, g=6)])
         rhs = dict(a=dict(b=10), b=[dict(d=30, e=40)])
-        rv = Pathfinder().combine(lhs, rhs)
+        rv = Visitor().combine(lhs, rhs)
         self.assertIs(rv, rhs)
         self.assertEqual(rv["a"]["b"], 10)
         self.assertEqual(rv["a"]["c"], 2)
@@ -117,7 +117,7 @@ class PathfinderTests(unittest.TestCase):
         """)
         node = tomllib.loads(node_toml)
 
-        template = Pathfinder().merge(index, node)
+        template = Visitor().merge(index, node)
         self.assertEqual(template["doc"]["config"]["tag_mode"], "pair")
         rv = Renderer().serialize(template)
         self.assertEqual(rv.count("href"), 2, rv)
@@ -133,7 +133,7 @@ class PathfinderTests(unittest.TestCase):
         witness = []
         with (
             tempfile.TemporaryDirectory() as output_name,
-            Pathfinder(*plugin_types) as pathfinder,
+            Visitor(*plugin_types) as pathfinder,
         ):
             pathfinder.options = dict(
                 output=pathlib.Path(output_name).resolve(),

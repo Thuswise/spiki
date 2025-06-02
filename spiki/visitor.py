@@ -39,7 +39,7 @@ from spiki.plugin import Phase
 from spiki.renderer import Renderer
 
 
-class Pathfinder(contextlib.ExitStack):
+class Visitor(contextlib.ExitStack):
 
     @staticmethod
     def slugify(text: str, table="".maketrans({i: i for i in string.ascii_letters + string.digits + "_-"})):
@@ -62,7 +62,7 @@ class Pathfinder(contextlib.ExitStack):
     @staticmethod
     def url_of(node: dict) -> str:
         root = node["registry"]["root"]
-        parent = Pathfinder.location_of(node).relative_to(root).parent
+        parent = Visitor.location_of(node).relative_to(root).parent
         return parent.joinpath(node["metadata"]["slug"]).with_suffix(".html").as_posix()
 
     def __init__(self, *plugin_types: tuple[Callable], **kwargs):
@@ -129,7 +129,7 @@ class Pathfinder(contextlib.ExitStack):
 
         node.setdefault("metadata", {})["slug"] = (
             node.get("metadata", {}).get("slug") or
-            Pathfinder.slugify("_".join(path.relative_to(root).with_suffix("").parts))
+            Visitor.slugify("_".join(path.relative_to(root).with_suffix("").parts))
         )
         node["metadata"]["title"] = node["metadata"].get("title", path.name)
         return node
