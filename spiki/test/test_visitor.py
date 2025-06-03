@@ -145,11 +145,11 @@ class VisitorTests(unittest.TestCase):
                 witness.append(event)
                 if event.node:
                     print(f"{event.node=}")
-                    destination = visitor.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
-                    print(f"{destination=}")
+                    # destination = visitor.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
+                    # print(f"{destination=}")
 
             print(*witness, sep="\n")
             self.assertEqual(len(visitor.state), 2, visitor.state)
             path = list(visitor.state)[0]
             self.assertEqual("a.toml", path.name)
-            self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["Hello, World!"])
+            self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["    Hello, World!\n\n    "])

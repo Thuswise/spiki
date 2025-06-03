@@ -185,7 +185,7 @@ class Indexer(Plugin):
         return rv
 
     def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
-        self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
+        self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=self.phase))
         return False
 
     def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
