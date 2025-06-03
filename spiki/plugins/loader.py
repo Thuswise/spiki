@@ -17,7 +17,9 @@
 
 import logging
 from pathlib import Path
+import tomllib
 
+from spiki.plugin import Event
 from spiki.plugin import Plugin
 
 
@@ -34,4 +36,8 @@ class Loader(Plugin):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
 
-
+    def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+        text = self.visitor.state[path].text
+        node = tomllib.loads(text)
+        print(f"{node=}")
+        return Event(self, path=path, node=node)

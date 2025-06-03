@@ -210,7 +210,7 @@ class Visitor(contextlib.ExitStack):
                     yield dataclasses.replace(event, phase=phase)
 
         for phase in list(Phase)[2:]:
-            for path in list(self.nodes):
+            for path in list(self.state):
                 state = self.state[path]
                 try:
                     for event in filter(None, (plugin(phase, path=path) for plugin in self.running)):
@@ -221,6 +221,7 @@ class Visitor(contextlib.ExitStack):
                             node=event.node,
                         )
                 except Exception as error:
+                    self.logger.error(error, exc_info=True)
                     break
             else:
                 for event in filter(None, (plugin(phase) for plugin in self.running)):

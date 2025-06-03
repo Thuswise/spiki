@@ -17,10 +17,9 @@
 
 import logging
 from pathlib import Path
-import tomllib
 
-from spiki.plugin import Plugin
 from spiki.plugin import Event
+from spiki.plugin import Plugin
 
 
 class Finder(Plugin):
@@ -41,8 +40,3 @@ class Finder(Plugin):
             for name in sorted(filenames):
                 p = parent.joinpath(name)
                 return Event(self, path=p, text=p.read_text())
-
-    def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
-        text = self.visitor.state[path].text
-        node = tomllib.loads(text)
-        return Event(self, node=node)
