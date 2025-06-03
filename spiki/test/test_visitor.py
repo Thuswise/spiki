@@ -133,20 +133,23 @@ class VisitorTests(unittest.TestCase):
         witness = []
         with (
             tempfile.TemporaryDirectory() as output_name,
-            Visitor(*plugin_types) as pathfinder,
+            Visitor(*plugin_types) as visitor,
         ):
-            pathfinder.options = dict(
+            visitor.options = dict(
                 output=pathlib.Path(output_name).resolve(),
                 paths=[examples.joinpath("atom")],
             )
 
-            self.assertFalse(pathfinder.state)
-            for event in pathfinder.walk(*pathfinder.options["paths"]):
+            self.assertFalse(visitor.state)
+            for event in visitor.walk(*visitor.options["paths"]):
                 witness.append(event)
                 if event.node:
                     print(f"{event.node=}")
-                    destination = pathfinder.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
+                    destination = visitor.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
                     print(f"{destination=}")
 
             print(*witness, sep="\n")
-            self.assertTrue(pathfinder.state)
+            self.assertEqual(len(visitor.state), 2, visitor.state)
+            path = list(visitor.state)[0]
+            self.assertEqual("a.toml", path.name)
+            self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["Hello, World!"])
