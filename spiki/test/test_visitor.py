@@ -23,6 +23,7 @@ import tomllib
 import unittest
 
 import spiki
+from spiki.plugin import Phase
 from spiki.renderer import Renderer
 from spiki.visitor import Visitor
 
@@ -143,10 +144,10 @@ class VisitorTests(unittest.TestCase):
             self.assertFalse(visitor.state)
             for event in visitor.walk(*visitor.options["paths"]):
                 witness.append(event)
-                if event.node:
+                if event.phase == Phase.ENRICH:
                     print(f"{event.node=}")
-                    # destination = visitor.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
-                    # print(f"{destination=}")
+                    destination = visitor.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
+                    print(f"{destination=}")
 
             print(*witness, sep="\n")
             self.assertEqual(len(visitor.state), 2, visitor.state)
