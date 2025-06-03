@@ -221,7 +221,7 @@ class Visitor(contextlib.ExitStack):
                             node=event.node,
                         )
                 except Exception as error:
-                    self.logger.error(error, exc_info=True)
+                    self.logger.error(error, extras=dict(phase=phase), exc_info=True)
                     break
             else:
                 for event in filter(None, (plugin(phase) for plugin in self.running)):
