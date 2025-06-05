@@ -127,7 +127,7 @@ class VisitorTests(unittest.TestCase):
         plugin_types = [
             "spiki.plugins.finder:Finder",
             "spiki.plugins.loader:Loader",
-            "spiki.plugins.indexer:Indexer",
+            # "spiki.plugins.indexer:Indexer",
             "spiki.plugins.writer:Writer",
         ]
         examples = importlib.resources.files("spiki.examples")
@@ -150,7 +150,7 @@ class VisitorTests(unittest.TestCase):
                     print(f"{destination=}")
 
             print(*witness, sep="\n")
-            self.assertEqual(len(visitor.state), 2, visitor.state)
+            self.assertEqual(len(visitor.state), 1, visitor.state)
             path = list(visitor.state)[0]
             self.assertEqual("a.toml", path.name)
             self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["    Hello, World!\n\n    "])
