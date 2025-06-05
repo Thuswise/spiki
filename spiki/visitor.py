@@ -218,8 +218,9 @@ class Visitor(contextlib.ExitStack):
                         self.state[event.path] = dataclasses.replace(
                             self.state.setdefault(event.path, event),
                             phase=phase,
-                            node=event.node,
+                            doc=event.doc
                         )
+                        self.state[event.path].node.update(event.node)
                 except Exception as error:
                     self.logger.error(error, extra=dict(phase=phase), exc_info=True)
                     break
