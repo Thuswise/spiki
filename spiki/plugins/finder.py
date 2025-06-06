@@ -39,4 +39,7 @@ class Finder(Plugin):
         for parent, dirnames, filenames in path.resolve().walk():
             for name in sorted(filenames):
                 p = parent.joinpath(name)
-                return Event(self, path=p, text=p.read_text())
+                return Event(self, path=p)
+
+    def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+        return Event(self, path=path, text=path.read_text())

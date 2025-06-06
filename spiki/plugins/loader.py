@@ -39,5 +39,4 @@ class Loader(Plugin):
     def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
         text = self.visitor.state[path].text
         node = tomllib.loads(text)
-        print(f"{node=}")
         return Event(self, path=path, node=node)

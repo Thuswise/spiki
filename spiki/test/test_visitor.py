@@ -144,10 +144,12 @@ class VisitorTests(unittest.TestCase):
             self.assertFalse(visitor.state)
             for event in visitor.walk(*visitor.options["paths"]):
                 witness.append(event)
-                if event.phase == Phase.ENRICH:
-                    destination = visitor.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
 
-            self.assertEqual(len(visitor.state), 1, visitor.state)
-            path = list(visitor.state)[0]
-            self.assertEqual("a.toml", path.name)
-            self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["    Hello, World!\n\n    "])
+        self.assertEqual(len(visitor.state), 2, visitor.state)
+        path = list(visitor.state)[0]
+        self.assertEqual("a.toml", path.name)
+        self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["    Hello, World!\n\n    "])
+
+        doc = visitor.state[path].doc
+        print(*witness, sep="\n")
+        self.assertIsInstance(doc, str)
