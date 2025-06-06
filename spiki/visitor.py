@@ -211,16 +211,20 @@ class Visitor(contextlib.ExitStack):
             for path in list(self.state):
                 state = self.state[path]
                 try:
-                    for event in filter(None, (plugin(phase, path=path) for plugin in self.running)):
-                        yield dataclasses.replace(event, phase=phase)
-                        self.state[event.path] = dataclasses.replace(
-                            self.state.setdefault(event.path, event),
-                            phase=phase,
-                            text=event.text,
-                            doc=event.doc
+                    for event in filter(
+                        None,
+                        (
+                            plugin(phase, path=path, text=state.text, node=state.node, doc=state.doc)
+                            for plugin in self.running
                         )
+                    ):
+                        yield dataclasses.replace(event, phase=phase)
                         if event.node:
                             self.state[event.path].node.update(event.node)
+                        if event.text:
+                            self.state[event.path].text = event.text
+                        if event.doc:
+                            self.state[event.path].doc = event.doc
                 except Exception as error:
                     self.logger.error(error, extra=dict(phase=phase), exc_info=True)
                     break

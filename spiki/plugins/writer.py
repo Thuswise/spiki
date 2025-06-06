@@ -43,4 +43,4 @@ class Writer(Plugin):
 
     def do_render(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
         doc = Renderer(node).serialize()
-        return Event(self, node=node, doc=doc)
+        return Event(self, path=path, node=node, doc=doc)

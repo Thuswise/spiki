@@ -145,7 +145,7 @@ class VisitorTests(unittest.TestCase):
             for event in visitor.walk(*visitor.options["paths"]):
                 witness.append(event)
 
-        self.assertEqual(len(visitor.state), 2, visitor.state)
+        self.assertEqual(len(visitor.state), 1, visitor.state)
         path = list(visitor.state)[0]
         self.assertEqual("a.toml", path.name)
         self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["    Hello, World!\n\n    "])
