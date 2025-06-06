@@ -192,6 +192,11 @@ class Visitor(contextlib.ExitStack):
         yield from ((path, node, Renderer(node).serialize()) for path, node in self.nodes.items())
 
     def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
+        paths = [i.resolve() for i in paths]
+        root = Path(os.path.commonprefix(paths))
+        for plugin in self.plugins:
+            plugin.root = root
+
         for phase in [Phase.CONFIG, Phase.SURVEY]:
             for path in paths:
                 try:
@@ -219,12 +224,12 @@ class Visitor(contextlib.ExitStack):
                         )
                     ):
                         yield dataclasses.replace(event, phase=phase)
-                        if event.node:
-                            self.state[event.path].node.update(event.node)
                         if event.text:
-                            self.state[event.path].text = event.text
+                            self.state[path].text = event.text
+                        if event.node:
+                            self.state[path].node.update(event.node)
                         if event.doc:
-                            self.state[event.path].doc = event.doc
+                            self.state[path].doc = event.doc
                 except Exception as error:
                     self.logger.error(error, extra=dict(phase=phase), exc_info=True)
                     break

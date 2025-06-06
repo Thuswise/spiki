@@ -19,6 +19,7 @@
 import dataclasses
 import enum
 from pathlib import Path
+import string
 
 
 class Phase(enum.Enum):
@@ -48,6 +49,7 @@ class Plugin:
 
     def __init__(self, visitor: "Pathfinder" = None):
         self.visitor = visitor
+        self.root = Path(".")
         self.phase = None
 
     def __enter__(self):
@@ -69,6 +71,13 @@ class Plugin:
         else:
             return None
 
-    def register(self, visitor: "Pathfinder"):
+    @staticmethod
+    def slugify(text: str, table="".maketrans({i: i for i in string.ascii_letters + string.digits + "_-"})):
+        mapping = {ord(i): None for i in text}
+        mapping.update(table)
+        mapping[ord(" ")] = "-"
+        return text.translate(mapping).lower()
+
+    def rogister(self, visitor: "Pathfinder"):
         self.visitor = visitor
         return self

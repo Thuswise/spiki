@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import datetime
 import logging
 from pathlib import Path
 import tomllib
@@ -39,4 +40,17 @@ class Loader(Plugin):
     def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
         text = self.visitor.state[path].text
         node = tomllib.loads(text)
+        return Event(self, path=path, node=node)
+
+    def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+        node.setdefault("registry", {})["path"] = path
+        node["registry"]["root"] = self.root
+        node["registry"]["node"] = path.parent.relative_to(self.root).parts
+        node["registry"]["time"] = datetime.datetime.now(tz=datetime.timezone.utc)
+
+        node.setdefault("metadata", {})["slug"] = (
+            node.get("metadata", {}).get("slug") or
+            self.slugify("_".join(path.relative_to(self.root).with_suffix("").parts))
+        )
+        node["metadata"]["title"] = node["metadata"].get("title", path.name)
         return Event(self, path=path, node=node)
