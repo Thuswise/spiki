@@ -151,5 +151,10 @@ class VisitorTests(unittest.TestCase):
         self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["    Hello, World!\n\n    "])
 
         doc = visitor.state[path].doc
-        print(*witness, sep="\n")
         self.assertIsInstance(doc, str)
+
+        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 1)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 2)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 1)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 1)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 1)

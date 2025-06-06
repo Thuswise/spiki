@@ -77,7 +77,3 @@ class Plugin:
         mapping.update(table)
         mapping[ord(" ")] = "-"
         return text.translate(mapping).lower()
-
-    def rogister(self, visitor: "Pathfinder"):
-        self.visitor = visitor
-        return self
