@@ -161,19 +161,20 @@ class Visitor(contextlib.ExitStack):
             for path in paths:
                 for plugin in self.running:
                     try:
-                        change = plugin(phase, path=path)
+                        changes = list(plugin(phase, path=path))
                     except Exception as error:
                         self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
                         continue
 
-                    try:
-                        yield dataclasses.replace(change, phase=phase)
-                        self.state[change.path] = dataclasses.replace(
-                            self.state.setdefault(change.path, change),
-                            phase=phase,
-                        )
-                    except TypeError:
-                        continue
+                    for change in changes:
+                        try:
+                            yield dataclasses.replace(change, phase=phase)
+                            self.state[change.path] = dataclasses.replace(
+                                self.state.setdefault(change.path, change),
+                                phase=phase,
+                            )
+                        except TypeError:
+                            continue
             else:
                 for change in filter(None, (plugin(phase) for plugin in self.running)):
                     yield dataclasses.replace(change, phase=phase)

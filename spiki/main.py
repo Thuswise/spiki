@@ -60,7 +60,7 @@ def main(args):
         for n, change in enumerate(visitor.walk(*args.paths)):
             pass
 
-    logger.info(f"Processed {n} changes", extra=dict(phase=Phase.REPORT))
+    logger.info(f"Processed {n} messages", extra=dict(phase=Phase.REPORT))
     return 0
 
 

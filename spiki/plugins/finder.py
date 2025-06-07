@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections.abc import Generator
 import logging
 from pathlib import Path
 
@@ -35,11 +36,11 @@ class Finder(Plugin):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
 
-    def mid_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def mid_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
         for parent, dirnames, filenames in path.resolve().walk():
             for name in sorted(filenames):
                 p = parent.joinpath(name)
-                return Change(self, path=p)
+                yield Change(self, path=p)
 
     def mid_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return Change(self, path=path, text=path.read_text())
