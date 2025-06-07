@@ -148,7 +148,10 @@ class VisitorTests(unittest.TestCase):
         self.assertEqual(len(visitor.state), 1, visitor.state)
         path = list(visitor.state)[0]
         self.assertEqual("a.toml", path.name)
-        self.assertEqual(visitor.state[path].node["doc"]["html"]["body"]["blocks"], ["    Hello, World!\n\n    "])
+        self.assertEqual(
+            visitor.state[path].node["doc"]["html"]["body"]["blocks"],
+            ["    Hello, World!\n\n    "]
+        )
 
         doc = visitor.state[path].doc
         self.assertIsInstance(doc, str)
@@ -157,4 +160,8 @@ class VisitorTests(unittest.TestCase):
         self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 2)
         self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 1)
         self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 1)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 1)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 2)
+
+        output_path = pathlib.Path(output_name)
+        files = list(output_path.glob("*.html"))
+        print(*files, sep="\n")

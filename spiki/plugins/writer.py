@@ -46,5 +46,11 @@ class Writer(Plugin):
         return Change(self, path=path, node=node, doc=doc)
 
     def do_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
-        doc = Renderer(node).serialize()
+        destination = self.visitor.location_of(node).relative_to(node["registry"]["root"]).parent
+        print(f"{destination=}")
         return Change(self, path=path, node=node, doc=doc)
+
+    def end_export(self, **kwargs) -> Change:
+        output = self.visitor.options["output"]
+        shutil.copytree(self.space, output, dirs_exist_ok=True)
+        return Change(self)
