@@ -40,7 +40,8 @@ class Finder(Plugin):
         for parent, dirnames, filenames in path.resolve().walk():
             for name in sorted(filenames):
                 p = parent.joinpath(name)
-                yield Change(self, path=p)
+                if p.suffix in (".toml",):
+                    yield Change(self, path=p)
 
     def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return Change(self, path=path, text=path.read_text())
