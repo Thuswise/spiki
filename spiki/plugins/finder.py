@@ -18,7 +18,7 @@
 import logging
 from pathlib import Path
 
-from spiki.plugin import Event
+from spiki.plugin import Change
 from spiki.plugin import Plugin
 
 
@@ -35,11 +35,11 @@ class Finder(Plugin):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
 
-    def do_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def do_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         for parent, dirnames, filenames in path.resolve().walk():
             for name in sorted(filenames):
                 p = parent.joinpath(name)
-                return Event(self, path=p)
+                return Change(self, path=p)
 
-    def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
-        return Event(self, path=path, text=path.read_text())
+    def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+        return Change(self, path=path, text=path.read_text())

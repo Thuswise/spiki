@@ -20,7 +20,7 @@ from pathlib import Path
 import shutil
 import tempfile
 
-from spiki.plugin import Event
+from spiki.plugin import Change
 from spiki.plugin import Plugin
 from spiki.renderer import Renderer
 
@@ -41,6 +41,10 @@ class Writer(Plugin):
         shutil.rmtree(self.space, ignore_errors=True)
         return rv
 
-    def do_render(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def do_render(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         doc = Renderer(node).serialize()
-        return Event(self, path=path, node=node, doc=doc)
+        return Change(self, path=path, node=node, doc=doc)
+
+    def do_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+        doc = Renderer(node).serialize()
+        return Change(self, path=path, node=node, doc=doc)

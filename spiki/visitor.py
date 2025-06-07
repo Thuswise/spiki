@@ -34,7 +34,7 @@ import tempfile
 import tomllib
 import warnings
 
-from spiki.plugin import Event
+from spiki.plugin import Change
 from spiki.plugin import Phase
 from spiki.renderer import Renderer
 
@@ -167,7 +167,7 @@ class Visitor(contextlib.ExitStack):
                         continue
                     touch = [plugin(Phase.SURVEY, path=path, node=node) for plugin in self.running]
                     self.logger.info(
-                        f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),
+                        f"{sum(touch)} change" + ("" if sum(touch) == 1 else "s"),
                         extra=dict(phase=Phase.SURVEY, path=path.relative_to(root).as_posix())
                     )
                     self.nodes[path] = node
@@ -183,7 +183,7 @@ class Visitor(contextlib.ExitStack):
 
             touch = [plugin(Phase.ENRICH, path=path, node=template) for plugin in self.running]
             self.logger.info(
-                f"{sum(touch)} event" + ("" if sum(touch) == 1 else "s"),
+                f"{sum(touch)} change" + ("" if sum(touch) == 1 else "s"),
                 extra=dict(phase=Phase.ENRICH, path=path.relative_to(root).as_posix())
             )
         else:
@@ -200,39 +200,39 @@ class Visitor(contextlib.ExitStack):
         for phase in [Phase.CONFIG, Phase.SURVEY]:
             for path in paths:
                 try:
-                    for event in filter(None, (plugin(phase, path=path) for plugin in self.running)):
-                        yield dataclasses.replace(event, phase=phase)
-                        self.state[event.path] = dataclasses.replace(
-                            self.state.setdefault(event.path, event),
+                    for change in filter(None, (plugin(phase, path=path) for plugin in self.running)):
+                        yield dataclasses.replace(change, phase=phase)
+                        self.state[change.path] = dataclasses.replace(
+                            self.state.setdefault(change.path, change),
                             phase=phase,
                         )
                 except Exception as error:
                     break
             else:
-                for event in filter(None, (plugin(phase) for plugin in self.running)):
-                    yield dataclasses.replace(event, phase=phase)
+                for change in filter(None, (plugin(phase) for plugin in self.running)):
+                    yield dataclasses.replace(change, phase=phase)
 
         for phase in list(Phase)[2:]:
             for path in list(self.state):
                 state = self.state[path]
                 try:
-                    for event in filter(
+                    for change in filter(
                         None,
                         (
                             plugin(phase, path=path, text=state.text, node=state.node, doc=state.doc)
                             for plugin in self.running
                         )
                     ):
-                        yield dataclasses.replace(event, phase=phase)
-                        if event.text:
-                            self.state[path].text = event.text
-                        if event.node:
-                            self.state[path].node.update(event.node)
-                        if event.doc:
-                            self.state[path].doc = event.doc
+                        yield dataclasses.replace(change, phase=phase)
+                        if change.text:
+                            self.state[path].text = change.text
+                        if change.node:
+                            self.state[path].node.update(change.node)
+                        if change.doc:
+                            self.state[path].doc = change.doc
                 except Exception as error:
                     self.logger.error(error, extra=dict(phase=phase), exc_info=True)
                     break
             else:
-                for event in filter(None, (plugin(phase) for plugin in self.running)):
-                    yield dataclasses.replace(event, phase=phase)
+                for change in filter(None, (plugin(phase) for plugin in self.running)):
+                    yield dataclasses.replace(change, phase=phase)

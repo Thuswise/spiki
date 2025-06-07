@@ -142,8 +142,8 @@ class VisitorTests(unittest.TestCase):
             )
 
             self.assertFalse(visitor.state)
-            for event in visitor.walk(*visitor.options["paths"]):
-                witness.append(event)
+            for change in visitor.walk(*visitor.options["paths"]):
+                witness.append(change)
 
         self.assertEqual(len(visitor.state), 1, visitor.state)
         path = list(visitor.state)[0]

@@ -30,13 +30,14 @@ class Phase(enum.Enum):
     FILTER = "Selecting sources"
     ASSETS = "Preparing media"
     ROUTES = "Interconnections"
+    EFFECT = "Adaptations and modifications"
     RENDER = "Generating content"
     EXPORT = "Finalizing output"
     REPORT = "Summary"
 
 
 @dataclasses.dataclass
-class Event:
+class Change:
     object: object  = None
     phase:  Phase   = None
     path:   Path    = None
@@ -59,7 +60,7 @@ class Plugin:
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
-    def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def __call__(self, phase: Phase, *, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         self.phase = phase
         if path is None:
             method = getattr(self, f"end_{phase.name.lower()}", None)
@@ -68,7 +69,7 @@ class Plugin:
 
         if method:
             rv = method(path=path, node=node, doc=doc, **kwargs)
-            return rv or Event(self, phase=phase, path=path, node=node, doc=doc)
+            return rv or Change(self, phase=phase, path=path, node=node, doc=doc)
         else:
             return None
 

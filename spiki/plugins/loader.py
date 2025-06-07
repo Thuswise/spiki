@@ -20,7 +20,7 @@ import logging
 from pathlib import Path
 import tomllib
 
-from spiki.plugin import Event
+from spiki.plugin import Change
 from spiki.plugin import Plugin
 
 
@@ -37,12 +37,12 @@ class Loader(Plugin):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
 
-    def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def do_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         text = self.visitor.state[path].text
         node = tomllib.loads(text)
-        return Event(self, path=path, node=node)
+        return Change(self, path=path, node=node)
 
-    def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         node.setdefault("registry", {})["path"] = path
         node["registry"]["root"] = self.root
         node["registry"]["node"] = path.parent.relative_to(self.root).parts
@@ -53,4 +53,4 @@ class Loader(Plugin):
             self.slugify("_".join(path.relative_to(self.root).with_suffix("").parts))
         )
         node["metadata"]["title"] = node["metadata"].get("title", path.name)
-        return Event(self, path=path, node=node)
+        return Change(self, path=path, node=node)

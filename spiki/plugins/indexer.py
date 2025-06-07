@@ -22,7 +22,7 @@ import logging
 from pathlib import Path
 import tomllib
 
-from spiki.plugin import Event
+from spiki.plugin import Change
 from spiki.plugin import Phase
 from spiki.plugin import Plugin
 
@@ -34,25 +34,25 @@ class Indexer(Plugin):
         self.logger = logging.getLogger("indexer")
         self.indexes = {}
 
-    def do_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def do_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         if path.name == self.visitor.index_name:
             self.logger.info(node["registry"]["path"], extra=dict(phase=self.phase))
             key = node["registry"]["node"]
             self.indexes[key] = node
-            return Event(self, path=path, edits=1)
+            return Change(self, path=path, edits=1)
         else:
-            return Event(self, path=path)
+            return Change(self, path=path)
 
-    def end_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
-        return Event(self, path=path)
+    def end_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+        return Change(self, path=path)
 
-    def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def do_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         ancestors = self.visitor.ancestors(path)
         root_path = ancestors[0]
         home_path = ancestors[-1]
 
         if path.name != self.visitor.index_name:
-            return Event(self, path=path)
+            return Change(self, path=path)
 
         try:
             root_node = self.visitor.nodes[root_path]
@@ -80,7 +80,7 @@ class Indexer(Plugin):
         except (KeyError, StopIteration) as error:
             return False
 
-    def end_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def end_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return False
         # FIXME - completely broken!
         rv = False
@@ -176,17 +176,17 @@ class Indexer(Plugin):
 
         return rv
 
-    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
         return False
 
-    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return False
         return rv
 
-    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def do_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=self.phase))
         return False
 
-    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Event:
+    def end_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return False
