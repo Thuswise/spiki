@@ -39,8 +39,15 @@ class Loader(Plugin):
 
     def mid_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         text = self.visitor.state[path].text
-        node = tomllib.loads(text)
-        return Change(self, path=path, node=node)
+        try:
+            node = tomllib.loads(text)
+        except (AttributeError, TypeError, tomllib.TOMLDecodeError):
+            self.logger.warning(
+                f"Unable to read data from {path.relative_to(self.visitor.root)}",
+                extra=dict(phase=self.phase)
+            )
+        else:
+            return Change(self, path=path, node=node)
 
     def mid_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         node.setdefault("registry", {})["path"] = path

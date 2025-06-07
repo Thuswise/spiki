@@ -72,7 +72,7 @@ class Visitor(contextlib.ExitStack):
         self.state = dict()
         self.running = None
         self.space = None
-        self.logger = logging.getLogger("pathfinder")
+        self.logger = logging.getLogger("visitor")
         self.plugins = list(filter(None, (self.init_plugin(i) for i in plugin_types)))
         self.options = kwargs
 
