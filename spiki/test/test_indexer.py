@@ -35,6 +35,6 @@ class IndexerTests(unittest.TestCase):
             visitor = Visitor()
             with Indexer(visitor) as indexer:
                 index_node = visitor.nodes[index] = visitor.build_node(index, root=src)
-                indexer.do_survey(path=index, node=index_node)
+                indexer.mid_survey(path=index, node=index_node)
                 self.assertTrue(indexer.indexes)
                 self.assertEqual(visitor.url_of(index_node), "index.html")

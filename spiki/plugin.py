@@ -65,7 +65,7 @@ class Plugin:
         if path is None:
             method = getattr(self, f"end_{phase.name.lower()}", None)
         else:
-            method = getattr(self, f"do_{phase.name.lower()}", None)
+            method = getattr(self, f"mid_{phase.name.lower()}", None)
 
         if method:
             rv = method(path=path, node=node, doc=doc, **kwargs)

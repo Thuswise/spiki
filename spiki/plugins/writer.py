@@ -41,11 +41,11 @@ class Writer(Plugin):
         shutil.rmtree(self.space, ignore_errors=True)
         return rv
 
-    def do_render(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def mid_render(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         doc = Renderer(node).serialize()
         return Change(self, path=path, node=node, doc=doc)
 
-    def do_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def mid_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         route = path.relative_to(self.root).parent
         parent = self.space.joinpath(route).resolve()
         slug = node["metadata"]["slug"]
