@@ -66,7 +66,7 @@ class Plugin:
         elif phase == Phase.SURVEY:
             method = getattr(self, f"gen_{phase.name.lower()}", None)
         else:
-            method = getattr(self, f"mid_{phase.name.lower()}", None)
+            method = getattr(self, f"run_{phase.name.lower()}", None)
 
         if method:
             rv = method(path=path, node=node, doc=doc, **kwargs)

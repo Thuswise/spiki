@@ -47,7 +47,7 @@ class Indexer(Plugin):
     def end_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return Change(self, path=path)
 
-    def mid_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def run_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         ancestors = self.visitor.ancestors(path)
         root_path = ancestors[0]
         home_path = ancestors[-1]
@@ -177,7 +177,7 @@ class Indexer(Plugin):
 
         return rv
 
-    def mid_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def run_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=phase))
         return False
 
@@ -185,7 +185,7 @@ class Indexer(Plugin):
         return False
         return rv
 
-    def mid_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def run_report(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         self.logger.info(f"{list(self.indexes)=}", extra=dict(phase=self.phase))
         return False
 

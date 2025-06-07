@@ -37,7 +37,7 @@ class Loader(Plugin):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
 
-    def mid_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         text = self.visitor.state[path].text
         try:
             node = tomllib.loads(text)
@@ -49,7 +49,7 @@ class Loader(Plugin):
         else:
             return Change(self, path=path, node=node)
 
-    def mid_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def run_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         node.setdefault("registry", {})["path"] = path
         node["registry"]["root"] = self.visitor.root
         node["registry"]["node"] = path.parent.relative_to(self.visitor.root).parts

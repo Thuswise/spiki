@@ -42,5 +42,5 @@ class Finder(Plugin):
                 p = parent.joinpath(name)
                 yield Change(self, path=p)
 
-    def mid_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return Change(self, path=path, text=path.read_text())
