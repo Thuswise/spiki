@@ -57,10 +57,10 @@ def main(args):
 
     plugin_types = args.plugin or default_plugin_types
     with Visitor(*plugin_types, **vars(args)) as visitor:
-        for n, event in enumerate(visitor.walk(*args.paths)):
+        for n, change in enumerate(visitor.walk(*args.paths)):
             pass
 
-    logger.info(f"Processed {n} nodes", extra=dict(phase=Phase.REPORT))
+    logger.info(f"Processed {n} changes", extra=dict(phase=Phase.REPORT))
     return 0
 
 

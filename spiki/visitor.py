@@ -159,40 +159,46 @@ class Visitor(contextlib.ExitStack):
         paths = [i.resolve() for i in paths]
         for phase in [Phase.CONFIG, Phase.SURVEY]:
             for path in paths:
-                try:
-                    for change in filter(None, (plugin(phase, path=path) for plugin in self.running)):
+                for plugin in self.running:
+                    try:
+                        change = plugin(phase, path=path)
+                    except Exception as error:
+                        self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
+                        continue
+
+                    try:
                         yield dataclasses.replace(change, phase=phase)
                         self.state[change.path] = dataclasses.replace(
                             self.state.setdefault(change.path, change),
                             phase=phase,
                         )
-                except Exception as error:
-                    break
+                    except TypeError:
+                        continue
             else:
                 for change in filter(None, (plugin(phase) for plugin in self.running)):
                     yield dataclasses.replace(change, phase=phase)
 
         for phase in list(Phase)[2:]:
             for path in list(self.state):
-                state = self.state[path]
-                try:
-                    for change in filter(
-                        None,
-                        (
-                            plugin(phase, path=path, text=state.text, node=state.node, doc=state.doc)
-                            for plugin in self.running
-                        )
-                    ):
+                for plugin in self.running:
+                    state = self.state[path]
+                    try:
+                        change = plugin(phase, path=path, text=state.text, node=state.node, doc=state.doc)
+                    except Exception as error:
+                        self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
+                        continue
+
+                    try:
                         yield dataclasses.replace(change, phase=phase)
-                        if change.text:
-                            self.state[path].text = change.text
-                        if change.node:
-                            self.state[path].node.update(change.node)
-                        if change.doc:
-                            self.state[path].doc = change.doc
-                except Exception as error:
-                    self.logger.error(error, extra=dict(phase=phase), exc_info=True)
-                    break
+                    except TypeError:
+                        continue
+
+                    if change.text:
+                        self.state[path].text = change.text
+                    if change.node:
+                        self.state[path].node.update(change.node)
+                    if change.doc:
+                        self.state[path].doc = change.doc
             else:
                 for change in filter(None, (plugin(phase) for plugin in self.running)):
                     yield dataclasses.replace(change, phase=phase)
