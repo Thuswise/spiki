@@ -44,7 +44,7 @@ class Change:
     text:   str     = None
     node:   dict    = dataclasses.field(default_factory=dict)
     doc:    str     = None
-    edits:  int     = 0
+    result: Path    = None
 
 
 class Plugin:

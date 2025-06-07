@@ -49,16 +49,16 @@ class Writer(Plugin):
         route = path.relative_to(self.visitor.root).parent
         parent = self.space.joinpath(route).resolve()
         slug = node["metadata"]["slug"]
-        path = parent.joinpath(slug).with_suffix(".html")
+        dest = parent.joinpath(slug).with_suffix(".html")
         try:
-            path.write_text(doc)
+            dest.write_text(doc)
         except TypeError:
             self.logger.warning(
                 f"Unable to write document for {path.relative_to(self.visitor.root)}",
                 extra=dict(phase=self.phase)
             )
         else:
-            return Change(self, path=path, node=node, doc=doc)
+            return Change(self, path=path, node=node, doc=doc, result=dest)
 
     def end_export(self, **kwargs) -> Change:
         output = self.visitor.options["output"]

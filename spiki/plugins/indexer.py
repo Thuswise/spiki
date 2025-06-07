@@ -39,7 +39,7 @@ class Indexer(Plugin):
             self.logger.info(node["registry"]["path"], extra=dict(phase=self.phase))
             key = node["registry"]["node"]
             self.indexes[key] = node
-            return Change(self, path=path, edits=1)
+            return Change(self, path=path)
         else:
             return Change(self, path=path)
 
