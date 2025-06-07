@@ -145,6 +145,9 @@ class VisitorTests(unittest.TestCase):
             for change in visitor.walk(*visitor.options["paths"]):
                 witness.append(change)
 
+            output_path = pathlib.Path(output_name)
+            files = list(output_path.glob("*.html"))
+
         self.assertEqual(len(visitor.state), 1, visitor.state)
         path = list(visitor.state)[0]
         self.assertEqual("a.toml", path.name)
@@ -155,6 +158,8 @@ class VisitorTests(unittest.TestCase):
 
         doc = visitor.state[path].doc
         self.assertIsInstance(doc, str)
+        self.assertLess(doc.index("<head"), doc.index("<body"))
+        self.assertEqual(doc.count("<meta"), 3)
 
         self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 1)
         self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 2)
@@ -162,6 +167,5 @@ class VisitorTests(unittest.TestCase):
         self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 1)
         self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 2)
 
-        output_path = pathlib.Path(output_name)
-        files = list(output_path.glob("*.html"))
-        print(*files, sep="\n")
+        self.assertEqual(len(files), 1)
+        self.assertEqual(files[0].name, "a.html")

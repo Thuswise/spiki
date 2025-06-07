@@ -48,7 +48,9 @@ class Writer(Plugin):
     def do_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         route = path.relative_to(self.root).parent
         parent = self.space.joinpath(route).resolve()
-        print(f"{route=}")
+        slug = node["metadata"]["slug"]
+        path = parent.joinpath(slug).with_suffix(".html")
+        path.write_text(doc)
         return Change(self, path=path, node=node, doc=doc)
 
     def end_export(self, **kwargs) -> Change:
