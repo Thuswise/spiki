@@ -46,8 +46,9 @@ class Writer(Plugin):
         return Change(self, path=path, node=node, doc=doc)
 
     def do_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
-        destination = self.visitor.location_of(node).relative_to(node["registry"]["root"]).parent
-        print(f"{destination=}")
+        route = path.relative_to(self.root).parent
+        parent = self.space.joinpath(route).resolve()
+        print(f"{route=}")
         return Change(self, path=path, node=node, doc=doc)
 
     def end_export(self, **kwargs) -> Change:
