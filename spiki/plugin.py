@@ -29,6 +29,7 @@ class Phase(enum.Enum):
     ENRICH = "Attaching metadata"
     FILTER = "Selecting sources"
     ASSETS = "Preparing media"
+    ROUTES = "Interconnections"
     RENDER = "Generating content"
     EXPORT = "Finalizing output"
     REPORT = "Summary"
