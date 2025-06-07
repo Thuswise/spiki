@@ -17,6 +17,7 @@
 
 import argparse
 from collections import defaultdict
+from collections.abc import Generator
 import itertools
 import logging
 from pathlib import Path
@@ -34,14 +35,14 @@ class Indexer(Plugin):
         self.logger = logging.getLogger("indexer")
         self.indexes = {}
 
-    def mid_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+    def gen_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
         if path.name == self.visitor.index_name:
             self.logger.info(node["registry"]["path"], extra=dict(phase=self.phase))
             key = node["registry"]["node"]
             self.indexes[key] = node
-            return Change(self, path=path)
+            yield Change(self, path=path)
         else:
-            return Change(self, path=path)
+            yield Change(self, path=path)
 
     def end_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return Change(self, path=path)

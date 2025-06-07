@@ -63,6 +63,8 @@ class Plugin:
         self.phase = phase
         if path is None:
             method = getattr(self, f"end_{phase.name.lower()}", None)
+        elif phase == Phase.SURVEY:
+            method = getattr(self, f"gen_{phase.name.lower()}", None)
         else:
             method = getattr(self, f"mid_{phase.name.lower()}", None)
 

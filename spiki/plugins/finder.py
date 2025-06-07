@@ -36,7 +36,7 @@ class Finder(Plugin):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
 
-    def mid_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
+    def gen_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
         for parent, dirnames, filenames in path.resolve().walk():
             for name in sorted(filenames):
                 p = parent.joinpath(name)
