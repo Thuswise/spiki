@@ -58,15 +58,8 @@ def main(args):
     plugin_types = args.plugin or default_plugin_types
     with Visitor(*plugin_types, **vars(args)) as visitor:
         for n, event in enumerate(visitor.walk(*args.paths)):
-            destination = visitor.location_of(event.node).relative_to(event.node["registry"]["root"]).parent
-            parent = visitor.space.joinpath(destination).resolve()
-            parent.mkdir(parents=True, exist_ok=True)
-            slug = template["metadata"]["slug"]
-            path = parent.joinpath(slug).with_suffix(".html")
-            path.write_text(doc)
+            pass
 
-        shutil.copytree(visitor.space, args.output, dirs_exist_ok=True)
-        touch = [plugin(Phase.REPORT) for plugin in visitor.running]
     logger.info(f"Processed {n} nodes", extra=dict(phase=Phase.REPORT))
     return 0
 
