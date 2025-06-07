@@ -157,46 +157,6 @@ class Visitor(contextlib.ExitStack):
 
     def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
         paths = [i.resolve() for i in paths]
-        root = Path(os.path.commonprefix(paths))
-        for p in paths:
-            for parent, dirnames, filenames in p.resolve().walk():
-                for name in sorted(filenames):
-                    path = parent.joinpath(name)
-                    node = self.build_node(path, root=root)
-                    if node is None:
-                        continue
-                    touch = [plugin(Phase.SURVEY, path=path, node=node) for plugin in self.running]
-                    self.logger.info(
-                        f"{sum(touch)} change" + ("" if sum(touch) == 1 else "s"),
-                        extra=dict(phase=Phase.SURVEY, path=path.relative_to(root).as_posix())
-                    )
-                    self.nodes[path] = node
-        else:
-            touch = [plugin(Phase.SURVEY) for plugin in self.running]
-
-        for path, node in self.nodes.items():
-
-            # Create a template from this node and all its ancestor indexes
-            indexes = self.ancestors(path)
-            stack = [copy.deepcopy(self.nodes[i]) for i in indexes]
-            template = self.merge(*stack + [copy.deepcopy(node)])
-
-            touch = [plugin(Phase.ENRICH, path=path, node=template) for plugin in self.running]
-            self.logger.info(
-                f"{sum(touch)} change" + ("" if sum(touch) == 1 else "s"),
-                extra=dict(phase=Phase.ENRICH, path=path.relative_to(root).as_posix())
-            )
-        else:
-            touch = [plugin(Phase.ENRICH) for plugin in self.running]
-
-        yield from ((path, node, Renderer(node).serialize()) for path, node in self.nodes.items())
-
-    def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
-        paths = [i.resolve() for i in paths]
-        root = Path(os.path.commonprefix(paths))
-        for plugin in self.plugins:
-            plugin.root = root
-
         for phase in [Phase.CONFIG, Phase.SURVEY]:
             for path in paths:
                 try:

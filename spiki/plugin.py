@@ -51,7 +51,6 @@ class Plugin:
 
     def __init__(self, visitor: "Pathfinder" = None):
         self.visitor = visitor
-        self.root = Path(".")
         self.phase = None
 
     def __enter__(self):

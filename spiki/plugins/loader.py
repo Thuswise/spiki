@@ -51,13 +51,13 @@ class Loader(Plugin):
 
     def mid_enrich(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         node.setdefault("registry", {})["path"] = path
-        node["registry"]["root"] = self.root
-        node["registry"]["node"] = path.parent.relative_to(self.root).parts
+        node["registry"]["root"] = self.visitor.root
+        node["registry"]["node"] = path.parent.relative_to(self.visitor.root).parts
         node["registry"]["time"] = datetime.datetime.now(tz=datetime.timezone.utc)
 
         node.setdefault("metadata", {})["slug"] = (
             node.get("metadata", {}).get("slug") or
-            self.slugify("_".join(path.relative_to(self.root).with_suffix("").parts))
+            self.slugify("_".join(path.relative_to(self.visitor.root).with_suffix("").parts))
         )
         node["metadata"]["title"] = node["metadata"].get("title", path.name)
         return Change(self, path=path, node=node)

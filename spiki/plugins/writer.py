@@ -46,7 +46,7 @@ class Writer(Plugin):
         return Change(self, path=path, node=node, doc=doc)
 
     def mid_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
-        route = path.relative_to(self.root).parent
+        route = path.relative_to(self.visitor.root).parent
         parent = self.space.joinpath(route).resolve()
         slug = node["metadata"]["slug"]
         path = parent.joinpath(slug).with_suffix(".html")
