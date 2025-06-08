@@ -37,8 +37,8 @@ default_plugin_types = [
 ]
 
 
-def setup_logger():
-    logging.basicConfig(level=logging.INFO)
+def setup_logger(level=logging.INFO):
+    logging.basicConfig(level=level)
     root_logger = logging.getLogger()
     for handler in root_logger.handlers:
         handler.setFormatter(
@@ -51,7 +51,8 @@ def setup_logger():
 
 
 def main(args):
-    setup_logger()
+    level = logging.DEBUG if args.debug else logging.INFO
+    setup_logger(level=level)
     logger = logging.getLogger("spiki")
     args.output.mkdir(parents=True, exist_ok=True)
 
@@ -70,6 +71,7 @@ def parser():
     rv.add_argument("paths", nargs="+", type=Path, help="Specify file paths")
     rv.add_argument("-O", "--output", type=Path, default=default_path, help=f"Specify output directory [{default_path}]")
     rv.add_argument("--plugin", action="append", help=f"Specify plugin list {default_plugin_types}")
+    rv.add_argument("--debug", action="store_true", default=False, help=f"Display debug logs")
     rv.convert_arg_line_to_args = lambda x: x.split()
     return rv
 
