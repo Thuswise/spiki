@@ -1,0 +1,18 @@
+[doc.html.body]
+h1 = "Blocks"
+blocks = [
+    '''
+    The *blocks* parameter is an array of Speechmark cues:
+    ''',
+    '''
+    blocks = [
+        """
+        <GUARD:intercom> Good afternoon and welcome to the delayed 14:24 service to Didcot Parkway.
+        """,
+        """
+        <MAN:thinks> This is supposed to be the Worcester train.
+        """,
+    ]
+    ''',
+]
+
