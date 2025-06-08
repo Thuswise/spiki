@@ -97,30 +97,6 @@ class Visitor(contextlib.ExitStack):
             key=lambda x: len(format(x))
         )
 
-    def build_node(self, path: Path, root: Path = None):
-        # TODO: MOve to loader
-        try:
-            text = path.read_text()
-            node = tomllib.loads(text, parse_float=decimal.Decimal)
-        except tomllib.TOMLDecodeError as error:
-            self.logger.warning(f"{path}: {error}")
-            raise
-        except UnicodeDecodeError as error:
-            self.logger.warning(f"{path}: {error}")
-            return None
-
-        node.setdefault("registry", {})["path"] = path
-        node["registry"]["root"] = root
-        node["registry"]["node"] = path.parent.relative_to(root).parts
-        node["registry"]["time"] = datetime.datetime.now(tz=datetime.timezone.utc)
-
-        node.setdefault("metadata", {})["slug"] = (
-            node.get("metadata", {}).get("slug") or
-            Visitor.slugify("_".join(path.relative_to(root).with_suffix("").parts))
-        )
-        node["metadata"]["title"] = node["metadata"].get("title", path.name)
-        return node
-
     def walk(self, *paths: list[Path]) -> Generator[tuple[Path, dict, str]]:
         paths = [i.resolve() for i in paths]
         for phase in [Phase.CONFIG, Phase.SURVEY]:

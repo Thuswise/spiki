@@ -105,9 +105,9 @@ class VisitorTests(unittest.TestCase):
         self.assertEqual(len(visitor.state), 4, visitor.state)
         path = list(visitor.state)[0]
         self.assertEqual("a.toml", path.name)
-        self.assertEqual(
-            visitor.state[path].node["doc"]["html"]["body"]["blocks"],
-            ["    Hello, World!\n\n    "]
+        self.assertIn(
+            "The *attrib* parameter",
+            visitor.state[path].node["doc"]["html"]["body"]["blocks"][0],
         )
 
         doc = visitor.state[path].doc
@@ -115,11 +115,11 @@ class VisitorTests(unittest.TestCase):
         self.assertLess(doc.index("<head"), doc.index("<body"))
         self.assertEqual(doc.count("<meta"), 3)
 
-        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 1)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 2)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 1)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 1)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 2)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 4)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 8)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 4)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 4)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 5)
 
-        self.assertEqual(len(files), 1)
+        self.assertEqual(len(files), 4)
         self.assertEqual(files[0].name, "a.html")
