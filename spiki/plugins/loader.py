@@ -89,3 +89,6 @@ class Loader(Plugin):
         )
         node["metadata"]["title"] = node["metadata"].get("title", path.name)
         return Change(self, path=path, node=node)
+
+    def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+        self.logger.info(f"extend node {path} from index base how?", extra=dict(phase=self.phase))
