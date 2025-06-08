@@ -1,0 +1,13 @@
+[doc.html.body]
+h1 = "Attrib"
+blocks = [
+    '''
+    The *attrib* parameter specifies attributes for the current tag:
+
+    `[[doc.html.head.meta]]`
+    `attrib = {name = "viewport", content = "width=device-width, initial-scale=1.0"}`
+    ''',
+    '''
+    `<meta name="viewport" content="width=device-width, initial-scale=1.0" />`
+    ''',
+]
