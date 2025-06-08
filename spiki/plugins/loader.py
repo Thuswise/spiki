@@ -16,6 +16,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import datetime
+import functools
 import logging
 from pathlib import Path
 import tomllib
@@ -25,6 +26,33 @@ from spiki.plugin import Plugin
 
 
 class Loader(Plugin):
+
+    @staticmethod
+    def slices(parts: tuple):
+        return [tuple()] if not parts else [parts[:n] for n in range(len(parts) + 1)]
+
+    @staticmethod
+    def merge(*args: tuple[dict]) -> dict:
+        bases = [dict(doc=i.get("base", {})) for i in args if "base" in i]
+        end = (args or [{}])[-1]
+        return functools.reduce(Loader.combine, bases + [end])
+
+    @staticmethod
+    def combine(lhs: dict, rhs: dict) -> dict:
+        "Use lhs as a base to update rhs"
+        for k, v in lhs.items():
+            try:
+                node = rhs[k]
+                if isinstance(node, dict):
+                    rv = Loader.combine(v, node)
+                    lhs_keys = list(v)
+                    rhs_keys = [i for i in node if i not in set(lhs_keys)]
+                    rhs[k] = {k: rv[k] for k in lhs_keys + rhs_keys}
+                elif isinstance(node, list):
+                    rhs[k] = v + node
+            except KeyError:
+                rhs[k] = v
+        return rhs
 
     def __init__(self, visitor):
         super().__init__(visitor)

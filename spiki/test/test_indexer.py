@@ -23,6 +23,7 @@ import unittest
 
 from spiki.visitor import Visitor
 from spiki.plugins.indexer import Indexer
+from spiki.plugins.loader import Loader
 
 
 class IndexerTests(unittest.TestCase):
@@ -32,9 +33,12 @@ class IndexerTests(unittest.TestCase):
             src = Path(src_name).resolve()
             index = src.joinpath("index.toml")
             index.write_text("")
-            visitor = Visitor()
-            with Indexer(visitor) as indexer:
-                index_node = visitor.nodes[index] = visitor.build_node(index, root=src)
+            visitor = Visitor(paths=[src])
+            with (
+                Loader(visitor) as loader,
+                Indexer(visitor) as indexer
+            ):
+                index_node = visitor.nodes[index] = loader.run_enrich(path=index, node={}).node
                 list(indexer.gen_survey(path=index, node=index_node))
                 self.assertTrue(indexer.indexes)
                 self.assertEqual(visitor.url_of(index_node), "index.html")

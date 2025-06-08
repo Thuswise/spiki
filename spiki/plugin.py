@@ -27,6 +27,7 @@ class Phase(enum.Enum):
     SURVEY = "Discovering topology"
     INGEST = "Reading structured data"
     ENRICH = "Attaching metadata"
+    EXTEND = "Hierarchical influences"
     FILTER = "Selecting sources"
     ASSETS = "Preparing media"
     ROUTES = "Interconnections"
