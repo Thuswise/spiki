@@ -92,3 +92,11 @@ class Loader(Plugin):
 
     def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         self.logger.info(f"extend node {path} from index base how?", extra=dict(phase=self.phase))
+        try:
+            index_path = path.parent.joinpath("index.toml")
+            index = self.visitor.state[index_path].node
+            node = self.merge(index, node)
+        except KeyError:
+            pass
+        else:
+            return Change(self, path=path, node=node)

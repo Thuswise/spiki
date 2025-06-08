@@ -38,7 +38,7 @@ class IndexerTests(unittest.TestCase):
                 Loader(visitor) as loader,
                 Indexer(visitor) as indexer
             ):
-                index_node = visitor.nodes[index] = loader.run_enrich(path=index, node={}).node
+                index_node = loader.run_enrich(path=index, node={}).node
                 list(indexer.gen_survey(path=index, node=index_node))
                 self.assertTrue(indexer.indexes)
                 self.assertEqual(visitor.url_of(index_node), "index.html")

@@ -56,7 +56,6 @@ class Visitor(contextlib.ExitStack):
     def __init__(self, *plugin_types: tuple[Callable], **kwargs):
         super().__init__()
         self.index_name = "index.toml"
-        self.nodes = dict()
         self.state = dict()
         self.running = None
         self.space = None
