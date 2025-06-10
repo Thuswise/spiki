@@ -35,7 +35,6 @@ import warnings
 
 from spiki.plugin import Change
 from spiki.plugin import Phase
-from spiki.renderer import Renderer
 
 
 class Visitor(contextlib.ExitStack):
