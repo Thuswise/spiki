@@ -114,6 +114,7 @@ class VisitorTests(unittest.TestCase):
         self.assertIsInstance(doc, str)
         self.assertLess(doc.index("<head"), doc.index("<body"))
         self.assertEqual(doc.count("<meta"), 3)
+        self.assertLess(doc.index("<h1"), doc.index("<blockquote"), doc)
 
         self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 4)
         self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 8)
