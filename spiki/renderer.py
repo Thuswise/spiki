@@ -58,6 +58,31 @@ class Renderer:
         rv = self.state.config.get(option.name, None)
         return rv in option.value and rv
 
+    def gen_blocks(self, **kwargs) -> Generator[str]:
+        block_wrap = self.get_option(self.Options.block_wrap)
+        for n, block in enumerate(self.state.blocks):
+            if block_wrap:
+                yield f'<{block_wrap} id="{n:02d}">'
+            block = block.format(**kwargs)
+            for line in self.sm.feed(block.strip(), terminate=True):
+                yield line.replace('<li id="', f'<li id="{n:02d}-')
+            self.sm.reset()
+            if block_wrap:
+                yield f"</{block_wrap}>"
+
+    def gen_nodes(self, tree: dict, **kwargs) -> Generator[str]:
+        attrs =  (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
+        tag_mode = self.get_option(self.Options.tag_mode)
+        pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
+        for node, entry in pool:
+            entry = html.escape(entry.format(**kwargs))
+            if tag_mode == "open":
+                yield f"<{node}{attrs}>"
+            elif tag_mode == "pair":
+                yield f"<{node}{attrs}>{entry}</{node}>"
+            elif tag_mode == "void":
+                yield f"<{node}{attrs} />"
+
     def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
         path = path or list()
         context = context or dict()
@@ -79,28 +104,8 @@ class Renderer:
         except StopIteration:
             pass
 
-        block_wrap = self.get_option(self.Options.block_wrap)
-        for n, block in enumerate(self.state.blocks):
-            if block_wrap:
-                yield f'<{block_wrap} id="{n:02d}">'
-            block = block.format(**context)
-            for line in self.sm.feed(block.strip(), terminate=True):
-                yield line.replace('<li id="', f'<li id="{n:02d}-')
-            self.sm.reset()
-            if block_wrap:
-                yield f"</{block_wrap}>"
-
-        attrs =  (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
-        tag_mode = self.get_option(self.Options.tag_mode)
-        pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
-        for node, entry in pool:
-            entry = html.escape(entry.format(**context))
-            if tag_mode == "open":
-                yield f"<{node}{attrs}>"
-            elif tag_mode == "pair":
-                yield f"<{node}{attrs}>{entry}</{node}>"
-            elif tag_mode == "void":
-                yield f"<{node}{attrs} />"
+        yield from self.gen_blocks(**context)
+        yield from self.gen_nodes(tree, **context)
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, list)]
         for node, entry in pool:
