@@ -104,8 +104,13 @@ class Renderer:
         except StopIteration:
             pass
 
-        yield from self.gen_blocks(**context)
-        yield from self.gen_nodes(tree, **context)
+        block_site = self.get_option(self.Options.block_site)
+        if block_site == "above":
+            yield from self.gen_blocks(**context)
+            yield from self.gen_nodes(tree, **context)
+        else:
+            yield from self.gen_nodes(tree, **context)
+            yield from self.gen_blocks(**context)
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, list)]
         for node, entry in pool:
