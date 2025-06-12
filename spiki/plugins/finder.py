@@ -31,16 +31,29 @@ class Finder(Plugin):
         self.logger = logging.getLogger("finder")
 
     def __enter__(self):
+        mimetypes.add_type("application/toml", ".toml", strict=False)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         rv = super().__exit__(exc_type, exc_val, exc_tb)
         return rv
 
+    @staticmethod
+    def get_type(path: Path):
+        try:
+            t = mimetypes.guess_file_type(path, strict=False)  # Python 3.13
+        except AttributeError:
+            t = mimetypes.guess_type(path, strict=False)
+        try:
+            return t[0]
+        except IndexError:
+            return ""
+
     def gen_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
         for parent, dirnames, filenames in path.resolve().walk():
             for name in sorted(filenames):
-                self.logger.info(mimetypes.guess_file_type(name, strict=False))
+                file_type = self.get_type(name)
+                self.logger.info(file_type, extra=dict(phase=self.phase))
                 p = parent.joinpath(name)
                 if p.suffix in (".toml", ".css"):
                     yield Change(self, path=p)
