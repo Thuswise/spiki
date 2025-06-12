@@ -17,6 +17,7 @@
 
 from collections.abc import Generator
 import logging
+import mimetypes
 from pathlib import Path
 
 from spiki.plugin import Change
@@ -39,8 +40,9 @@ class Finder(Plugin):
     def gen_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
         for parent, dirnames, filenames in path.resolve().walk():
             for name in sorted(filenames):
+                self.logger.info(mimetypes.guess_file_type(name, strict=False))
                 p = parent.joinpath(name)
-                if p.suffix in (".toml",):
+                if p.suffix in (".toml", ".css"):
                     yield Change(self, path=p)
 
     def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:

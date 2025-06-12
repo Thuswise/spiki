@@ -102,9 +102,9 @@ class Visitor(contextlib.ExitStack):
             for path in paths:
                 for plugin in self.running:
                     try:
-                        changes = list(plugin(phase, path=path))
+                        changes = list(plugin(phase, path=path) or [])
                     except Exception as error:
-                        self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
+                        self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
                         continue
 
                     for change in changes:
@@ -127,7 +127,7 @@ class Visitor(contextlib.ExitStack):
                     try:
                         change = plugin(phase, path=path, text=state.text, node=state.node, doc=state.doc)
                     except Exception as error:
-                        self.logger.debug(error, extra=dict(phase=phase), exc_info=True)
+                        self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
                         continue
 
                     try:
