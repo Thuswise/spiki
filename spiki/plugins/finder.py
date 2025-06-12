@@ -55,8 +55,8 @@ class Finder(Plugin):
                 file_type = self.get_type(name)
                 self.logger.info(file_type, extra=dict(phase=self.phase))
                 p = parent.joinpath(name)
-                if p.suffix in (".toml", ".css"):
-                    yield Change(self, path=p)
+                if file_type:
+                    yield Change(self, path=p, type=file_type)
 
     def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         return Change(self, path=path, text=path.read_text())

@@ -42,6 +42,7 @@ class Change:
     object: object  = None
     phase:  Phase   = None
     path:   Path    = None
+    type:   str     = ""
     text:   str     = None
     node:   dict    = dataclasses.field(default_factory=dict)
     doc:    str     = None
