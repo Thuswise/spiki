@@ -66,8 +66,11 @@ class Loader(Plugin):
         return rv
 
     def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
-        text = self.visitor.state[path].text
+        if path.suffix != ".toml":
+            return
+
         try:
+            text = self.visitor.state[path].text
             node = tomllib.loads(text)
         except (AttributeError, TypeError, tomllib.TOMLDecodeError):
             self.logger.warning(

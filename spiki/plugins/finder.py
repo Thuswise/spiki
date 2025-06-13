@@ -51,10 +51,11 @@ class Finder(Plugin):
 
     def gen_survey(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
         for parent, dirnames, filenames in path.resolve().walk():
+            self.logger.info(f"Visiting {parent}...", extra=dict(phase=self.phase))
             for name in sorted(filenames):
                 file_type = self.get_type(name)
-                self.logger.info(file_type, extra=dict(phase=self.phase))
                 p = parent.joinpath(name)
+                self.logger.info(f"Found {file_type:<16} file: {name}", extra=dict(path=p, phase=self.phase))
                 if file_type:
                     yield Change(self, path=p, type=file_type)
 

@@ -43,7 +43,7 @@ def setup_logger(level=logging.INFO):
     for handler in root_logger.handlers:
         handler.setFormatter(
             logging.Formatter(
-                fmt="{asctime}|{levelname:>8}|{phase.name:^8}| {name:<16}| {path:<32}| {message}",
+                fmt="{asctime}|{levelname:>8}|{phase.name:^8}| {name:<16}| {path!s:<64}| {message}",
                 datefmt=None, style='{',
                 defaults=dict(phase=Phase.CONFIG, path="")
             )
@@ -61,7 +61,7 @@ def main(args):
         for n, change in enumerate(visitor.walk(*args.paths)):
             pass
 
-    logger.info(f"Processed {n} messages", extra=dict(phase=Phase.REPORT))
+    logger.info(f"Completed {n} actions", extra=dict(phase=Phase.REPORT))
     return 0
 
 
