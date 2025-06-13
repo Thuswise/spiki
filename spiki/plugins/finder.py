@@ -45,7 +45,7 @@ class Finder(Plugin):
         except AttributeError:
             t = mimetypes.guess_type(path, strict=False)
         try:
-            return t[0]
+            return t[0] or ""
         except IndexError:
             return ""
 

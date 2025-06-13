@@ -10,7 +10,7 @@ attrib = {lang = "en"}
 title = "{metadata[title]}"
 
 [[base.html.head.meta]]
-config = {tag_mode = "open"}
+config = {tag_mode = "void"}
 attrib = {charset = "UTF-8"}
 
 [[base.html.head.meta]]
@@ -18,5 +18,13 @@ config = {tag_mode = "void"}
 attrib = {name = "viewport", content = "width=device-width, initial-scale=1.0"}
 
 [[base.html.head.meta]]
-config = {tag_mode = "open"}
+config = {tag_mode = "void"}
 attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
+
+[[base.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel= "stylesheet", href="basics.css"}
+
+[[base.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel= "stylesheet", href="layout.css"}
