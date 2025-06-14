@@ -59,7 +59,7 @@ class VisitorTests(unittest.TestCase):
         path = list(visitor.state)[0]
         self.assertEqual("a.toml", path.name)
         self.assertEqual(
-            visitor.state[path].node["doc"]["html"]["body"]["blocks"],
+            visitor.state[path].node["doc"]["html"]["body"]["main"]["blocks"],
             ["    Hello, World!\n\n    "]
         )
 
@@ -107,13 +107,14 @@ class VisitorTests(unittest.TestCase):
         self.assertEqual("a.toml", path.name)
         self.assertIn(
             "The *attrib* parameter",
-            visitor.state[path].node["doc"]["html"]["body"]["blocks"][0],
+            visitor.state[path].node["doc"]["html"]["body"]["main"]["blocks"][0],
         )
 
         doc = visitor.state[path].doc
         self.assertIsInstance(doc, str)
         self.assertLess(doc.index("<head"), doc.index("<body"))
         self.assertEqual(doc.count("<meta"), 3)
+        self.assertLess(doc.index("<nav"), doc.index("<blockquote"), visitor.state[path].node)
         self.assertLess(doc.index("<h1"), doc.index("<blockquote"), doc)
 
         self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 6)

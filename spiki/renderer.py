@@ -118,7 +118,7 @@ class Renderer:
                 yield from self.walk(item, path=path + [node, n], context=context)
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, dict)]
-        for node, entry in pool:  # Removed reverse. Orders html, head, body correctly, but masks bugs.
+        for node, entry in pool:
             yield from self.walk(entry, path=path + [node], context=context)
 
         try:

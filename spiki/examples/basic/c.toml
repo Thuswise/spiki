@@ -1,4 +1,4 @@
-[doc.html.body]
+[doc.html.body.main]
 h1 = "Config"
 blocks = [
     '''
