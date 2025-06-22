@@ -11,10 +11,13 @@ grid-row: nav;
 
 main {
 grid-row: main;
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+height: 100%;
 }
 
 blockquote {
-height: minmax(4ch, 1fr, 24ch);
 }
 
 cite {
