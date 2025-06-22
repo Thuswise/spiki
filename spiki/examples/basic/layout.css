@@ -1,19 +1,11 @@
 body {
-display: flex;
-flex-direction: column;
+display: grid;
 height: 100vh;
-justify-content: space-evenly;
-margin: auto;
-text-align: center;
-max-width: 42rem;
+place-items: center;
 }
 
 blockquote {
 padding: 2rem 0 2rem 0;
-}
-
-button, input {
-padding: 1.2rem 3rem 1.2rem 3rem;
 }
 
 cite {
