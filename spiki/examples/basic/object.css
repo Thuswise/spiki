@@ -2,12 +2,12 @@
 https://moderncss.dev/container-query-solutions-with-css-grid-and-flexbox/
 */
 
-maine {
-container-type: size;
+dav:has(blockquote) {
+container-type: inline-size;
 container-name: speech;
 }
 
-@container speech (block-size < 6rem) {
+@container speech (width < 6rem) {
     blockquote {
     background-color: yellow;
     }

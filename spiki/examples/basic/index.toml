@@ -36,3 +36,6 @@ attrib = {rel= "stylesheet", href="object.css"}
 [[base.html.body.nav.header.ul.li]]
 attrib = {class = "spiki home", href = "index.html"}
 a = "Basic Example"
+
+[base.html.body.main]
+config = {tag_mode = "pair", block_wrap = "div"}
