@@ -1,17 +1,16 @@
 body {
 display: grid;
-grid-template-rows:  [scarf] auto [shirt] auto [slacks] 1fr [shoes] auto;
-
+grid-template-rows: [top] minmax(5%, 25%) [nav] auto [main] 1fr [base] minmax(5%, 25%);
 height: 100vh;
 place-items: center;
 }
 
 nav {
-grid-row: shirt;
+grid-row: nav;
 }
 
 main {
-grid-row: slacks;
+grid-row: main;
 }
 
 blockquote {
