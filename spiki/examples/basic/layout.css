@@ -1,5 +1,7 @@
 body {
 display: grid;
+grid-template-rows:  [scarf] auto [shirt] auto [slacks] 1fr [shoes] auto;
+
 height: 100vh;
 place-items: center;
 }
