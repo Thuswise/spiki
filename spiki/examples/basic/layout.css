@@ -13,11 +13,13 @@ main {
 grid-row: main;
 display: flex;
 flex-direction: column;
+flex-wrap: wrap;
 justify-content: space-around;
 height: 100%;
 }
 
 blockquote {
+    width: 100%;
 }
 
 cite {
