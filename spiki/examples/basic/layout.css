@@ -14,7 +14,7 @@ grid-row: main;
 }
 
 blockquote {
-padding: 2rem 0 2rem 0;
+height: minmax(4ch, 1fr, 24ch);
 }
 
 cite {
