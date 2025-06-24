@@ -11,14 +11,9 @@ grid-row: nav;
 
 main {
 grid-row: main;
-display: flex;
-flex-direction: column;
-justify-content: space-around;
 }
 
 blockquote {
-margin-bottom: auto;
-margin-top: auto;
 padding: 1.6rem;
 }
 

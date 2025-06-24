@@ -2,14 +2,14 @@
 https://moderncss.dev/container-query-solutions-with-css-grid-and-flexbox/
 */
 
-dav:has(blockquote) {
+nav {
 container-type: inline-size;
-container-name: speech;
+container-name: navigation;
 }
 
-@container speech (width < 6rem) {
-    blockquote {
-    background-color: yellow;
+nav li {
+    @container navigation (max-width: 2rem) {
+        background-color: yellow;
     }
 }
 
