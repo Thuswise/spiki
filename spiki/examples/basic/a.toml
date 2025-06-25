@@ -1,4 +1,5 @@
 [doc.html.body.main]
+attrib = {class="material-symbols-outlined"}
 h1 = "Attrib"
 blocks = [
     '''
