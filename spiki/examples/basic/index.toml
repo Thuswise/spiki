@@ -23,6 +23,10 @@ attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
 
 [[base.html.head.link]]
 config = {tag_mode = "void"}
+attrib = {rel= "stylesheet", href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"}
+
+[[base.html.head.link]]
+config = {tag_mode = "void"}
 attrib = {rel= "stylesheet", href="basics.css"}
 
 [[base.html.head.link]]
