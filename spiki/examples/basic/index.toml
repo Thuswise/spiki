@@ -37,6 +37,13 @@ attrib = {rel= "stylesheet", href="layout.css"}
 config = {tag_mode = "void"}
 attrib = {rel= "stylesheet", href="object.css"}
 
+[base.html.body.header]
+attrib = {popovertarget = "nav-upper"}
+button = "Nav"
+
+[base.html.body.header.nav]
+attrib = {id="nav-upper", popover = "auto"}
+
 [[base.html.body.header.nav.ul.li]]
 attrib = {class = "spiki home", href = "index.html"}
 a = "Basic Example"
