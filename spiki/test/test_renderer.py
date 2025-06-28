@@ -36,6 +36,18 @@ class RendererTests(unittest.TestCase):
         self.assertFalse(rv)
         self.assertIn("invalid", format(context.warning))
 
+    def test_config_scope(self):
+        toml = textwrap.dedent("""
+        [doc.html.body.header.nav]
+        attrib = {popovertarget = "menu"}
+        config = {tag_mode = "pair"}
+        button = "Click for Menu"
+        """).strip()
+        template = tomllib.loads(toml)
+        rv = Renderer().serialize(template)
+        self.assertIn("<nav>", rv)
+        self.assertIn('<button popovertarget="menu">', rv)
+
     def test_head(self):
         test = "Essential head content"
         goal = textwrap.dedent(f"""

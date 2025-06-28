@@ -91,12 +91,18 @@ class Renderer:
         self.state.blocks = tree.pop("blocks", [])
         self.state.config = self.state.config.new_child(self.check_config(tree.pop("config", {}), self.Options))
 
-        attrs =  (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
+        attrs = (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
         tag_mode = self.get_option(self.Options.tag_mode)
 
         try:
             tag = next(i for i in reversed(path) if isinstance(i, str))
-            params = "" if isinstance(path[-1], int) and tree else attrs
+            if isinstance(path[-1], int) and tree:
+                params = ""
+            elif any(i for i in tree.values() if isinstance(i, str)):
+                params = ""
+            else:
+                params = attrs
+
             if tag_mode in ["open", "pair"]:
                 yield f"<{tag}{params}>"
             elif tag_mode == "void":
