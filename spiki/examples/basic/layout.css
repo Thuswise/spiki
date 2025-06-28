@@ -1,12 +1,16 @@
 body {
 display: grid;
-grid-template-rows: [top] minmax(5%, 15%) [nav] auto [main] 1fr [base] minmax(5%, 15%);
+grid-template-rows: [sash] minmax(5%, 15%) [main] 1fr [sill] minmax(5%, 15%);
 height: 100vh;
 place-items: center;
 }
 
-nav {
-grid-row: nav;
+body header nav {
+grid-row: sash;
+}
+
+body footer nav {
+grid-row: sash;
 }
 
 main {
