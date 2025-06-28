@@ -4,3 +4,40 @@ font-family: monospace;
 
 p:first-letter {
 }
+
+[popover] {
+  background-color: white;
+  border: 1px solid black;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Style only open popovers */
+[popover]:popover-open {
+animation: fadeIn 0.3s ease-out;
+margin: 2rem auto auto auto;
+}
+
+/* Example of a transition */
+@starting-style {
+  [popover] {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+[popover]:popover-open {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, overlay 0.3s allow-discrete, display 0.3s allow-discrete;
+}
+
+/* Example of a backdrop */
+::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
