@@ -61,7 +61,7 @@ class Writer(Plugin):
         try:
             dest.write_text(text)
         except TypeError:
-            dest.write_bytes(text)
+            shutil.copyfile(path, dest)
         except Exception:
             self.logger.warning(
                 f"Unable to write document for {path.relative_to(self.visitor.root)}",

@@ -62,5 +62,5 @@ class Finder(Plugin):
     def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         file_type = self.get_type(path.name)
         if "image" in file_type:
-            return Change(self, path=path, text=path.read_bytes(), type=file_type)
+            return Change(self, path=path, type=file_type)
         return Change(self, path=path, text=path.read_text(), type=file_type)
