@@ -45,13 +45,23 @@ button = "Nav"
 attrib = {id="nav-upper", popover = "auto"}
 
 [[base.html.body.header.nav.ul.li]]
-attrib = {class = "spiki home", href = "index.html"}
+attrib = {class = "card"}
+
+[base.html.body.header.nav.ul.li.div]
+p = "Some explanatory text"
+
+[base.html.body.header.nav.ul.li.div.span]
+attrib = {href = "index.html"}
 a = "Basic Example"
+
+[base.html.body.header.nav.ul.li.div.img]
+config = {tag_mode = "void"}
+attrib = {src = "zen-509371_640.jpg", alt="Close up on the face of a Zen Buddha statue"}
 
 [base.html.body.main]
 config = {tag_mode = "pair", block_wrap = "div"}
 
 [[base.html.body.footer.nav.ul.li]]
 attrib = {class = "spiki home", href = "index.html"}
-a = "Basic Example"
+a = "Next"
 

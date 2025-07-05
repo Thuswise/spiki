@@ -96,9 +96,7 @@ class Renderer:
 
         try:
             tag = next(i for i in reversed(path) if isinstance(i, str))
-            if isinstance(path[-1], int) and tree:
-                params = ""
-            elif any(i for i in tree.values() if isinstance(i, str)):
+            if any(i for i in tree.values() if isinstance(i, str)):
                 params = ""
             else:
                 params = attrs
