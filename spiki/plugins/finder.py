@@ -60,4 +60,7 @@ class Finder(Plugin):
                     yield Change(self, path=p, type=file_type)
 
     def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
-        return Change(self, path=path, text=path.read_text())
+        file_type = self.get_type(path.name)
+        if "image" in file_type:
+            return Change(self, path=path, text=path.read_bytes(), type=file_type)
+        return Change(self, path=path, text=path.read_text(), type=file_type)
