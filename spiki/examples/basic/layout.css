@@ -1,12 +1,14 @@
 body {
 display: grid;
-grid-template-rows: [head] minmax(5%, 15%) [main] 1fr [foot] minmax(5%, 15%);
+grid-template-rows: [head] 2fr [main] 9fr [foot] 1fr;
+grid-gap: 1rem;
 height: 100vh;
 place-items: center;
 }
 
 body header {
 grid-row: head;
+width: 100%;
 }
 
 body footer {
@@ -28,4 +30,15 @@ padding: 0.6rem;
 cite {
 display: block;
 margin: 0.6rem 0 2.2rem 0;
+}
+
+nav ul:has(.card) {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+}
+
+.card img {
+aspect-ratio: 16 / 10;
+width: 18rem;
 }
