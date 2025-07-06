@@ -42,7 +42,7 @@ attrib = {popovertarget = "nav-upper"}
 button = "Nav"
 
 [base.html.body.header.nav]
-attrib = {id="nav-upper", popover = "auto"}
+# attrib = {id="nav-upper", popover = "auto"}
 
 [[base.html.body.header.nav.ul.li]]
 attrib = {class = "card"}
