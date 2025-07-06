@@ -52,6 +52,7 @@ grid-template-areas:
 "a a a a a a a a c c c c c c"
 "a a a a a a a a c c c c c c"
 ;
+place-items: center;
 width: 32rem;
 }
 

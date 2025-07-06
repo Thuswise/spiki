@@ -39,10 +39,10 @@ attrib = {rel= "stylesheet", href="object.css"}
 
 [base.html.body.header]
 attrib = {popovertarget = "nav-upper"}
-button = "Nav"
+button = "≡"  # "IDENTICAL TO" (U+2261)
 
 [base.html.body.header.nav]
-# attrib = {id="nav-upper", popover = "auto"}
+attrib = {id="nav-upper", popover = "auto"}
 
 [[base.html.body.header.nav.ul.li]]
 attrib = {class = "card"}

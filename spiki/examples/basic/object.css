@@ -12,12 +12,10 @@ p:first-letter {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Style only open popovers */
 [popover]:popover-open {
 margin: 2rem auto auto auto;
 }
 
-/* Example of a backdrop */
 ::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
 }
