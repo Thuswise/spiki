@@ -47,44 +47,44 @@ button = "Nav"
 [[base.html.body.header.nav.ul.li]]
 attrib = {class = "card"}
 
-[base.html.body.header.nav.ul.li.div]
-p = "Some explanatory text"
+[base.html.body.header.nav.ul.li.div.img]
+config = {tag_mode = "void"}
+attrib = {src = "zen-509371_640.jpg", alt="Close up on the face of a Zen Buddha statue"}
 
 [base.html.body.header.nav.ul.li.div.span]
 attrib = {href = "a.html"}
 a = "Page A"
 
-[base.html.body.header.nav.ul.li.div.img]
-config = {tag_mode = "void"}
-attrib = {src = "zen-509371_640.jpg", alt="Close up on the face of a Zen Buddha statue"}
-
-[[base.html.body.header.nav.ul.li]]
-attrib = {class = "card"}
-
 [base.html.body.header.nav.ul.li.div]
 p = "Some explanatory text"
 
-[base.html.body.header.nav.ul.li.div.span]
-attrib = {href = "b.html"}
-a = "Page B"
+[[base.html.body.header.nav.ul.li]]
+attrib = {class = "card"}
 
 [base.html.body.header.nav.ul.li.div.img]
 config = {tag_mode = "void"}
 attrib = {src = "lion-671193_640.jpg", alt="Close up on the face of a Stone Lion statue"}
 
-[[base.html.body.header.nav.ul.li]]
-attrib = {class = "card"}
+[base.html.body.header.nav.ul.li.div.span]
+attrib = {href = "b.html"}
+a = "Page B"
 
 [base.html.body.header.nav.ul.li.div]
 p = "Some explanatory text"
+
+[[base.html.body.header.nav.ul.li]]
+attrib = {class = "card"}
+
+[base.html.body.header.nav.ul.li.div.img]
+config = {tag_mode = "void"}
+attrib = {class = "spiki hflip", src = "bull-statue-7482855_640.jpg", alt="Close up on the face of a Bronze Bull statue"}
 
 [base.html.body.header.nav.ul.li.div.span]
 attrib = {href = "c.html"}
 a = "Page C"
 
-[base.html.body.header.nav.ul.li.div.img]
-config = {tag_mode = "void"}
-attrib = {class = "spiki hflip", src = "bull-statue-7482855_640.jpg", alt="Close up on the face of a Bronze Bull statue"}
+[base.html.body.header.nav.ul.li.div]
+p = "Some explanatory text"
 
 [base.html.body.main]
 config = {tag_mode = "pair", block_wrap = "div"}

@@ -38,7 +38,33 @@ flex-direction: row;
 flex-wrap: wrap;
 }
 
+.card {
+flex-grow: 1;
+margin: 0.4rem;
+}
+
+.card div {
+display: grid;
+grid-template-areas:
+"a a a a a a a a b b b b b b"
+"a a a a a a a a b b b b b b"
+"a a a a a a a a b b b b b b"
+"a a a a a a a a c c c c c c"
+"a a a a a a a a c c c c c c"
+;
+width: 32rem;
+}
+
 .card img {
 aspect-ratio: 16 / 10;
+grid-area: a;
 width: 18rem;
+}
+
+.card p {
+grid-area: b;
+}
+
+.card span {
+grid-area: c;
 }
