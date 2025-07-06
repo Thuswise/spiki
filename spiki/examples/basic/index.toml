@@ -56,7 +56,7 @@ a = "Page A"
 
 [base.html.body.header.nav.ul.li.div.img]
 config = {tag_mode = "void"}
-attrib = {class = "spiki hflip", src = "bull-statue-7482855_640.jpg", alt="Close up on the face of a Bronze Bull statue"}
+attrib = {src = "zen-509371_640.jpg", alt="Close up on the face of a Zen Buddha statue"}
 
 [[base.html.body.header.nav.ul.li]]
 attrib = {class = "card"}
@@ -84,7 +84,7 @@ a = "Page C"
 
 [base.html.body.header.nav.ul.li.div.img]
 config = {tag_mode = "void"}
-attrib = {src = "zen-509371_640.jpg", alt="Close up on the face of a Zen Buddha statue"}
+attrib = {class = "spiki hflip", src = "bull-statue-7482855_640.jpg", alt="Close up on the face of a Bronze Bull statue"}
 
 [base.html.body.main]
 config = {tag_mode = "pair", block_wrap = "div"}
