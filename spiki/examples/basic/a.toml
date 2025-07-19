@@ -3,16 +3,24 @@ attrib = {class="material-symbols-outlined"}
 h1 = "Attrib"
 blocks = [
     '''
-    The *attrib* parameter specifies attributes for the current tag:
+    The doors are beeping. So nobody is speaking. And now the doors open and the beeping stops.
     ''',
     '''
-    `[[doc.html.head.meta]]`
-
-    `attrib = {{name = "viewport", content = "width=device-width, initial-scale=1.0"}}`
+    <Chalgrove>     The benches are all wet.
     ''',
     '''
-    Results in:
-
-    `<meta name="viewport" content="width=device-width, initial-scale=1.0" />`
+    <Bullingdon>    Well, I fancy a smoke anyway. We'll wait for him through there.
+    ''',
+    '''
+    On the street.
+    ''',
+    '''
+    <Appleby>       Found you.
+    ''',
+    '''
+    <Chalgrove>     I was about to send a message.
+    ''',
+    '''
+    <Appleby>       The seating was wet, so I came out here.
     ''',
 ]
