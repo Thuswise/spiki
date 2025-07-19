@@ -1,14 +1,19 @@
 [doc.html.body.main]
-h1 = "Config"
 blocks = [
     '''
-    The *config* parameter allows you to define options which locally affect plugin behaviour.
-    For example, to specify that tags should be rendered in pairs:
+    <Bullingdon>    Just because you *feel* unhappy, doesn't mean you actually are.
     ''',
     '''
-    `[doc.html]`
-
-    `config = {{tag_mode = "pair"}}`
+    <Appleby>       Well on the plus side I'm going to have a lot more free time from now on.
+    ''',
+    '''
+    <Chalgrove>     The rain has stopped.
+    ''',
+    '''
+    <Bullingdon>    Shall we get on then?
+    ''',
+    '''
+    <Appleby>       Yes, let's go.
     ''',
 ]
 
