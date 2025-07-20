@@ -3,7 +3,7 @@ attrib = {class="material-symbols-outlined"}
 h1 = "Attrib"
 blocks = [
     '''
-    The doors are beeping. So nobody is speaking. And now the doors open and the beeping stops.
+    Everyone has stopped talking. After three seconds the doors open and the dialogue picks up again.
     ''',
     '''
     <Chalgrove>     The benches are all wet.
