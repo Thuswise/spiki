@@ -3,6 +3,11 @@
 :Author: D E Haynes
 :Licence: `CC BY-NC-ND <https://creativecommons.org/licenses/by-nc-nd/4.0/>`_ Attribution-NonCommercial-NoDerivs
 
+Spiki
+#####
+
+Spiki is a processor for SpeechMark_.
+
 SpeechMark
 ##########
 
