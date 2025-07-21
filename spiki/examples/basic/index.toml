@@ -92,7 +92,7 @@ attrib = {href = "c.html"}
 a = "Resolve"
 
 [base.html.body.header.nav.ul.li.div]
-p = "The bond is strengthened by adversity. They commence the next move forward together."
+p = "The bond is strengthened by adversity. They take the next step forward together."
 
 [base.html.body.main]
 config = {tag_mode = "pair", block_wrap = "div"}
