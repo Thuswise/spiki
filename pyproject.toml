@@ -40,7 +40,11 @@ packages = [
 ]
 
 [tool.setuptools.package-data]
-spiki = [
+"spiki.examples" = [
+    "*/*.cli",
+    "*/*.css",
+    "*/*.jpg",
+    "*/*.toml",
 ]
 
 [tool.setuptools.dynamic]
