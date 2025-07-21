@@ -1,6 +1,4 @@
 [doc.html.body.main]
-attrib = {class="material-symbols-outlined"}
-h1 = "Attrib"
 blocks = [
     '''
     Everyone has stopped talking. After three seconds the doors open and the dialogue picks up again.

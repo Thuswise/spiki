@@ -2,9 +2,6 @@ code {
 font-family: monospace;
 }
 
-p:first-letter {
-}
-
 [popover] {
   background-color: white;
   border: 1px solid black;
@@ -18,4 +15,29 @@ margin: 2rem auto auto auto;
 
 ::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+a {
+font-family: "Arial", sans-serif;
+}
+
+p {
+font-family: "Libre Caslon Text", serif;
+font-weight: 400;
+font-style: normal;
+}
+
+main p {
+font-style: italic;
+}
+
+cite + p {
+font-weight: 500;
+font-style: normal;
+}
+
+cite {
+font-family: "Libre Caslon Text", serif;
+font-weight: 400;
+font-style: normal;
 }

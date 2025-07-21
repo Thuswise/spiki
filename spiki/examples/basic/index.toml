@@ -23,7 +23,15 @@ attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
 
 [[base.html.head.link]]
 config = {tag_mode = "void"}
-attrib = {rel= "stylesheet", href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"}
+attrib = {rel = "preconnect", href = "https://fonts.googleapis.com"}
+
+[[base.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel = "preconnect", href = "https://fonts.gstatic.com", crossorigin = "crossorigin"}
+
+[[base.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap"}
 
 [[base.html.head.link]]
 config = {tag_mode = "void"}
