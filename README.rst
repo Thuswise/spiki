@@ -1,8 +1,4 @@
 
-:Version: 0.11.0
-:Author: D E Haynes
-:Licence: `CC BY-NC-ND <https://creativecommons.org/licenses/by-nc-nd/4.0/>`_ Attribution-NonCommercial-NoDerivs
-
 Spiki
 #####
 
@@ -18,6 +14,9 @@ Spiki is at an early stage of development, but here's an example of how to use i
 
 SpeechMark
 ##########
+
+:Author: D E Haynes
+:Licence: `CC BY-NC-ND <https://creativecommons.org/licenses/by-nc-nd/4.0/>`_ Attribution-NonCommercial-NoDerivs
 
 SpeechMark is a convention for markup of authored text.
 It is designed for capturing dialogue, attributing speech, and writing screenplay directions.
