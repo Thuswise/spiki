@@ -48,7 +48,7 @@ display: grid;
 grid-template-areas:
 "a a a a a a a a b b b b b b"
 "a a a a a a a a b b b b b b"
-"a a a a a a a a b b b b b b"
+"a a a a a a a a c c c c c c"
 "a a a a a a a a c c c c c c"
 "a a a a a a a a c c c c c c"
 ;
@@ -62,10 +62,10 @@ grid-area: a;
 width: 18rem;
 }
 
-.card p {
+.card span {
 grid-area: b;
 }
 
-.card span {
+.card p {
 grid-area: c;
 }

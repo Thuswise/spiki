@@ -27,6 +27,17 @@ font-weight: 400;
 font-style: normal;
 }
 
+.card p {
+padding-left: 1.5rem;
+text-wrap: balance;
+}
+
+.card span a {
+color: #000000;
+font-weight: bold;
+padding-top: 1.5rem;
+}
+
 em {
 font-style: italic;
 }
@@ -35,13 +46,14 @@ main p {
 font-style: italic;
 }
 
-cite ~ p {
-font-weight: 500;
-font-style: normal;
-}
-
 cite {
 font-family: "Libre Caslon Text", serif;
 font-weight: 400;
 font-style: normal;
 }
+
+cite ~ p {
+font-weight: 500;
+font-style: normal;
+}
+
