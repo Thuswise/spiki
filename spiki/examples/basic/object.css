@@ -31,7 +31,7 @@ main p {
 font-style: italic;
 }
 
-cite + p {
+cite ~ p {
 font-weight: 500;
 font-style: normal;
 }
