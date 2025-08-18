@@ -18,13 +18,16 @@ margin: 2rem auto auto auto;
 }
 
 a {
-font-family: "Arial", sans-serif;
+color: #000000;
+font-family: "Vollkorn", sans-serif;
+text-decoration: underline;
 }
 
 p {
-font-family: "Libre Caslon Text", serif;
-font-weight: 400;
+font-family: "Georgia", serif;
+font-size: 1.4rem;
 font-style: normal;
+font-weight: 450;
 }
 
 button[popovertarget] {
@@ -33,14 +36,15 @@ padding: 0.8rem;
 }
 
 .card p {
+font-size: 1.1rem;
 padding-left: 1.5rem;
 text-wrap: balance;
 }
 
 .card span a {
-color: #000000;
 font-weight: bold;
 padding-top: 1.5rem;
+text-decoration: underline;
 }
 
 em {
@@ -52,13 +56,13 @@ font-style: italic;
 }
 
 cite {
-font-family: "Libre Caslon Text", serif;
-font-weight: 400;
+font-family: "Vollkorn", serif;
+font-weight: 450;
 font-style: normal;
 }
 
 cite ~ p {
-font-weight: 500;
+font-weight: 350;
 font-style: normal;
 }
 

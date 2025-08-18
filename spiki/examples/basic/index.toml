@@ -31,7 +31,7 @@ attrib = {rel = "preconnect", href = "https://fonts.gstatic.com", crossorigin = 
 
 [[base.html.head.link]]
 config = {tag_mode = "void"}
-attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap"}
+attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Vollkorn+SC:ital,wght@0,400;0,700;1,400&display=swap"}
 
 [[base.html.head.link]]
 config = {tag_mode = "void"}
@@ -99,5 +99,5 @@ config = {tag_mode = "pair", block_wrap = "div"}
 
 [[base.html.body.footer.nav.ul.li]]
 attrib = {class = "spiki home", href = "index.html"}
-a = "Next"
+a = "Home"
 
