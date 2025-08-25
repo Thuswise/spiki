@@ -1,20 +1,25 @@
 body {
 display: grid;
-grid-template-rows: [head] 2fr [main] 9fr [foot] 1fr;
+grid-template-rows: [head] 1fr [main] 9fr [foot] 1fr;
 grid-gap: 1rem;
 }
 
 body header {
 grid-row: head;
-width: 100%;
+width: 100%
 }
 
 body footer {
 grid-row: foot;
+margin-left: auto;
+margin-right: auto;
 }
 
 main {
 grid-row: main;
+max-width: 48rem;
+margin-left: auto;
+margin-right: auto;
 }
 
 blockquote {

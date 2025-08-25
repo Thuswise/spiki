@@ -3,10 +3,12 @@ font-family: monospace;
 }
 
 [popover] {
-  background-color: white;
-  border: 1px solid black;
-  padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+border: 1px solid black;
+padding: 1rem;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+justify-content: center;
+opacity: 90%;
+width: 100%;
 }
 
 [popover]:popover-open {
