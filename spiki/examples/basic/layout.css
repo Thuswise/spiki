@@ -32,8 +32,8 @@ margin: 0.6rem 0 2.2rem 0;
 
 nav ul:has(li.card) {
 display: grid;
-grid-auto-flow: column-dense;
-grid-template-columns: 1fr 1fr 1fr 1fr;
+gap: 0.4rem;
+grid-template-columns: repeat(auto-fit, 28rem);
 grid-template-rows: 1fr 1fr 1fr 1fr;
 place-items: center;
 }
