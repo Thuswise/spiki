@@ -38,8 +38,7 @@ margin: 0.6rem 0 2.2rem 0;
 nav ul:has(li.card) {
 display: grid;
 gap: 0.4rem;
-grid-template-columns: repeat(auto-fit, 28rem);
-grid-template-rows: 1fr 1fr 1fr 1fr;
+grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
 place-items: center;
 }
 
