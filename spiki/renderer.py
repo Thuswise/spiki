@@ -26,6 +26,7 @@ import copy
 import enum
 import html
 import sys
+import textwrap
 from types import SimpleNamespace
 import warnings
 
@@ -64,7 +65,7 @@ class Renderer:
             if block_wrap:
                 yield f'<{block_wrap} id="{n:02d}">'
             block = block.format(**kwargs)
-            for line in self.sm.feed(block.strip(), terminate=True):
+            for line in self.sm.feed(textwrap.dedent(block).strip(), terminate=True):
                 yield line.replace('<li id="', f'<li id="{n:02d}-')
             self.sm.reset()
             if block_wrap:
@@ -88,7 +89,9 @@ class Renderer:
         context = context or dict()
 
         self.state.attrib = tree.pop("attrib", {})
-        self.state.blocks = tree.pop("blocks", [])
+        blocks = tree.pop("blocks", "")
+        # print(f"{blocks=}")
+        self.state.blocks = [blocks] if isinstance(blocks, str) else blocks
         self.state.config = self.state.config.new_child(self.check_config(tree.pop("config", {}), self.Options))
 
         attrs = (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()

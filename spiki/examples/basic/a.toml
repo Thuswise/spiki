@@ -1,27 +1,16 @@
 [doc.html.body.main]
-blocks = [
-    '''
+blocks = '''
     Everyone has stopped talking. After three seconds of beeps, the doors open and the dialogue picks up again.
-    ''',
-    '''
+
     <Chalgrove>     All the benches are wet.
-    ''',
-    '''
     <Bullingdon>    Well, I fancy a smoke anyway. Let's wait for him through there.
-    ''',
-    '''
-    They stroll onto the street.
-    ''',
-    '''
+
+    <>  They stroll onto the street.
+
     <Appleby>       Found you.
-    ''',
-    '''
-    Nods of acknowledgement all round.
-    ''',
-    '''
-    <Chalgrove>     I was about to send a message.
-    ''',
-    '''
+
+    <>  Nods of acknowledgement all round.
+
+    <Chalgrove>     I was about to send you a message.
     <Appleby>       The seats were all wet, so I came out here.
-    ''',
-]
+'''
