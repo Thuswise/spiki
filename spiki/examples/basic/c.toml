@@ -1,19 +1,9 @@
 [doc.html.body.main]
-blocks = [
-    '''
+blocks = """
     <Bullingdon>    Just because you *feel* unhappy, doesn't mean you actually *are*.
-    ''',
-    '''
     <Appleby>       Well on the plus side I'm going to have a lot more free time from now on.
-    ''',
-    '''
     <Chalgrove>     The rain has stopped.
-    ''',
-    '''
     <Bullingdon>    Shall we get on then?
-    ''',
-    '''
     <Appleby>       Yes, let's go.
-    ''',
-]
+"""
 
