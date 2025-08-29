@@ -1,3 +1,7 @@
+[[doc.html.body.footer.nav.ul.li]]
+attrib = {class = "spiki next", href = "c.html"}
+a = "Next"
+
 [doc.html.body.main]
 blocks = """
     <Chalgrove>     Are you well?

@@ -1,3 +1,7 @@
+[[doc.html.body.footer.nav.ul.li]]
+attrib = {class = "spiki next", href = "b.html"}
+a = "Next"
+
 [doc.html.body.main]
 blocks = '''
     Everyone has fallen silent. After three seconds of beeping, the doors open and the dialogue picks up again.
