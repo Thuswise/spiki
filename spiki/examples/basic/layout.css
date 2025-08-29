@@ -35,6 +35,12 @@ display: block;
 margin: 0.6rem 0 2.2rem 0;
 }
 
+nav ul {
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+}
+
 nav ul:has(li.card) {
 display: grid;
 gap: 0.4rem;
