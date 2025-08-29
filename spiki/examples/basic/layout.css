@@ -13,6 +13,7 @@ body footer {
 grid-row: foot;
 margin-left: auto;
 margin-right: auto;
+width: 100%;
 }
 
 main {
@@ -38,7 +39,7 @@ margin: 0.6rem 0 2.2rem 0;
 nav ul {
 display: flex;
 flex-direction: row;
-justify-content: space-around;
+justify-content: space-evenly;
 }
 
 nav ul:has(li.card) {
