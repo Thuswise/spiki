@@ -31,7 +31,11 @@ attrib = {rel = "preconnect", href = "https://fonts.gstatic.com", crossorigin = 
 
 [[base.html.head.link]]
 config = {tag_mode = "void"}
-attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Vollkorn+SC:ital,wght@0,400;0,700;1,400&display=swap"}
+attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&display=swap"}
+
+[[base.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"}
 
 [[base.html.head.link]]
 config = {tag_mode = "void"}

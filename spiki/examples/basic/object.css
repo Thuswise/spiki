@@ -21,12 +21,13 @@ margin: 2rem auto auto auto;
 
 a {
 color: #000000;
-font-family: "Vollkorn", sans-serif;
+font-family: "Bitter", serif;
+font-weight: 600;
 text-decoration: underline;
 }
 
 p {
-font-family: "Georgia", serif;
+font-family: "Lora", "Georgia", serif;
 font-size: 1.4rem;
 font-style: normal;
 font-weight: 450;
@@ -58,7 +59,7 @@ font-style: italic;
 }
 
 cite {
-font-family: "Vollkorn", serif;
+font-family: "Bitter", serif;
 font-weight: 450;
 font-style: normal;
 }
