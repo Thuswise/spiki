@@ -1,7 +1,6 @@
 body {
 display: grid;
-grid-template-rows: [head] 1fr [main] 9fr [foot] 1fr;
-grid-gap: 1rem;
+grid-template-rows: [head] auto [main] 9fr [foot] 1fr;
 }
 
 body header {
@@ -13,6 +12,7 @@ body footer {
 grid-row: foot;
 margin-left: auto;
 margin-right: auto;
+padding-top: 1.6rem;
 width: 100%;
 }
 
@@ -21,6 +21,14 @@ grid-row: main;
 max-width: 48rem;
 margin-left: auto;
 margin-right: auto;
+padding-bottom: 1.2rem;
+padding-left: 2.4rem;
+padding-right: 0.4rem;
+padding-top: 2.0rem;
+}
+
+main:has(blockquote) {
+background-color: white;
 }
 
 blockquote {

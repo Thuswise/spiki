@@ -189,7 +189,7 @@ config = {tag_mode = "pair", block_wrap = "div"}
 attrib = {class = "spiki home", href = "index.html"}
 a = "Home"
 
-[[doc.html.body.main.nav.ul.li]]
+[[doc.html.body.footer.nav.ul.li]]
 attrib = {class = "spiki next", href = "a.html"}
 a = "Start"
 
