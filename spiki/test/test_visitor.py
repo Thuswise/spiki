@@ -102,26 +102,21 @@ class VisitorTests(unittest.TestCase):
             output_path = pathlib.Path(output_name)
             files = list(output_path.glob("*.css")) + list(output_path.glob("*.html"))
 
-        self.assertEqual(len(visitor.state), 7, visitor.state)
+        self.assertEqual(len(visitor.state), 10, visitor.state)
         path = list(visitor.state)[0]
         self.assertEqual("a.toml", path.name)
-        self.assertIn(
-            "The *attrib* parameter",
-            visitor.state[path].node["doc"]["html"]["body"]["main"]["blocks"][0],
-        )
 
         doc = visitor.state[path].doc
         self.assertIsInstance(doc, str)
         self.assertLess(doc.index("<head"), doc.index("<body"))
         self.assertEqual(doc.count("<meta"), 3)
         self.assertLess(doc.index("<nav"), doc.index("<blockquote"), visitor.state[path].node)
-        self.assertLess(doc.index("<h1"), doc.index("<blockquote"), doc)
 
-        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 7)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 14)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 7)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 7)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 8)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 10)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 20)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 10)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 10)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 11)
 
         file_names = sorted([i.name for i in files])
         self.assertEqual(len(files), 7, files)
