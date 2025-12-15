@@ -1,9 +1,0 @@
-[doc.html.body]
-blocks = [
-    '''
-    <GUARD.announcing@COACH_A,COACH_B,COACH_C:intercom?#> Good afternoon and welcome to the delayed 14:24 service to Didcot Parkway.
-    ''',
-    '''
-    <MAN:thinks> This is supposed to be the Worcester train.
-    ''',
-]
