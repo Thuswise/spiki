@@ -1,0 +1,21 @@
+# Node '3'
+
+[metadata]
+title = "Construction"
+
+[[doc.html.body.footer.nav.ul.li]]
+attrib = {class = "spiki next", href = "1176.html"}
+a = "Delivery"
+
+[[doc.html.body.footer.nav.ul.li]]
+attrib = {class = "spiki next", href = "4984.html"}
+a = "Disavowal"
+
+[[doc.html.body.footer.nav.ul.li]]
+attrib = {class = "spiki next", href = "5082.html"}
+a = "Cancellation"
+
+[doc.html.body.main]
+blocks = """
+construction
+"""

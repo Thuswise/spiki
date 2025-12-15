@@ -1,0 +1,13 @@
+# Node '1'
+
+[metadata]
+title = "Inception"
+
+[[doc.html.body.footer.nav.ul.li]]
+attrib = {class = "spiki next", href = "0852.html"}
+a = "Proposal"
+
+[doc.html.body.main]
+blocks = """
+inception
+"""

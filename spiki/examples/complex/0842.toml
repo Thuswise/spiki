@@ -1,0 +1,13 @@
+# Node '5'
+
+[metadata]
+title = "Completion"
+
+[[doc.html.body.footer.nav.ul.li]]
+attrib = {class = "spiki next", href = "6401.html"}
+a = "Revisit"
+
+[doc.html.body.main]
+blocks = """
+completion
+"""

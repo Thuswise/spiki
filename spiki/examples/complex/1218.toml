@@ -1,0 +1,13 @@
+# Edge 'd'
+
+[metadata]
+title = "Adoption"
+
+[[doc.html.body.footer.nav.ul.li]]
+attrib = {class = "spiki next", href = "0842.html"}
+a = "Completion"
+
+[doc.html.body.main]
+blocks = """
+adoption
+"""
