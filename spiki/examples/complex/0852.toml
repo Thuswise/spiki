@@ -9,5 +9,9 @@ a = "Elaboration"
 
 [doc.html.body.main]
 blocks = """
-proposal
+The rain has almost stopped.
+
+The cobbled street is all greys and browns.
+
+
 """

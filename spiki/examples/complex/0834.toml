@@ -9,5 +9,10 @@ a = "Proposal"
 
 [doc.html.body.main]
 blocks = """
-inception
+<Bullingdon>    We don't have to go just yet, chaps. There'll be another train in an hour or so.
+
+<Appleby>       I've lost sight of him again.
+
+<Chalgrove>     Here I am.
+
 """
