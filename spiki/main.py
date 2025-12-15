@@ -23,7 +23,6 @@ from pathlib import Path
 import shutil
 import sys
 
-from spiki.renderer import Renderer
 from spiki.visitor import Visitor
 
 from spiki.plugin import Phase
@@ -57,6 +56,7 @@ def main(args):
     args.output.mkdir(parents=True, exist_ok=True)
 
     plugin_types = args.plugin or default_plugin_types
+    # TODO: A file path (.toml) is a plugin input
     with Visitor(*plugin_types, **vars(args)) as visitor:
         for n, change in enumerate(visitor.walk(*args.paths)):
             pass
