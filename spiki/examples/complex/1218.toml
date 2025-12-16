@@ -9,15 +9,15 @@ a = "Completion"
 
 [doc.html.body.main]
 blocks = """
-<Bullingdon>    It's a very common mistake to think of an enemy as a single entity.
+<Broadstairs>   It's a very common mistake to think of an enemy as a single entity.
                 The larger an organization is, the more riven it is with rivalries.
 <Chalgrove>     A really big firm is just a cluster of fiefdoms.
-<Bullingdon>    The only thing they share is the name.
+<Broadstairs>   The only thing they share is the name.
 <Chalgrove>     Underneath it's all chaos. I've seen it myself.
 <Appleby>       What are you suggesting?
-<Bullingdon>    Let's start gathering some competitive intelligence.
+<Broadstairs>   Let's start gathering some competitive intelligence.
 <Chalgrove>     A new project?
-<Bullingdon>    A new project, a new formation, a new address.
+<Broadstairs>   A new project, a new formation, a new address.
 
                 Happy now, Appleby?
 """
