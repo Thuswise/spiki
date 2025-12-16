@@ -9,5 +9,9 @@ a = "Revisit"
 
 [doc.html.body.main]
 blocks = """
-completion
+Appleby is quiet for a moment. He looks happier now.
+
+<Chalgrove>     OK, is it time for another round?
+<Broadstairs>   Let's keep moving. I'd like to try further down the street.
+<Appleby>       Yep, let's go.
 """
