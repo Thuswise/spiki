@@ -18,10 +18,10 @@ a = "Cancellation"
 [doc.html.body.main]
 blocks = """
 This is the crisis point.
-<Appleby>       Something something.
+<Appleby>       Or perhaps you'll just drop it on the floor. Again.
 <Bullingdon>    And what do you mean by that?
 <Chalgrove>     That's rather uncalled for, Appleby.
-<Appleby>       We got slaughtered and you did nothing about it.
-<Chalgrove>     de Bilito can borrow on very easy terms, I hear.
-<Bullingdon>    We can't beat them toe to toe. We need a different strategy.
+<Appleby>       We get slaughtered and you do nothing about it.
+<Chalgrove>     de Bilito can borrow on a very easy schedule.
+<Bullingdon>    We can't beat them toe to toe. We need a [different strategy](1218.html).
 """
