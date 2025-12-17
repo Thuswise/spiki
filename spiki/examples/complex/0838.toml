@@ -17,5 +17,8 @@ a = "Cancellation"
 
 [doc.html.body.main]
 blocks = """
-construction
+A fun scene with lots of pep.
+<Appleby>       What are you suggesting?
+<Broadstairs>   Let's start gathering some competitive intelligence.
+<Chalgrove>     A new project?
 """
