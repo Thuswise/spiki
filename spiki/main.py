@@ -31,7 +31,7 @@ from spiki.plugin import Phase
 default_plugin_types = [
     "spiki.plugins.finder:Finder",
     "spiki.plugins.loader:Loader",
-    # "spiki.plugins.indexer:Indexer",
+    "spiki.plugins.bootstrapper:Bootstrapper",
     "spiki.plugins.writer:Writer",
 ]
 

@@ -18,13 +18,12 @@
 import argparse
 import http.server
 import importlib.resources
-import inspect
 import ipaddress
 import pathlib
+import shutil
 import sys
 import zipapp
 import tempfile
-import zipfile
 
 try:
     from spiki.plugin import Change
@@ -37,9 +36,9 @@ except (ImportError, ModuleNotFoundError):
 class Bootstrapper(Plugin):
 
     @staticmethod
-    def get_filename(module_name: str) -> str:
+    def get_filepath(module_name: str) -> pathlib.Path:
         module = sys.modules[module_name]
-        return module.__loader__.get_filename()
+        return pathlib.Path(module.__loader__.get_filename(module_name))
 
     @staticmethod
     def get_source(module_name: str) -> str:
@@ -67,21 +66,19 @@ class Bootstrapper(Plugin):
 
 def main(args):
     frozen = getattr(sys, "frozen", None)
-    data = dict(inspect.getmembers(Bootstrapper))
-    module = sys.modules["__main__"]
-    print(data)
-    print(vars(module))
 
+    path = Bootstrapper.get_filepath("__main__")
     with (
         tempfile.TemporaryDirectory() as temp_dir,
         # Visitor(*plugin_types) as visitor,
     ):
+        temp_path = pathlib.Path(temp_dir)
         # TODO Unpack .pyz
-        print(temp_dir, file=sys.stderr)
-        print(module.__file__, file=sys.stderr)
-        print(dir(module.__loader__), file=sys.stderr)
-        print(module.__loader__.get_filename(), file=sys.stderr)
-        print(module.__loader__.get_source("__main__"), file=sys.stderr)
+        print(f"{temp_dir=}", file=sys.stderr)
+        print(f"{path=}", file=sys.stderr)
+        shutil.unpack_archive(path.parent, extract_dir=temp_dir, format="zip")
+        print(*temp_path.iterdir(), sep="\n", file=sys.stderr)
+        # TODO: delete __main__.py
 
     return 0
 
