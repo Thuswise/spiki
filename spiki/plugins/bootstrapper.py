@@ -25,6 +25,7 @@ import pathlib
 import shutil
 import sys
 import tempfile
+import time
 import webbrowser
 import zipapp
 
@@ -87,7 +88,12 @@ def main(args):
             pass
 
         url = f"http://{args.host}:{args.port}"
-        print(f"{url=}")
+        if not args.headless:
+            delay = functools.partial(time.sleep, args.delay)
+            client = lambda f: webbrowser.open_new_tab(url)
+            print(f"Sending client to '{url}' in {args.delay} s", file=sys.stderr)
+            executor.submit(delay).add_done_callback(client)
+
         http.server.test(
             HandlerClass=http.server.SimpleHTTPRequestHandler,
             ServerClass=HTTPDirectoryServer,
@@ -115,6 +121,10 @@ def parser():
     rv.add_argument(
         "--headless", action="store_true", default=(headless := False),
         help=f"Serve files without launching a browser [{headless}]"
+    )
+    rv.add_argument(
+        "--delay", type=float, default=(delay := 1.5),
+        help=f"Set the delay in seconds before client connection [{delay}]"
     )
     rv.convert_arg_line_to_args = lambda x: x.split()
     return rv
