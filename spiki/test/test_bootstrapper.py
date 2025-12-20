@@ -53,16 +53,18 @@ class VisitorTests(unittest.TestCase):
             output_path = pathlib.Path(output_name)
             files = list(output_path.glob("*.py"))
 
+            self.assertEqual(len(files), 1)
+            text = files[0].read_text()
+
         self.assertEqual(len(visitor.state), 1, visitor.state)
         path = list(visitor.state)[0]
         self.assertEqual("__main__.py", path.name)
 
-        text = visitor.state[path].text
-        self.assertIsInstance(text, str)
+        check = visitor.state[path].text
+        self.assertIsInstance(check, str)
         # self.assertLess(text.index("<head"), text.index("<body"))
         # self.assertEqual(doc.count("<meta"), 3)
 
         self.assertEqual(len([i for i in witness if i.phase == Phase.EXTEND]), 1)
-
-        self.assertEqual(len(files), 1)
         self.assertEqual(files[0].name, "__main__.py")
+        self.assertEqual(text, check)
