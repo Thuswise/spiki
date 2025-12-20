@@ -65,8 +65,10 @@ class VisitorTests(unittest.TestCase):
 
         check = visitor.state[path].text
         self.assertIsInstance(check, str)
-        # self.assertLess(text.index("<head"), text.index("<body"))
-        # self.assertEqual(doc.count("<meta"), 3)
+        self.assertIn("import argparse", check)
+        self.assertIn("class Bootstrapper", check)
+        self.assertIn("def main(args):", check)
+        self.assertEqual(doc.count("run()"), 2)
 
         self.assertEqual(len([i for i in witness if i.phase == Phase.EXTEND]), 1)
         self.assertEqual(files[0].name, "__main__.py")

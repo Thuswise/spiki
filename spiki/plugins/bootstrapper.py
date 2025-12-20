@@ -36,9 +36,17 @@ except (ImportError, ModuleNotFoundError):
 
 class Bootstrapper(Plugin):
 
+    @staticmethod
+    def get_source(module_name: str) -> str:
+        module = sys.modules[module_name]
+        pass
+
     def end_extend(self, **kwargs) -> Change:
         path = self.visitor.root.joinpath("__main__.py")
         node = dict(metadata=dict(slug=path.name))
+
+        module = sys.modules["spiki.plugins.bootstrapper"]
+        print(f"{module=}")
         self.logger.info(f"Generating a {path.name}", extra=dict(path=path, phase=self.phase))
         return Change(self, path=path, text="#", node=node, phase=self.phase)
 
@@ -51,6 +59,8 @@ class Bootstrapper(Plugin):
         target = output.with_suffix(".pyz")
         self.logger.info(f"Creating {target}", extra=dict(path=path, phase=self.phase))
         zipapp.create_archive(source, target=target)
+
+        print(f"{sys.modules=}")
 
 
 def main(args):
@@ -66,6 +76,10 @@ def main(args):
     ):
         # TODO Unpack .pyz
         print(temp_dir, file=sys.stderr)
+        print(module.__file__, file=sys.stderr)
+        print(dir(module.__loader__), file=sys.stderr)
+        print(module.__loader__.get_filename(), file=sys.stderr)
+        print(module.__loader__.get_source("__main__"), file=sys.stderr)
 
     return 0
 
