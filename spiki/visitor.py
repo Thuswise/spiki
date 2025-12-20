@@ -141,6 +141,8 @@ class Visitor(contextlib.ExitStack):
                         self.state[path].node.update(change.node)
                     if change.doc:
                         self.state[path].doc = change.doc
+                    if change.result:
+                        self.state[path].result = change.result
             else:
                 for change in filter(None, (plugin(phase) for plugin in self.running)):
                     if change.text:

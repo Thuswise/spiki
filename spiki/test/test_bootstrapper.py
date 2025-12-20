@@ -56,6 +56,9 @@ class VisitorTests(unittest.TestCase):
             self.assertEqual(len(files), 1)
             text = files[0].read_text()
 
+            pyz = output_path.with_suffix(".pyz")
+            self.assertTrue(pyz.exists())
+
         self.assertEqual(len(visitor.state), 1, visitor.state)
         path = list(visitor.state)[0]
         self.assertEqual("__main__.py", path.name)

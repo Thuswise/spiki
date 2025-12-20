@@ -18,6 +18,7 @@
 
 import dataclasses
 import enum
+import logging
 from pathlib import Path
 import string
 
@@ -52,6 +53,7 @@ class Change:
 class Plugin:
 
     def __init__(self, visitor: "Pathfinder" = None):
+        self.logger = logging.getLogger(self.__class__.__name__.lower())
         self.visitor = visitor
         self.phase = None
 

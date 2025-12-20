@@ -29,7 +29,6 @@ class Writer(Plugin):
 
     def __init__(self, visitor):
         super().__init__(visitor)
-        self.logger = logging.getLogger("writer")
         self.space = None
 
     def __enter__(self):

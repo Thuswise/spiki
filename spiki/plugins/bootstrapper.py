@@ -19,6 +19,7 @@ import argparse
 import importlib.resources
 import pathlib
 import sys
+import zipapp
 import tempfile
 import zipfile
 
@@ -29,10 +30,21 @@ from spiki.plugin import Plugin
 class Bootstrapper(Plugin):
 
     def end_extend(self, **kwargs) -> Change:
-        output = self.visitor.options["output"]
         path = self.visitor.root.joinpath("__main__.py")
         node = dict(metadata=dict(slug=path.name))
-        return Change(self, path=path, text="#", node=node)
+        self.logger.info(f"Generating a {path.name}", extra=dict(path=path, phase=self.phase))
+        return Change(self, path=path, text="#", node=node, phase=self.phase)
+
+    def end_export(self, **kwargs) -> Change:
+        path = self.visitor.root.joinpath("__main__.py")
+        change = self.visitor.state[path]
+        source = change.result.parent
+
+        output = self.visitor.options["output"]
+        target = output.with_suffix(".pyz")
+        self.logger.info(f"Creating {target}", extra=dict(path=path, phase=self.phase))
+        zipapp.create_archive(source, target=target)
+
 
 """
 frozen = getattr(sys, "frozen", None)
