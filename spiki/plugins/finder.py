@@ -63,4 +63,9 @@ class Finder(Plugin):
         file_type = self.get_type(path.name)
         if "image" in file_type:
             return Change(self, path=path, type=file_type)
-        return Change(self, path=path, text=path.read_text(), type=file_type)
+        try:
+            text = path.read_text()
+            return Change(self, path=path, text=text, type=file_type)
+        except UnicodeDecodeError:
+            self.logger.warning(f"Error reading file: {path}", extra=dict(path=path, phase=self.phase))
+            return Change(self, path=path, text="", type=file_type)

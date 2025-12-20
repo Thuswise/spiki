@@ -21,12 +21,21 @@ import sys
 import tempfile
 import zipfile
 
+from spiki.plugin import Change
+from spiki.plugin import Plugin
 
-class AppPlugin:
-    pass
 
+class Bootstrapper(Plugin):
+
+    def end_export(self, **kwargs) -> Change:
+        output = self.visitor.options["output"]
+        print(f"{output=}")
+        return Change(self)
+
+"""
 frozen = getattr(sys, "frozen", None)
 root = importlib.resources.files()
 
 for path in root.iterdir():
     print(path, type(path))
+"""

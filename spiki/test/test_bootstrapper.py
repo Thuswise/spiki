@@ -32,10 +32,10 @@ class VisitorTests(unittest.TestCase):
 
     def test_example_atom(self):
         plugin_types = [
-            "spiki.plugins.finder:Finder",
-            "spiki.plugins.loader:Loader",
-            # "spiki.plugins.indexer:Indexer",
-            "spiki.plugins.writer:Writer",
+            # "spiki.plugins.finder:Finder",
+            # "spiki.plugins.loader:Loader",
+            # "spiki.plugins.writer:Writer",
+            "spiki.plugins.bootstrapper:Bootstrapper",
         ]
         examples = importlib.resources.files("spiki.examples")
         witness = []
