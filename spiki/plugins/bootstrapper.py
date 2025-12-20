@@ -19,7 +19,6 @@ import argparse
 import concurrent.futures
 import functools
 import http.server
-import importlib.resources
 import ipaddress
 import pathlib
 import shutil
