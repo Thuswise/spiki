@@ -143,4 +143,6 @@ class Visitor(contextlib.ExitStack):
                         self.state[path].doc = change.doc
             else:
                 for change in filter(None, (plugin(phase) for plugin in self.running)):
+                    if change.text:
+                        self.state.setdefault(change.path, change).text = change.text
                     yield dataclasses.replace(change, phase=phase)

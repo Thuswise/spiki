@@ -17,6 +17,7 @@
 
 import argparse
 import importlib.resources
+import pathlib
 import sys
 import tempfile
 import zipfile
@@ -27,10 +28,11 @@ from spiki.plugin import Plugin
 
 class Bootstrapper(Plugin):
 
-    def end_export(self, **kwargs) -> Change:
+    def end_extend(self, **kwargs) -> Change:
         output = self.visitor.options["output"]
-        print(f"{output=}")
-        return Change(self)
+        path = self.visitor.root.joinpath("__main__.py")
+        node = dict(metadata=dict(slug=path.name))
+        return Change(self, path=path, text="#", node=node)
 
 """
 frozen = getattr(sys, "frozen", None)
