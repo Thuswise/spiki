@@ -16,15 +16,22 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
+import http.server
 import importlib.resources
+import inspect
+import ipaddress
 import pathlib
 import sys
 import zipapp
 import tempfile
 import zipfile
 
-from spiki.plugin import Change
-from spiki.plugin import Plugin
+try:
+    from spiki.plugin import Change
+    from spiki.plugin import Plugin
+except (ImportError, ModuleNotFoundError):
+    Change = object
+    Plugin = object
 
 
 class Bootstrapper(Plugin):
@@ -46,10 +53,57 @@ class Bootstrapper(Plugin):
         zipapp.create_archive(source, target=target)
 
 
-"""
-frozen = getattr(sys, "frozen", None)
-root = importlib.resources.files()
+def main(args):
+    frozen = getattr(sys, "frozen", None)
+    data = dict(inspect.getmembers(Bootstrapper))
+    module = sys.modules["__main__"]
+    print(data)
+    print(vars(module))
 
-for path in root.iterdir():
-    print(path, type(path))
-"""
+    with (
+        tempfile.TemporaryDirectory() as temp_dir,
+        # Visitor(*plugin_types) as visitor,
+    ):
+        # TODO Unpack .pyz
+        print(temp_dir, file=sys.stderr)
+
+    return 0
+
+    root = importlib.resources.files()
+    for path in root.iterdir():
+        print(path, type(path))
+    print(f"{spec=}")
+    return 0
+
+
+def parser():
+    rv = argparse.ArgumentParser(usage=__doc__, fromfile_prefix_chars="=")
+    rv.add_argument(
+        "-d", "--directory", type=pathlib.Path, default=None,
+        help=f"Set the directory for source files"
+    )
+    rv.add_argument(
+        "--host", type=ipaddress.ip_address, default=(host := ipaddress.ip_address("127.0.0.1")),
+        help=f"Set the IP address to bind and serve [{host}]"
+    )
+    rv.add_argument(
+        "--port", type=int, default=(port := 8000),
+        help=f"Set the IP port [{port}]"
+    )
+    rv.add_argument(
+        "--headless", action="store_true", default=(headless := False),
+        help=f"Serve files without launching a browser [{headless}]"
+    )
+    rv.convert_arg_line_to_args = lambda x: x.split()
+    return rv
+
+
+def run():
+    p = parser()
+    args = p.parse_args()
+    rv = main(args)
+    sys.exit(rv)
+
+
+if __name__ == "__main__":
+    run()
