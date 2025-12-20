@@ -54,7 +54,7 @@ class Bootstrapper(Plugin):
         node = dict(metadata=dict(slug=path.name))
 
         text = self.get_source("spiki.plugins.bootstrapper")
-        self.logger.info(f"Generating the {path.name}", extra=dict(path=path, phase=self.phase))
+        self.logger.info(f"Generated the {path.name}", extra=dict(path=path, phase=self.phase))
         return Change(self, path=path, text=text, node=node, phase=self.phase)
 
     def end_export(self, **kwargs) -> Change:
