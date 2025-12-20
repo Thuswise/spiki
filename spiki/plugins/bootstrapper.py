@@ -50,7 +50,7 @@ class Bootstrapper(Plugin):
         node = dict(metadata=dict(slug=path.name))
 
         text = self.get_source("spiki.plugins.bootstrapper")
-        self.logger.info(f"Generating a {path.name}", extra=dict(path=path, phase=self.phase))
+        self.logger.info(f"Generating the {path.name}", extra=dict(path=path, phase=self.phase))
         return Change(self, path=path, text=text, node=node, phase=self.phase)
 
     def end_export(self, **kwargs) -> Change:
@@ -73,19 +73,23 @@ def main(args):
         # Visitor(*plugin_types) as visitor,
     ):
         temp_path = pathlib.Path(temp_dir)
-        # TODO Unpack .pyz
-        print(f"{temp_dir=}", file=sys.stderr)
-        print(f"{path=}", file=sys.stderr)
         shutil.unpack_archive(path.parent, extract_dir=temp_dir, format="zip")
-        print(*temp_path.iterdir(), sep="\n", file=sys.stderr)
-        # TODO: delete __main__.py
+        temp_path.joinpath("__main__.py").unlink(missing_ok=True)
 
-    return 0
+        class LocalDirectoryMixin:
+            def finish_request(self, request, client_address):
+                self.RequestHandlerClass(request, client_address, self, directory=format(temp_path.resolve()))
 
-    root = importlib.resources.files()
-    for path in root.iterdir():
-        print(path, type(path))
-    print(f"{spec=}")
+        class HTTPDirectoryServer(LocalDirectoryMixin, http.server.ThreadingHTTPServer):
+            pass
+
+        http.server.test(
+            HandlerClass=http.server.SimpleHTTPRequestHandler,
+            ServerClass=HTTPDirectoryServer,
+            port=str(args.port),
+            bind=format(args.host),
+        )
+
     return 0
 
 
