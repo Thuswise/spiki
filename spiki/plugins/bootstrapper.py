@@ -16,14 +16,17 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
+import concurrent.futures
+import functools
 import http.server
 import importlib.resources
 import ipaddress
 import pathlib
 import shutil
 import sys
-import zipapp
 import tempfile
+import webbrowser
+import zipapp
 
 try:
     from spiki.plugin import Change
@@ -70,7 +73,7 @@ def main(args):
     path = Bootstrapper.get_filepath("__main__")
     with (
         tempfile.TemporaryDirectory() as temp_dir,
-        # Visitor(*plugin_types) as visitor,
+        concurrent.futures.ThreadPoolExecutor() as executor,
     ):
         temp_path = pathlib.Path(temp_dir)
         shutil.unpack_archive(path.parent, extract_dir=temp_dir, format="zip")
@@ -83,6 +86,8 @@ def main(args):
         class HTTPDirectoryServer(LocalDirectoryMixin, http.server.ThreadingHTTPServer):
             pass
 
+        url = f"http://{args.host}:{args.port}"
+        print(f"{url=}")
         http.server.test(
             HandlerClass=http.server.SimpleHTTPRequestHandler,
             ServerClass=HTTPDirectoryServer,
