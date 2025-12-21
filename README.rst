@@ -35,21 +35,25 @@ does not otherwise exist. This allows string substitution to construct text cont
 Special properties
 ==================
 
-======  =========================================== ===============
-Key     Notes                                       Example
-======  =========================================== ===============
-attrib
-blocks
-config
-======  =========================================== ===============
+There are three reserved key-names. They do not define tags underneath the TOML table element.
+Instead, they work as follows.
+
+======  ======================================================  =======================================
+Key     Notes                                                   Example
+======  ======================================================= =======================================
+attrib  Defines HTML attributes to apply to the generated tag   ``attrib = {class = "note"}``
+blocks  An array or multiline string of SpeechMark_ dialogue    ``blocks = """<PHONE> Ring riiing!"""``
+config  Specifies particular modes of operation (see below)
+======  ======================================================= =======================================
+
+The Config options currently supported are these:
 
 tag_mode
-    a
+    One of ``open``, ``pair`` or ``void``. Controls tag termination style.
+block_site
+    One of ``above``, ``below`` or ``stripe``. Determines where blocks are placed relative to table-level tags.
 block_wrap
-    b
-
-Metadata
-========
+    One of ``above``, ``below`` or ``stripe``. Determines where blocks are placed relative to table-level tags.
 
 The Index
 =========
