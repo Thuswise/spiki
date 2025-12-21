@@ -7,6 +7,9 @@ Spiki is a processor for SpeechMark_ content.
 It can be used to generate static websites, blogs and other online literature.
 Unlike template-based generators, Spiki uses TOML files to define the structure of output documents.
 
+PLugins
+=======
+
 Spiki is at an early stage of development, but here's an example of how to use it::
 
     $ cd spiki

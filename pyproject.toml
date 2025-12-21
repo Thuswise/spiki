@@ -26,7 +26,8 @@ dependencies = [
 [project.urls]
 
 [project.scripts]
-speechmark = "speechmark.main:run"
+speechmark = "spiki.speechmark:run"
+spiki = "spiki.main:run"
 
 [build-system]
 requires = ["setuptools>=75.0.0"]
