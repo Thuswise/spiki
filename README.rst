@@ -65,13 +65,51 @@ Every other TOML file will inherit the contents of ``base`` as if it had been pa
 Plugins
 =======
 
-Spiki is at an early stage of development, but here's an example of how to use it::
+Processing of the TOML files proceeds in phases. Spiki uses an ordered sequence of plugins to generate the output.
+The current available plugins are these:
+
+==============  ===================================================================================================
+Plugin          Function
+==============  ===================================================================================================
+Finder          Surveys and reads TOML file input
+Loader          Parses TOML files and combines ``base`` with ``doc`` where necessary
+Writer          Renders TOML tables to HTML
+Bootstrapper    Generates a ``__main.py__`` module and a ``.pyz`` file for portable browsing
+==============  ===================================================================================================
+
+You can define which plugins to use from the command line. Advanced users may create their own plugins to customize
+Spiki behaviour.
+
+Examples
+========
+
+The source repository contains a couple of examples for study::
 
     $ cd spiki
     $ python -m spiki.main =spiki/examples/basic/spiki.cli
 
-.. _TOML syntax: https://toml.io
+Usage
+=====
 
+You can install Spiki as a `PyPI package`_. It runs from the command line.::
+
+    spiki --help
+    usage: spiki [-h] [-O OUTPUT] [--plugin PLUGIN] [--debug] paths [paths ...]
+
+    positional arguments:
+      paths                 Specify file paths
+
+    options:
+      -h, --help            show this help message and exit
+      -O, --output OUTPUT   Specify output directory [/home/boss/src/spiki/output]
+      --plugin PLUGIN       Specify plugin list [
+                            'spiki.plugins.finder:Finder', 'spiki.plugins.loader:Loader',
+                            'spiki.plugins.bootstrapper:Bootstrapper', 'spiki.plugins.writer:Writer'
+                            ]
+      --debug               Display debug logs
+
+.. _TOML syntax: https://toml.io
+.. _PyPI package: https://pypi.org/project/spiki/
 
 SpeechMark
 ##########
