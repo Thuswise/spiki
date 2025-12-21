@@ -11,8 +11,9 @@ The Document
 ============
 
 Spiki looks for a `doc` table in your `.toml` fi`les. This represents the HTML document entity.
-TOML provides a very convenient syntax to define the contents of any part of the document,
-eg `[doc.html.body.main]` generates the `<main> ... </main>` element in the HTML output.
+TOML provides a very convenient syntax to define the contents of any part of the document.
+
+eg ```[doc.html.body.main]``` generates the ```<main> ... </main>``` element in the HTML output.
 
 Place tags (table keys) at each level of the structure. The value of each key will be rendsered as the text content of
 the tag
@@ -31,11 +32,13 @@ The Index
 Special properties
 ==================
 
-Key     | Notes                                         | Example
---------|-----------------------------------------------|--------
-attrib  |                                               |
-blocks  |                                               |
-config  |                                               |
+======  =========================================== ===============
+Key     Notes                                       Example
+======  =========================================== ===============
+attrib
+blocks
+config
+======  =========================================== ===============
 
 tag_mode
     a
