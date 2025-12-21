@@ -19,8 +19,18 @@ eg ``[doc.html.body.main]`` generates the ``<main> ... </main>`` element inside 
 
 The contents of the elements are defined by table key/value pairs, eg::
 
-    [base.html.head]
+    [doc.html.head]
     title = "My Web page"
+
+Spiki will automatically generate a title for each document and place it in a ``metdata`` table if one
+does not otherwise exist. This allows string substitution to construct text content::
+
+    [metadata]
+    title = "My Web page"
+
+    [doc.html.head]
+    title = "{metadata[title]}"
+
 
 Special properties
 ==================
