@@ -22,7 +22,7 @@ The contents of the elements are defined by table key/value pairs, eg::
     [doc.html.head]
     title = "My Web page"
 
-Spiki will automatically generate a title for each document and place it in a ``metdata`` table if one
+Spiki will automatically generate a title for each document and place it in a ``metadata`` table if one
 does not otherwise exist. This allows string substitution to construct text content::
 
     [metadata]
