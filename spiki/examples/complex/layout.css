@@ -9,6 +9,7 @@ width: 100%
 }
 
 body footer {
+font-size: 1.8rem;
 grid-row: foot;
 margin-left: auto;
 margin-right: auto;
