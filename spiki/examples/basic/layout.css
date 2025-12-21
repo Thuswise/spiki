@@ -4,6 +4,7 @@ grid-template-rows: [head] auto [main] 9fr [foot] 1fr;
 }
 
 body header {
+font-size: 1.8rem;
 grid-row: head;
 width: 100%
 }
