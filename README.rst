@@ -7,13 +7,52 @@ Spiki is a processor for SpeechMark_ content.
 It can be used to generate static websites, blogs and other online literature.
 Unlike template-based generators, Spiki uses TOML files to define the structure of output documents.
 
-PLugins
+The Document
+============
+
+Spiki looks for a `doc` table in your `.toml` fi`les. This represents the HTML document entity.
+TOML provides a very convenient syntax to define the contents of any part of the document,
+eg `[doc.html.body.main]` generates the `<main> ... </main>` element in the HTML output.
+
+Place tags (table keys) at each level of the structure. The value of each key will be rendsered as the text content of
+the tag
+
+::
+
+ ?
+
+
+Metadata
+========
+
+The Index
+=========
+
+Special properties
+==================
+
+Key     | Notes                                         | Example
+--------|-----------------------------------------------|--------
+attrib  |                                               |
+blocks  |                                               |
+config  |                                               |
+
+tag_mode
+    a
+block_wrap
+    b
+
+
+Plugins
 =======
 
 Spiki is at an early stage of development, but here's an example of how to use it::
 
     $ cd spiki
     $ python -m spiki.main =spiki/examples/basic/spiki.cli
+
+.. _TOML: https://toml.io
+
 
 SpeechMark
 ##########
