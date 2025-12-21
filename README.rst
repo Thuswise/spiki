@@ -38,7 +38,7 @@ Special properties
 There are three reserved key-names. They do not define tags underneath the TOML table element.
 Instead, they work as follows.
 
-======  ======================================================  =======================================
+======  ======================================================= =======================================
 Key     Notes                                                   Example
 ======  ======================================================= =======================================
 attrib  Defines HTML attributes to apply to the generated tag   ``attrib = {class = "note"}``
