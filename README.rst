@@ -38,13 +38,13 @@ Special properties
 There are three reserved key-names. They do not define tags underneath the TOML table element.
 Instead, they work as follows.
 
-======  ======================================================= =======================================
+======  ======================================================= ====================================================
 Key     Notes                                                   Example
-======  ======================================================= =======================================
+======  ======================================================= ====================================================
 attrib  Defines HTML attributes to apply to the generated tag   ``attrib = {class = "note"}``
 blocks  An array or multiline string of SpeechMark_ dialogue    ``blocks = """<PHONE> Ring riiing!"""``
-config  Specifies particular modes of operation (see below)
-======  ======================================================= =======================================
+config  Specifies particular modes of operation (see below)     ``config = {tag_mode = "pair", block_wrap = "div"}``
+======  ======================================================= ====================================================
 
 The Config options currently supported are these:
 
@@ -53,11 +53,14 @@ tag_mode
 block_site
     One of ``above``, ``below`` or ``stripe``. Determines where blocks are placed relative to table-level tags.
 block_wrap
-    One of ``above``, ``below`` or ``stripe``. Determines where blocks are placed relative to table-level tags.
+    One of ``div``, ``section`` or ``none``. Used to define a parent element for generated SpeechMark blocks.
 
 The Index
 =========
 
+If you create an *index.toml* file it will be used to generate a corresponding *index.html* for your generated content.
+Here there is an opportunity to define a ``base`` table. All the conventions of the ``doc`` table apply to ``base``.
+Every other TOML file will inherit the contents of ``base`` as if it had been part of the ``doc`` table.
 
 Plugins
 =======
