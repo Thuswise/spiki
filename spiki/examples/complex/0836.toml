@@ -21,5 +21,10 @@ a = "Withdrawal"
 
 [doc.html.body.main]
 blocks = """
-elaboration
+Appleby regards the [shopfront suspiciously](1266.html).
+Chalgrove is unhappy too, but why?
+He's looking at his watch. [His train](4578.html).
+Broadstairs needs convincing. He has half a mind to [call it a day](4646.html).
+
+Ahead lies the [old town](1136.html).
 """
