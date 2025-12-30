@@ -22,4 +22,7 @@ a = "Confirmation"
 [doc.html.body.main]
 blocks = """
 discussion
+<Broadstairs>   Where's he going?
+<Chalgrove>     He's gone into that terrace on the right there.
+<Appleby>       Every single one. They've bought up the whole row.
 """
