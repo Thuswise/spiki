@@ -211,3 +211,33 @@ class RendererTests(unittest.TestCase):
         self.assertIn("</head>", rv)
         self.assertIn("<title>Test variable substitution &amp; escaping</title>", rv)
         self.assertIn("It's vital to Test variable substitution &amp; escaping.", rv)
+
+    def test_definition_list(self):
+        test = "Test variable substitution & escaping"
+        toml = textwrap.dedent("""
+        [metadata]
+
+        [doc.html]
+        config = {tag_mode = "pair"}
+
+        [[doc.html.body.main.dl.div]]
+        dt = "Title"
+        dd = "{metadata[title]}"
+
+        [[doc.html.body.main.dl.div]]
+        dt = "Version"
+        dd = "1"
+
+        """)
+        template = tomllib.loads(toml)
+        template["metadata"]["title"] = test
+        rv = Renderer().serialize(template)
+        self.assertTrue(rv.startswith("<html>"))
+        self.assertTrue(rv.endswith("</html>"))
+        self.assertEqual(rv.count("<div>"), 2)
+        self.assertEqual(rv.count("</div>"), 2)
+        self.assertEqual(rv.count("<dt>"), 2)
+        self.assertEqual(rv.count("</dt>"), 2)
+        self.assertEqual(rv.count("<dd>"), 2)
+        self.assertEqual(rv.count("</dd>"), 2)
+        print(rv)
