@@ -13,7 +13,7 @@ blocks = [
 Railway stations are like old words. We use them differently these days.
 """,
 """
-<Broadstairs>   So there ought to be another train in... Wait a minute.
+<Broadstairs>   So there ought to be another train in... Wait a moment.
 <Chalgrove>     I've lost sight of him again.
 <Appleby>       Here I am.
 <Broadstairs>   In an hour or so. Eighty minutes.
@@ -24,8 +24,8 @@ Too many of its great men fled to Hughenden, so in 1848 they made this terminus 
 For sure, it facilitates departures, but secretly it invites us to stay.
 """,
 """
-<Broadstairs>   We don't have to go just yet, chaps. There'll be another train in an hour or so.
-<Chalgrove>     I've lost sight of him again.
-<Appleby>       Here I am.
+<Broadstairs>   Anyone hungry?
+<Appleby>       Let's take a [wander](0842.html).
+<Chalgrove>     Need to keep an eye on the time.
 """,
 ]
