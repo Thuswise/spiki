@@ -90,7 +90,7 @@ class Renderer:
 
         self.state.attrib = tree.pop("attrib", {})
         blocks = tree.pop("blocks", "")
-        self.state.blocks = [blocks] if isinstance(blocks, str) else blocks
+        self.state.blocks = [blocks] if blocks and isinstance(blocks, str) else blocks
         self.state.config = self.state.config.new_child(self.check_config(tree.pop("config", {}), self.Options))
 
         attrs = (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()

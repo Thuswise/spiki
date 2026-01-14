@@ -158,5 +158,4 @@ class LoaderTests(unittest.TestCase):
         self.assertEqual(template["doc"]["config"]["tag_mode"], "pair")
         rv = Renderer().serialize(template)
         self.assertEqual(rv.count("href"), 2, rv)
-        self.assertEqual(rv.count('<div id="00">'), 1, rv)
-        print(rv)
+        self.assertEqual(rv.count("<div"), 2, rv)
