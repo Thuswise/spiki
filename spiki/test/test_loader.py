@@ -122,3 +122,41 @@ class LoaderTests(unittest.TestCase):
         self.assertEqual(template["doc"]["config"]["tag_mode"], "pair")
         rv = Renderer().serialize(template)
         self.assertEqual(rv.count("href"), 2, rv)
+
+    def test_merge_index_content(self):
+        index_toml = textwrap.dedent("""
+        [base]
+        config = {tag_mode = "pair", block_wrap = "div"}
+
+        [[base.html.body.nav.ul.li]]
+        attrib = {href = "/"}
+        a = "Home"
+        """)
+        index = tomllib.loads(index_toml)
+
+        node_toml = textwrap.dedent("""
+
+        [doc.html]
+        config = {tag_mode = "pair"}
+
+        [[doc.html.body.main.dl.div]]
+        dt = "Title"
+        dd = "Test"
+
+        [[doc.html.body.main.dl.div]]
+        dt = "Version"
+        dd = "1"
+
+        [[doc.html.body.nav.ul.li]]
+        attrib = {href = "/faq.html"}
+        a = "FAQ"
+
+        """)
+        node = tomllib.loads(node_toml)
+
+        template = Loader.merge(index, node)
+        self.assertEqual(template["doc"]["config"]["tag_mode"], "pair")
+        rv = Renderer().serialize(template)
+        self.assertEqual(rv.count("href"), 2, rv)
+        self.assertEqual(rv.count('<div id="00">'), 1, rv)
+        print(rv)

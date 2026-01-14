@@ -240,4 +240,3 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(rv.count("</dt>"), 2)
         self.assertEqual(rv.count("<dd>"), 2)
         self.assertEqual(rv.count("</dd>"), 2)
-        print(rv)
