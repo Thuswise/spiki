@@ -10,16 +10,26 @@ a = "Inception"
 [doc.html.body.main]
 blocks = [
 """
+When it's time to leave an old town, you get an odd mix of satisfaction and regret.
+It's nice to think there's a bit we didn't see yet. We have a reason to come back one day.
 """,
 """
 <Appleby>       You're setting a decent pace there, Broadstairs.
 <Broadstairs>   I can't abide missing a train.
-<Chalgrove>     I do wish I had my timetable. Four minutes past the hour, I believe it is?
-<Broadstairs>   That's the Northbound.
-<Chalgrove>     Oh, what really? Are you sure?
 """,
 """
-Gloom settles
+They march smartly back towards Castle Neck. Whatever the oncoming crowd, Broadstairs somehow
+retains command of the pavement. Chalgrove dodges about behind in the turbulent wake of his advance.
+Appleby takes to the road where he makes the best progress.
+""",
+"""
+<Chalgrove>     I do wish I had my timetable. Four minutes past the hour, I believe it is?
+<Broadstairs>   That's the Northbound.
+""",
+"""
+It's not much to ask, that a traveller knows his train times.
+You require in the mind's eye a single digit to persist aglow. Or the image of one finger on a clock face.
+If only one of the three could recollect.
 """,
 """
 <Appleby>       So it has departed already.
