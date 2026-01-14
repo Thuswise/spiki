@@ -8,6 +8,21 @@ attrib = {class = "spiki next", href = "0834.html"}
 a = "Inception"
 
 [doc.html.body.main]
-blocks = """
-revisit
+blocks = [
 """
+""",
+"""
+<Appleby>       You're setting a decent pace there, Broadstairs.
+<Broadstairs>   I can't abide missing a train.
+<Chalgrove>     I do wish I had my timetable. Four minutes past the hour, I believe it is?
+<Broadstairs>   That's the Northbound.
+<Chalgrove>     Oh, what really? Are you sure?
+""",
+"""
+Gloom settles
+""",
+"""
+<Appleby>       So it has departed already.
+<Broadstairs>   We may as well go in and make certain. Let's try to remember for next time.
+""",
+]
