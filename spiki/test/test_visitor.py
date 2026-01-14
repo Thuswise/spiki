@@ -30,7 +30,7 @@ from spiki.visitor import Visitor
 
 class VisitorTests(unittest.TestCase):
 
-    def test_example_atom(self):
+    def test_example_atomic(self):
         plugin_types = [
             "spiki.plugins.finder:Finder",
             "spiki.plugins.loader:Loader",
@@ -45,7 +45,7 @@ class VisitorTests(unittest.TestCase):
         ):
             visitor.options = dict(
                 output=pathlib.Path(output_name).resolve(),
-                paths=[examples.joinpath("atom")],
+                paths=[examples.joinpath("atomic")],
             )
 
             self.assertFalse(visitor.state)
