@@ -349,8 +349,16 @@ attrib = {class = "spiki home", href = "index.html"}
 a = "Home"
 
 [[doc.html.body.main.dl.div]]
-dt = "Title"
-dd = "The Hounds of History"
+dt = "Imprint"
+dd = "Hounds of History"
+
+[[doc.html.body.main.dl.div]]
+dt = "Version"
+dd = "2026-01.01"
+
+[[doc.html.body.main.dl.div]]
+dt = "Author"
+dd = "D E Haynes"
 
 [[doc.html.body.footer.nav.ul.li]]
 attrib = {class = "spiki next", href = "0834.html"}
