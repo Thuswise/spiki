@@ -23,8 +23,8 @@ a = "Withdrawal"
 blocks = """
 Appleby regards the [shopfront suspiciously](1266.html).
 Chalgrove is unhappy too, but why?
-He's looking at his watch. [His train](4578.html).
-Broadstairs needs convincing. He has half a mind to [call it a day](4646.html).
+He's looking at his watch. If they follow [the river](4578.html), they can loop back in time for the train.
 
-Ahead lies the [old town](1136.html).
+Broadstairs needs convincing. He has half a mind to [call it a day](4646.html).
+Otherwise, what's wrong with a [pub](1136.html)?
 """
