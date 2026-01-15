@@ -353,6 +353,10 @@ dt = "Imprint"
 dd = "Hounds of History"
 
 [[doc.html.body.main.dl.div]]
+dt = "Project"
+dd = "Cyclic Fruition Number 1"
+
+[[doc.html.body.main.dl.div]]
 dt = "Version"
 dd = "2026-01.01"
 
