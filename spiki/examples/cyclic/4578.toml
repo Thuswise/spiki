@@ -8,6 +8,14 @@ attrib = {class = "spiki next", href = "0848.html"}
 a = "Withdrawn"
 
 [doc.html.body.main]
-blocks = """
-disinclination
+blocks = [
 """
+They follow a brick-lined lane and pass under the battlements to the water.
+""",
+"""
+<Chalgrove>     We won't get lost if we keep to the river.
+""",
+"""
+Appleby looks bored.
+""",
+]
