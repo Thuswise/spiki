@@ -8,6 +8,18 @@ attrib = {class = "spiki next", href = "0848.html"}
 a = "Withdrawn"
 
 [doc.html.body.main]
-blocks = """
-withdrawal
+blocks = [
 """
+They assemble in the gardens of a church.
+""",
+"""
+<Broadstairs>   While we're here, I'll just quickly light up.
+""",
+"""
+Plumes of smoke. Furniture polish and burnt leather.
+""",
+"""
+<Appleby>       What have you got today?
+<Broadstairs>   Balkan mixture.
+""",
+]
