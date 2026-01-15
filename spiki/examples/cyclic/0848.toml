@@ -8,6 +8,16 @@ attrib = {class = "spiki next", href = "6127.html"}
 a = "Revisit"
 
 [doc.html.body.main]
-blocks = """
-withdrawn
+blocks = [
 """
+There's been silence for a while.
+""",
+"""
+<Broadstairs>   Look, is there any point in hanging around much longer?
+<Chalgrove>     No desire to be late again.
+<Appleby>       If we're out of time, we're out of time.
+""",
+"""
+Looks like that's it for today. They [turn back](6127.html).
+""",
+]
