@@ -357,13 +357,18 @@ dt = "Project"
 dd = "Cyclic Fruition Number 1"
 
 [[doc.html.body.main.dl.div]]
-dt = "Version"
-dd = "2026-01.01"
-
-[[doc.html.body.main.dl.div]]
 dt = "Author"
 dd = "D E Haynes"
+
+[[doc.html.body.main.dl.div]]
+dt = "Formatting"
+dd = {a = "spiki", attrib = {href = "https://pypi.org/project/spiki"}}
+
+[[doc.html.body.main.dl.div]]
+dt = "Version"
+dd = "2026-01.01"
 
 [[doc.html.body.footer.nav.ul.li]]
 attrib = {class = "spiki next", href = "0834.html"}
 a = "Inception"
+
