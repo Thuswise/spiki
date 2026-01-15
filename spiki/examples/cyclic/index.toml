@@ -361,7 +361,7 @@ dt = "Author"
 dd = "D E Haynes"
 
 [[doc.html.body.main.dl.div]]
-dt = "Formatting"
+dt = "Workflow"
 dd = {a = "spiki", attrib = {href = "https://pypi.org/project/spiki"}}
 
 [[doc.html.body.main.dl.div]]
