@@ -8,6 +8,24 @@ attrib = {class = "spiki next", href = "0844.html"}
 a = "Discussion"
 
 [doc.html.body.main]
-blocks = """
-offer
+blocks = [
 """
+Railway stations are like old words. We use them differently these days.
+""",
+"""
+<Broadstairs>   So there ought to be another train in... Wait a moment.
+<Chalgrove>     I've lost sight of him again.
+<Appleby>       Here I am.
+<Broadstairs>   In an hour or so. Eighty minutes.
+""",
+"""
+We're in a country town. You probably know it.
+Too many of its fine men fled to Hughenden, so in 1848 they made this terminus in a Tudor style.
+For sure, it facilitates departures, but secretly it invites us to stay.
+""",
+"""
+<Broadstairs>   Anyone hungry?
+<Appleby>       Let's take a [wander](0852.html).
+<Chalgrove>     Need to keep an eye on the time.
+""",
+]

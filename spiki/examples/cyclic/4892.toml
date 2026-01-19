@@ -8,6 +8,10 @@ attrib = {class = "spiki next", href = "0838.html"}
 a = "Construction"
 
 [doc.html.body.main]
-blocks = """
-confirmation
+blocks = [
 """
+<Broadstairs>   Where's he going?
+<Chalgrove>     He's gone into that terrace on the right there.
+<Appleby>       Every single one. They've bought up the whole row.
+""",
+]

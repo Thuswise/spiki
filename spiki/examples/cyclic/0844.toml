@@ -20,8 +20,24 @@ attrib = {class = "spiki next", href = "4892.html"}
 a = "Confirmation"
 
 [doc.html.body.main]
-blocks = """
-<Broadstairs>   Where's he going?
-<Chalgrove>     He's gone into that terrace on the right there.
-<Appleby>       Every single one. They've bought up the whole row.
+blocks = [
 """
+<Appleby>       I thought I heard shouting.
+                Someone said, "They've closed the bridges". I asked which bridges, and they said, "all of them".
+<Chalgrove>     What, just now?
+<Appleby>       So I ran down to English Bridge and it was blocked. They'd put a cordon across it.
+<Chalgrove>     The traffic is flowing. I can see cars crossing the river.
+""",
+"""
+Chalgrove rarely takes a stand but he won't tolerate an inaccuracy.
+""",
+"""
+<Appleby>       Look, I'm still sweating from coming back up the hill.
+                They had these red barriers, and signs. With a name on them. I'm trying to think.
+                Began with a 'D'.
+<Broadstairs>   deBilito. Look.
+""",
+"""
+Chalgrove is rattled now. Broadstairs is grave, but calm.
+""",
+]
