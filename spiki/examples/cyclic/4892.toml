@@ -10,6 +10,9 @@ a = "Construction"
 [doc.html.body.main]
 blocks = [
 """
+Chalgrove is rattled now. Broadstairs is grave, but calm.
+""",
+"""
 <Broadstairs>   Where's he going?
 <Chalgrove>     He's gone into that terrace on the right there.
 <Appleby>       Every single one. They've bought up the whole row.
