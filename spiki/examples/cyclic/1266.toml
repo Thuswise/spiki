@@ -10,22 +10,17 @@ a = "Discussion"
 [doc.html.body.main]
 blocks = [
 """
-Railway stations are like old words. We use them differently these days.
+Street scene.
 """,
 """
-<Broadstairs>   So there ought to be another train in... Wait a moment.
-<Chalgrove>     I've lost sight of him again.
-<Appleby>       Here I am.
-<Broadstairs>   In an hour or so. Eighty minutes.
+<Broadstairs>   Not sure how we're to choose a pub. There must be one on every corner.
+<Chalgrove>     I do fancy a pint.
 """,
 """
-We're in a country town. You probably know it.
-Too many of its fine men fled to Hughenden, so in 1848 they made this terminus in a Tudor style.
-For sure, it facilitates departures, but secretly it invites us to stay.
+Mystery prose.
 """,
 """
-<Broadstairs>   Anyone hungry?
-<Appleby>       Let's take a [wander](0852.html).
-<Chalgrove>     Need to keep an eye on the time.
+<Broadstairs>   We're a man down.
+<Chalgrove>     He's [over there](0844.html).
 """,
 ]

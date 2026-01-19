@@ -26,7 +26,7 @@ blocks = [
                 Someone said, "They've closed the bridges". I asked which bridges, and they said, "all of them".
 <Chalgrove>     What, just now?
 <Appleby>       So I ran down to English Bridge and it was blocked. They'd put a cordon across it.
-<Chalgrove>     The traffic is flowing. I can see cars crossing the river.
+<Chalgrove>     But the traffic is flowing. I can see cars crossing the river.
 """,
 """
 Chalgrove rarely takes a stand but he won't tolerate an inaccuracy.
@@ -38,7 +38,12 @@ Chalgrove rarely takes a stand but he won't tolerate an inaccuracy.
 <Broadstairs>   deBilito. Look.
 """,
 """
-Like battle standards in some unifactional War, where each family bears the same arms.
+All at once they perceived that every shop, and office, and tenement gate, bore the brand of deBilito.
+Like battle standards in some unifactional war, where each family bears the same arms.
 Chalgrove is rattled now. Broadstairs is grave, but calm.
+""",
+"""
+<Chalgrove>     That's extraordinary. I'm sure I didn't see that before.
+<Broadstairs>   Appleby, [where are you going](4892.html)?
 """,
 ]
