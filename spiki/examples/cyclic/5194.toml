@@ -8,6 +8,28 @@ attrib = {class = "spiki next", href = "0838.html"}
 a = "Construction"
 
 [doc.html.body.main]
-blocks = """
-refusal
+blocks = [
 """
+It's been a while since anybody spoke. Appleby leans forward to relight his cigar.
+He is intrigued to discover that it is still in its wrapper.
+""",
+"""
+<Appleby>       It's only a guess, but I believe we've found our way into
+                some sort of recurrent structure.
+<Chalgrove>     A Florean Winograde?
+<Appleby>       Feels like it. But it's self-cyclic.
+""",
+"""
+Broadstairs is delighted. It's time to draw up a plan.
+""",
+"""
+<Broadstairs>   First priority then is to establish the scale of the temporal domain.
+<Chalgrove>     We should log any occurrences of semiotic breakdown.
+                Any residue that might indicate a shift in autopoesis.
+<Broadstairs>   If we get separated, let's try to meet up again here.
+<Appleby>       Agreed. But be prepared for a wait.
+""",
+"""
+Maybe that's all they need to do. To [sit back and wait](0838.html).
+""",
+]
