@@ -8,6 +8,20 @@ attrib = {class = "spiki next", href = "0840.html"}
 a = "Evaluation"
 
 [doc.html.body.main]
-blocks = """
-delivery
+blocks = [
 """
+<Broadstairs>   I hope you haven't lost your appetite.
+<Appleby>       What's it say on the back of that menu?
+<Broadstairs>   deBilito. They do a Beef Wellington.
+""",
+"""
+Broadstairs is invulnerable when he has a glass in his hand.
+Chalgrove, on the other hand, has developed an aversion to his Gin and Tonic.
+Appleby takes a tug on his pint. It is now a Brown Ale.
+""",
+"""
+<Broadstairs>   What do we think about this outfit then?
+<Chalgrove>     They are popping up everywhere. I guess they borrow on a very easy schedule.
+<Appleby>       We should watch out for changes.
+""",
+]

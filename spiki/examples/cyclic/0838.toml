@@ -16,11 +16,26 @@ attrib = {class = "spiki next", href = "5082.html"}
 a = "Cancellation"
 
 [doc.html.body.main]
-blocks = """
-They are in a pub.
-Appleby has discovered something.
-A fun scene with lots of pep.
-<Appleby>       What are you suggesting?
-<Broadstairs>   Let's start gathering some competitive intelligence.
-<Chalgrove>     A new project?
+blocks = [
 """
+Settling in nicely at the Admiral Benbow.
+""",
+"""
+<Broadstairs>   They have a beer called Rail Replacement Service. It's an IPA.
+<Appleby>       Oh. No, a pint of Stout I think.
+<Chalgrove>     Gin and Tonic please.
+""",
+"""
+They have chosen a spot in the yard at the back.
+""",
+"""
+<Appleby>       That was very strange in the street back there.
+<Chalgrove>     Yes it affected me too.
+<Appleby>       Can you check that beer mat for me?
+<Chalgrove>     deBilito. I think I might just [get out of here](4984.html).
+<Appleby>       We should [stick together](5082.html). We need to compare notes.
+""",
+"""
+Broadstairs comes back with [drinks and menus](1176.html).
+""",
+]
