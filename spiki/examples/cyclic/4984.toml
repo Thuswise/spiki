@@ -8,6 +8,20 @@ attrib = {class = "spiki next", href = "0846.html"}
 a = "Defaulted"
 
 [doc.html.body.main]
-blocks = """
-disavowal
+blocks = [
 """
+Chalgrove nips back into the street, and sets off briskly over the crest of the little hill,
+then down through colleges towards the park.
+
+Some years ago he would have little dared such a breach of etiquette.
+But it's a trick he employs occasionally.
+No haphazard reconnaissance has yet tumbled Appleby. Nor via any review has it become clear to Broadstairs.
+It is an affordance known only to Chalgrove.
+The fact is, that unless certain protocols be observed, it is impossible for them to separate.
+""",
+"""
+<Appleby>       There you are.
+<Broadstairs>   What happened to lunch?
+<Chalgrove>     I though you wanted to [get back home](0846.html).
+""",
+]
