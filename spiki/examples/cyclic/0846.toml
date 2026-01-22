@@ -8,6 +8,10 @@ attrib = {class = "spiki next", href = "6003.html"}
 a = "Revisit"
 
 [doc.html.body.main]
-blocks = """
-defaulted
+blocks = [
 """
+<Appleby>       So this is the park.
+<Chalgrove>     If we follow the path down and then left, it will lead us [back to the station](6003.html).
+<Broadstairs>   Tactical retreat then. Very well.
+""",
+]
