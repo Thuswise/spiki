@@ -8,6 +8,18 @@ attrib = {class = "spiki next", href = "0834.html"}
 a = "Inception"
 
 [doc.html.body.main]
-blocks = """
-revisit
+blocks = [
 """
+<Chalgrove>     I find it very calming, walking by the river. No traffic.
+<Appleby>       It feels like, coming this way, we've missed a lot though.
+""",
+"""
+The zeal of the clergy and the ambitions of architects exceed the construction of mere churches.
+Hence this Tertio-Georgian gaol. The pews here, arguably more comfortable. The hangings decidedly less decorative.
+""",
+"""
+<Broadstairs>   This is a prison.
+<Appleby>       So it is.
+<Chalgrove>     Not far now. Down the end of the road, and we'll be at the rear of [the station](0834.html).
+""",
+]
