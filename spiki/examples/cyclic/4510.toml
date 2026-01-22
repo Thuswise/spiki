@@ -8,6 +8,13 @@ attrib = {class = "spiki next", href = "0836.html"}
 a = "Elaboration"
 
 [doc.html.body.main]
-blocks = """
-clarification
+blocks = [
 """
+They know Appleby. If they're not careful he will charge off and theyll end up chasing after him.
+""",
+"""
+<Broadstairs>   Let's maintain a bit of discipline, shall we?
+<Appleby>       There's definitely something going on here. Something strange.
+<Chalgrove>     If so, we should check it out. We just need to decide how to [go about](0836.html) it.
+""",
+]
