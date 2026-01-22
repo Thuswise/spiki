@@ -10,10 +10,9 @@ a = "Withdrawn"
 [doc.html.body.main]
 blocks = [
 """
-<Broadstairs>   Whatever's happened here, I don't want us to go in unprepared.
-<Chalgrove>     Agreed.
-<Appleby>       You want to [go back](0848.html) then?
+<Chalgrove>     Look chaps. I really don't want to be late back again.
+<Broadstairs>   You want to [head off home](0848.html) then?
 <Chalgrove>     I think so.
-<Broadstairs>   Under the circumstances.
+<Appleby>       We've got a bit of time though, surely.
 """,
 ]
