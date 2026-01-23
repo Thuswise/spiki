@@ -13,7 +13,7 @@ blocks = [
 Broadstairs is about to peruse the menu. Best to interrupt him now before he gets used to the idea of eating.
 """,
 """
-<Appleby>       We're thinking of [getting back](0850.html). Immediately.
+<Appleby>       We're thinking of [getting back](0850.html). As in, immediately.
 <Chalgrove>     Yes, whatever's going on here, we can't have any part of it.
 <Broadstairs>   Hmmm.
 """,

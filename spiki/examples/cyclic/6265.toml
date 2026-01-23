@@ -8,6 +8,15 @@ attrib = {class = "spiki next", href = "0834.html"}
 a = "Inception"
 
 [doc.html.body.main]
-blocks = """
-revisit
+blocks = [
 """
+<Broadstairs>   Back through the town?
+<Chalgrove>     I think we'd best avoid the areas of anomally.
+<Appleby>       Follow me then.
+""",
+"""
+It seems some of the older buildings offered resistance to encroachment. So it happened that they
+find their way back past a grand Anglican church. Chalgrove would ordinarily have loved to go inside,
+but it's all he can do to hide his anxiety that they [reach the station](0834.html).
+""",
+]
