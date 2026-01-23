@@ -8,6 +8,14 @@ attrib = {class = "spiki next", href = "0834.html"}
 a = "Inception"
 
 [doc.html.body.main]
-blocks = """
-revisit
+blocks = [
 """
+They walk back through the main part of the town, taking note of all they see.
+""",
+"""
+<Appleby>       All we need to do now is figure out the nature of
+                [this loop](https://tundish.github.io/junkdlc/1-dialogue-and-action.html)
+                we seem to be in.
+<Chalgrove>     Do you mind if we leave that discussion [for the train](0834.html) please?
+""",
+]
