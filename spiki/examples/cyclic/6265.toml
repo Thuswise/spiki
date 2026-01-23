@@ -11,7 +11,7 @@ a = "Inception"
 blocks = [
 """
 <Broadstairs>   Back through the town?
-<Chalgrove>     I think we'd best avoid the areas of anomally.
+<Chalgrove>     I think we'd best avoid the areas of anomaly.
 <Appleby>       Follow me then.
 """,
 """
