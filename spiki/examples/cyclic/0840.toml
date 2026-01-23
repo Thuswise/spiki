@@ -17,11 +17,12 @@ a = "Cancellation"
 
 [doc.html.body.main]
 blocks = """
-This is the crisis point.
-<Appleby>       Or perhaps you'll just drop it on the floor. Again.
-<Broadstairs>   And what do you mean by that?
-<Chalgrove>     That's rather uncalled for, Appleby.
+It actually rather fun.
+<Chalgrove>     So here's what we know. A new word has appeared. And it is propagating everywhere.
+<Broadstairs>   The propagation is a Heideggerian breakdown. deBilito was here before we arrived.
+<Appleby>       No, we are witnessing a process. Language is action.
 <Appleby>       We [get slaughtered](5194.html) and you do nothing about it.
 <Chalgrove>     de Bilito can borrow on a very easy schedule.
-<Broadstairs>   We can't beat them toe to toe. We need a [different strategy](1218.html).
+<Broadstairs>   Do we have a stable representation of our situation? [different strategy](1218.html).
+<Appleby>       Every representation is an interpretation.
 """
