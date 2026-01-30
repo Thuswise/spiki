@@ -21,6 +21,7 @@ a = "Withdrawal"
 
 [doc.html.body.main]
 blocks = """
+About Broadstairs.
 Appleby regards the [shopfront suspiciously](1266.html).
 Chalgrove is unhappy too, but why?
 He's looking at his watch. If they follow [the river](4578.html), they can loop back in time for the train.
