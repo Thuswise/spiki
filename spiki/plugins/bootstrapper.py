@@ -41,7 +41,8 @@ class Bootstrapper(Plugin):
     @staticmethod
     def get_filepath(module_name: str) -> pathlib.Path:
         module = sys.modules[module_name]
-        return pathlib.Path(module.__loader__.get_filename(module_name))
+        full_name = f"{module.__package__}.{module_name}".lstrip(".")
+        return pathlib.Path(module.__loader__.get_filename(full_name))
 
     @staticmethod
     def get_source(module_name: str) -> str:
@@ -76,7 +77,13 @@ def main(args):
         concurrent.futures.ThreadPoolExecutor() as executor,
     ):
         temp_path = pathlib.Path(temp_dir)
-        shutil.unpack_archive(path.parent, extract_dir=temp_dir, format="zip")
+        if path.parent.is_dir():
+            print(f"Copying {path.parent} to {temp_dir}", file=sys.stderr)
+            shutil.copytree(path.parent, temp_dir, dirs_exist_ok=True)
+        else:
+            print(f"Unpacking {path.parent} to {temp_dir}", file=sys.stderr)
+            shutil.unpack_archive(path.parent, extract_dir=temp_dir, format="zip")
+
         temp_path.joinpath("__main__.py").unlink(missing_ok=True)
 
         class LocalDirectoryMixin:
