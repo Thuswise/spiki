@@ -53,7 +53,7 @@ tag_mode
 block_site
     One of ``above``, ``below`` or ``stripe``. Determines where blocks are placed relative to table-level tags.
 block_wrap
-    One of ``div``, ``section`` or ``none``. Used to define a parent element for generated SpeechMark blocks.
+    May be set to ``div`` or ``section``. Used to define a parent element for generated SpeechMark blocks.
 
 The Index
 =========
