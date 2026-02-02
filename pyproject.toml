@@ -25,6 +25,7 @@ dependencies = [
 
 [project.urls]
 github = "https://github.com/thuswise/spiki"
+examples = "https://github.com/thuswise/spiki/tree/main/spiki/examples"
 bugs = "https://github.com/thuswise/spiki/issues"
 
 [project.scripts]
