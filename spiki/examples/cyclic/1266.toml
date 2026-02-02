@@ -11,8 +11,18 @@ a = "Discussion"
 blocks = [
 """
 About Appleby.
-Appleby doesn't care to be in charge. He understands there's no such thing.
+Appleby has no history. His consciousness is a parade of morphing images and transient sensations.
+He lives by the light of this internal projection.
+It is the means by which he communicates with many worlds.
+Appleby is a character not without contradictions.
+He is in a continual struggle of dreaming himself somewhere
+and having all the while to reconcile with the contemporaneous sensations of his physical disposition.
+
+So you may find him twitchy.
+
+Interpenetrating.
 Watchful, discriminating.
+Uncommitted investigator.
 Hunts Phantasms.
 Street scene.
 """,
@@ -21,7 +31,7 @@ Street scene.
 <Chalgrove>     I do fancy a pint.
 """,
 """
-Mystery prose.
+Appleby doesn't care to be in charge. He understands there's no such thing.
 """,
 """
 <Broadstairs>   We're a man down.
