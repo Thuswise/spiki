@@ -10,9 +10,10 @@ a = "Discussion"
 [doc.html.body.main]
 blocks = [
 """
-About Appleby.
+Let me remind you about Appleby. Because he's hard to pin down.
+
 Appleby has no history. His consciousness is a parade of morphing images and transient sensations.
-He lives by the light of this internal projection.
+He lives only by the light of this internal projection.
 It is the means by which he communicates with many worlds.
 Appleby is a character not without contradictions.
 He is in a continual struggle of dreaming himself somewhere
@@ -20,10 +21,8 @@ and having all the while to reconcile with the contemporaneous sensations of his
 
 So you may find him twitchy.
 
-Interpenetrating.
 Watchful, discriminating.
 Uncommitted investigator.
-Hunts Phantasms.
 Street scene.
 """,
 """
