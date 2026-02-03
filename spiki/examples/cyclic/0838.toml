@@ -18,8 +18,10 @@ a = "Cancellation"
 [doc.html.body.main]
 blocks = [
 """
-Settling in nicely at the Admiral Benbow.
-All the signs are familiar. All the words well-known
+So they decide on the Admiral Benbow. A cosy little place with plenty of character.
+Chalgrove does a quick check for anything untoward.
+Any hint of trouble and he would be [straight out the door](4984.html).
+But at first glance all the signs are familiar. All the words are well-known.
 """,
 """
 <Broadstairs>   They have a beer called Rail Replacement Service. It's an IPA.
@@ -27,20 +29,19 @@ All the signs are familiar. All the words well-known
 <Chalgrove>     Gin and Tonic please.
 """,
 """
-They have chosen a spot in the yard at the back.
-Chalgrove's eyes settle on something he doesn't understand.
+They have chosen a spot in the yard at the back. It has a little roof to keep off the weather.
+The seats are nice and dry. It's plenty warm enough.
+Just as he's about to relax, Chalgrove's eyes settle on something he doesn't understand.
 """,
 """
-<Chalgrove>     That was very strange in the street back there.
-<Appleby>       Yes it affected me too.
-<Chalgrove>     Can you check that beer mat for me?
-<Appleby>       deBilito.
-<Chalgrove>     I think I might just [get out of here](4984.html).
-<Appleby>       We should [leave together](5082.html) then.
+<Chalgrove>     Can you check that beer mat for me? That logo. Do you recognize it?
+<Appleby>       deBilito. No. It doesn't seem to connect to anything.
+<Chalgrove>     How did it get there? Did it follow us in?
 """,
 """
-Broadstairs comes back with [drinks and menus](1176.html).
-<Broadstairs>   Whatever can exist, does exist.
-<Chalgrove>     Then why haven't we seen it before?
+Broadstairs comes back with [drinks and menus](1176.html). The writing has not escaped him either.
+They all sit down to puzzle over the bit of new vocabulary.
+<Broadstairs>   Let's start with the fundamentals. Whatever can exist, does exist.
+<Chalgrove>     Then why haven't we seen it before? We should [get away now](5082.html).
 """,
 ]
