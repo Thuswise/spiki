@@ -19,6 +19,7 @@ a = "Cancellation"
 blocks = [
 """
 Settling in nicely at the Admiral Benbow.
+All the signs are familiar. All the words well-known
 """,
 """
 <Broadstairs>   They have a beer called Rail Replacement Service. It's an IPA.
@@ -27,12 +28,14 @@ Settling in nicely at the Admiral Benbow.
 """,
 """
 They have chosen a spot in the yard at the back.
+Chalgrove's eyes settle on something he doesn't understand.
 """,
 """
-<Appleby>       That was very strange in the street back there.
-<Chalgrove>     Yes it affected me too.
-<Appleby>       Can you check that beer mat for me?
-<Chalgrove>     deBilito. I think I might just [get out of here](4984.html).
+<Chalgrove>     That was very strange in the street back there.
+<Appleby>       Yes it affected me too.
+<Chalgrove>     Can you check that beer mat for me?
+<Appleby>       deBilito.
+<Chalgrove>     I think I might just [get out of here](4984.html).
 <Appleby>       We should [leave together](5082.html) then.
 """,
 """
