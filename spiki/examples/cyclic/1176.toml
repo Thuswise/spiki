@@ -12,7 +12,7 @@ blocks = [
 """
 <Broadstairs>   I hope you haven't lost your appetite.
 <Appleby>       What's it say on the back of that menu?
-<Broadstairs>   deBilito. They do a Beef Wellington.
+<Broadstairs>   Reciprocus. They do a Beef Wellington.
 """,
 """
 Broadstairs is invulnerable when he has a glass in his hand.
@@ -23,7 +23,7 @@ Appleby takes a tug on his pint. It is a Brown Ale.
 <Broadstairs>   What do we think about this new arrival then?
 <Chalgrove>     It's popping up everywhere.
 <Appleby>       That's just Heideggerian breakdown.
-                deBilito was probably here all along.
+                Reciprocus was probably here all along.
                 You're seeing it now because of a shift in the linguistic domain.
 """,
 ]
