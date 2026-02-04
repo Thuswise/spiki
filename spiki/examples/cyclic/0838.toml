@@ -25,7 +25,7 @@ But at first glance all the signs are familiar. All the words are well-known.
 """,
 """
 <Broadstairs>   They have a beer called Rail Replacement Service. It's an IPA.
-<Appleby>       Oh. No, a pint of Stout I think.
+<Appleby>       No, a pint of Stout I think.
 <Chalgrove>     Gin and Tonic please.
 """,
 """
@@ -34,7 +34,7 @@ The seats are nice and dry. It's plenty warm enough.
 Just as he's about to relax, Chalgrove's eyes settle on something he doesn't understand.
 """,
 """
-<Chalgrove>     Can you check that beer mat for me? That logo. Do you recognize it?
+<Chalgrove>     Would you check that beer mat for me? The logo. Do you recognize it?
 <Appleby>       deBilito. No. It doesn't seem to connect to anything.
 <Chalgrove>     How did it get there? Did it follow us in?
 """,

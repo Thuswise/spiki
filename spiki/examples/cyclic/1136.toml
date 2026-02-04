@@ -10,9 +10,6 @@ a = "Construction"
 [doc.html.body.main]
 blocks = [
 """
-To the max
-""",
-"""
 <Broadstairs>
 + Pie and chips? Or Welsh Rarebit?
 + Some place where we can smoke and sit.
