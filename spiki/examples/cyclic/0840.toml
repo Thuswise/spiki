@@ -17,18 +17,11 @@ a = "Cancellation"
 
 [doc.html.body.main]
 blocks = """
-It actually rather fun.
-<Broadstairs>   Do we have a stable representation of our situation? [different strategy](1218.html).
+<Broadstairs>   Do we have a stable representation of our situation? [An interpretation](1218.html)?
 <Chalgrove>     OK, here's what we know. A new word has appeared. And it is propagating everywhere.
-<Broadstairs>   I think that 'propagation' as you say is really Heideggerian breakdown.
-                deBilito was here before we arrived. It's a historical token. It's dead.
-                We're seeing it now because there's been a shift in the domain.
 <Appleby>       No, we are witnessing a process. Language is action.
 <Chalgrove>     Action by whom?
 <Appleby>       I don't know. But forget where you think you are.
-                This a topological system. We're part of some sort of poietic process.
-<Broadstairs>   A shift in the linguistic domain.
-<Appleby>       We [get slaughtered](5194.html) and you do nothing about it.
-<Chalgrove>     de Bilito can borrow on a very easy schedule.
-<Appleby>       Every representation is an interpretation.
+                If I'm right we're part of some sort of poietic process.
+<Broadstairs>   [More observations](5194.html) required then.
 """
