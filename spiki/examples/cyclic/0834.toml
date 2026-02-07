@@ -10,7 +10,7 @@ a = "Proposal"
 [doc.html.body.main]
 blocks = [
 """
-Railway stations age like old words. Every repetition precipitates new meaning.
+Railway stations age like old words. With every repetition we precipitate new meaning.
 """,
 """
 <Broadstairs>   So there ought to be another train in... Wait a moment.
@@ -19,7 +19,7 @@ Railway stations age like old words. Every repetition precipitates new meaning.
 <Broadstairs>   In an hour or so. Eighty minutes.
 """,
 """
-We're in a country town. You may yet get to know it.
+We're in a country town very welcoming to visitors.
 Too many of its fine men fled to Hughenden, so in 1848 they made this terminus in a Tudor style.
 For sure, it facilitates departures, but secretly it invites us to stay.
 """,
