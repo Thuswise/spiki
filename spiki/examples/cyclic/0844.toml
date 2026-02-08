@@ -22,28 +22,25 @@ a = "Confirmation"
 [doc.html.body.main]
 blocks = [
 """
-<Appleby>       I thought I heard shouting.
-                Someone said, "They've closed the bridges". I asked which bridges, and they said, "all of them".
-<Chalgrove>     What, just now?
-<Appleby>       So I ran down to English Bridge and it was blocked. They'd put a cordon across it.
+<Appleby>       I'm back again. I thought I heard some shouting. "They've closed the bridges".
+                So I ran down to English Bridge and it was blocked. There was a cordon across it.
 <Chalgrove>     But the traffic is flowing. I can see cars crossing the river.
 """,
 """
-Chalgrove rarely takes a stand but he won't tolerate an inaccuracy. He's also very keen not to become
-entangled in any of the sketchy situations which Appleby has a tendency to initiate. 
+Chalgrove rarely takes a stand but he won't tolerate an inaccuracy. He's also very keen not to participate
+in any of the odd experiences which inevitably arrive when one listens to Appleby.
 """,
 """
-<Appleby>       They had these red barriers, and signs. With a name on them.
-                Odd name. Latin or something.
+<Appleby>       They had big red barriers and signs. There was a name. A Latin name.
 <Broadstairs>   Reciprocus. There.
 """,
 """
-A pair of large rubbish bins in the alley across from them were stamped with that very name.
+A pair of large rubbish bins in the alley across from them were stamped with that very label.
 
 They looked about them.
 
 Ten red flags which hung from the Market House were embroidered with one identical word.
-Like battle standards in some unifactional war, where each family claims the same crest.
+Like battle standards for some unifactional war, where everyone in the family claims the same crest.
 
 Wherever they turned they saw it on billboards and shop signs.
 Even the Cenotaph bore the brand of Reciprocus.
