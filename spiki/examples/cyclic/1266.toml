@@ -23,14 +23,14 @@ So you may find him absent. But he is always there. Noticing and questioning, ne
 A rare breed of investigator, uncommitted to everything but the discovery.
 """,
 """
-<Broadstairs>   Not sure how we're to choose a pub. There must be one on every corner.
-<Chalgrove>     I do fancy a pint.
+<Broadstairs>   I'd like to make some progress before Appleby wanders off again.
 """,
 """
-Appleby doesn't care to be in charge. He understands there's no such thing.
+Appleby doesn't care who's in charge. His impulses originate in a different realm.
+He doesn't resent authority. He has learned that there's no such thing.
 """,
 """
-<Broadstairs>   We're a man down.
+<Broadstairs>   We're a man down already. That didn't take long. Where is he now?
 <Chalgrove>     He's [over there](0844.html).
 """,
 ]
