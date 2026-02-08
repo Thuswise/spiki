@@ -11,8 +11,8 @@ a = "Revisit"
 blocks = [
 """
 <Broadstairs>   Orderly retreat. I agree, that's the right call.
-<Chalgrove>     We aren't in a position to make a serious analysis with the evidence we have.
-<Appleby>       I think with more preparation we could have done a better job.
+<Appleby>       We aren't in a position to make a comprehensive analysis. Not with the evidence we have.
+<Chalgrove>     I think with more observation we could have done a better job. But we've run out of time.
 """,
 """
 Broadstairs sinks his pint in exactly the time it takes Chalgrove to retie a shoelace.
