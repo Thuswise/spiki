@@ -366,7 +366,7 @@ dd = {a = "spiki", attrib = {href = "https://pypi.org/project/spiki"}}
 
 [[doc.html.body.main.dl.div]]
 dt = "Version"
-dd = "2026-02.02"
+dd = "2026-02.03"
 
 [[doc.html.body.footer.nav.ul.li]]
 attrib = {class = "spiki next", href = "0834.html"}
