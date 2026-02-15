@@ -56,7 +56,10 @@ class Writer(Plugin):
             dest = parent.joinpath(slug).with_suffix(path.suffix)
             text = self.visitor.state[path].text
 
-        self.logger.info(f"Exporting to {dest.relative_to(self.space)}", extra=dict(path=path, phase=self.phase))
+        self.logger.info(
+            f"Exporting to {dest.relative_to(self.space)}",
+            extra=dict(path=path.relative_to(self.visitor.root), phase=self.phase)
+        )
         try:
             dest.write_text(text)
         except TypeError:
@@ -65,7 +68,7 @@ class Writer(Plugin):
             except Exception:
                 self.logger.warning(
                     f"Unable to copy {path.relative_to(self.visitor.root)}",
-                    extra=dict(path=path, phase=self.phase)
+                    extra=dict(path=path.relative_to(self.visitor.root), phase=self.phase)
                 )
         except Exception:
             self.logger.warning(

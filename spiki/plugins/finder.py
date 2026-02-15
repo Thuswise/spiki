@@ -55,7 +55,10 @@ class Finder(Plugin):
             for name in sorted(filenames):
                 file_type = self.get_type(name)
                 p = parent.joinpath(name)
-                self.logger.info(f"Found {file_type:<16} file: {name}", extra=dict(path=p, phase=self.phase))
+                self.logger.info(
+                    f"Found {file_type:<16} file: {name}",
+                    extra=dict(path=p.relative_to(parent), phase=self.phase)
+                )
                 if file_type:
                     yield Change(self, path=p, type=file_type)
 
@@ -67,5 +70,8 @@ class Finder(Plugin):
             text = path.read_text()
             return Change(self, path=path, text=text, type=file_type)
         except UnicodeDecodeError:
-            self.logger.warning(f"Error reading file: {path}", extra=dict(path=path, phase=self.phase))
+            self.logger.warning(
+                f"Error reading file: {path}",
+                extra=dict(path=path.relative_to(self.visitor.root), phase=self.phase)
+            )
             return Change(self, path=path, text="", type=file_type)

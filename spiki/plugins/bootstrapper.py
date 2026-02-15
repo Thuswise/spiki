@@ -54,7 +54,10 @@ class Bootstrapper(Plugin):
         node = dict(metadata=dict(slug=path.name))
 
         text = self.get_source("spiki.plugins.bootstrapper")
-        self.logger.info(f"Generated the {path.name}", extra=dict(path=path, phase=self.phase))
+        self.logger.info(
+            f"Generated the {path.name}",
+            extra=dict(path=path.relative_to(self.visitor.root), phase=self.phase)
+        )
         return Change(self, path=path, text=text, node=node, phase=self.phase)
 
     def end_export(self, **kwargs) -> Change:
@@ -64,7 +67,10 @@ class Bootstrapper(Plugin):
 
         output = self.visitor.options["output"]
         target = output.with_suffix(".pyz")
-        self.logger.info(f"Creating {target}", extra=dict(path=path, phase=self.phase))
+        self.logger.info(
+            f"Creating {target}",
+            extra=dict(path=path.relative_to(self.visitor.root), phase=self.phase)
+        )
         zipapp.create_archive(source, target=target)
 
 
