@@ -10,14 +10,14 @@ a = "Revisit"
 [doc.html.body.main]
 blocks = [
 """
-There's been silence for a while.
+There has been a silence for a while. It all feels a bit aimless and unfulfilled.
 """,
 """
-<Broadstairs>   Look, is there any point in hanging around much longer?
-<Chalgrove>     No desire to be late again.
-<Appleby>       If we're out of time, we're out of time.
+<Appleby>       Look, is there any point in hanging around much longer?
+<Chalgrove>     I'm afraid we might be short on time.
+<Broadstairs>   Shall we withdraw? I've no desire to be late again.
 """,
 """
-Looks like that's it for today. They [turn back](6127.html).
+They [turn back](6127.html) the way they came.
 """,
 ]
