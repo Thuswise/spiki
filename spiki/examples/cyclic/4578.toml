@@ -10,18 +10,20 @@ a = "Withdrawn"
 [doc.html.body.main]
 blocks = [
 """
-They follow a brick-lined lane and pass under the battlements to the water.
+Chalgrove favours a narrow brick-lined lane which passes under the old wall.
 """,
 """
+<Broadstairs>   Water Lane. Are you sure you want to go this way?
 <Chalgrove>     We won't get lost if we keep to the river.
 """,
 """
-Appleby looks bored. Broadstairs is [not impressed](0848.html) either.
+Appleby looks bored. Broadstairs is not very impressed either.
 """,
 """
-<Chalgrove>     Thirteenth Century, I think
+<Chalgrove>     This arch is Thirteenth Century, I believe.
 """,
 """
-They go out through [Traitor's Gate](0848.html).
+Or perhaps older than that. It's called [Traitor's Gate](0848.html).
+That's the way they go now.
 """,
 ]
