@@ -23,13 +23,14 @@ He is intrigued to discover that it is still in its wrapper.
 Broadstairs steps in. It's time to draw up a plan. Give people some jobs to do.
 """,
 """
-<Broadstairs>   First priority then is to establish the scale of the temporal domain.
+<Broadstairs>   First priority is to establish the scale of the domain.
+                How far does it extend?
 <Chalgrove>     We should log any occurrences of semiotic failure.
                 Some residue that might point us toward the origin.
+<Appleby>       Question everything you believe to be true. And the terms in which you understand them.
 <Broadstairs>   If we get separated, let's try to meet up again here.
-<Appleby>       Agreed. But be prepared for repetition.
 """,
 """
-Broadstairs is delighted. It seems they've agreed to [stay in the pub](0838.html).
+Broadstairs is delighted. It looks like they'll be able to [stay in the pub](0838.html).
 """,
 ]
