@@ -9,18 +9,15 @@ a = "Completion"
 
 [doc.html.body.main]
 blocks = """
-Acknowledge the Phantasm.
-Interpenetrating. Material and Cosmic sectors.
-
-<Broadstairs>   It's a common mistake to think of the enemy as a single entity.
-                The larger the organization, the more it is riven with rivalry.
-<Chalgrove>     A big firm can often be a cluster of fiefdoms.
-<Broadstairs>   The only thing they share is the name.
-<Chalgrove>     Underneath it's all chaos. I've seen it myself.
-<Appleby>       What are you suggesting?
-<Broadstairs>   Let's start gathering some competitive intelligence.
-<Chalgrove>     A new project?
-<Broadstairs>   A new project. A new formation. A new address.
+<Chalgrove>     Human action is repetitious. We establish a routine and it propagates to others.
+<Broadstairs>   Yes, and the vocabulary evolves accordingly. New words are created, or older ones get repurposed.
+<Appleby>       But here we've encountered a semantic token with no apparent reference. Which implies an entire
+                process of action which hitherto we've been unaware of.
+<Chalgrove>     So I'm classifying this as a Phantasm. For the moment, at least.
+<Appleby>       OK, and whatever else we encounter will simply accrete. Until we glimpse its nature.
+<Broadstairs>   Then our own vocabulary will adjust to explain it.
+<Chalgrove>     A new case then?
+<Broadstairs>   A new case. A priority, I'd say. Lots of discovery to be done.
 
                 Happy now, Appleby?
 """
