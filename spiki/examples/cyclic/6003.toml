@@ -11,11 +11,11 @@ a = "Inception"
 blocks = [
 """
 <Chalgrove>     I find it very calming, walking by the river. No traffic.
-<Appleby>       It feels though, coming this way, we've missed some of the sights.
+<Appleby>       Although coming this way, we're missing some of the sights. But what's this?
 """,
 """
-The zeal of the clergy and the ambitions of architects exceed the construction of mere churches.
-Hence this Tertio-Georgian gaol. The pews here, arguably more comfortable. The hangings decidedly less decorative.
+The zeal of the clergy and the ambitions of architects extend beyond the construction of mere churches.
+Hence this Georgian gaol. The pews here, arguably more comfortable. The hangings decidedly less decorative.
 """,
 """
 <Broadstairs>   This is a prison.

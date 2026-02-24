@@ -10,10 +10,13 @@ a = "Revisit"
 [doc.html.body.main]
 blocks = [
 """
+A lovely stone promenade gives a view over the park.
+They pass through an iron gate and stand for a moment at the conjunction of two tree-lined avenues.
+The paths down to the river flank a cultivated pool and a pretty public garden.
 """,
 """
-<Appleby>       So this is the park.
-<Chalgrove>     If we follow the path down and then left, it will lead us [back to the station](6003.html).
-<Broadstairs>   Tactical retreat then. Very well.
+<Broadstairs>   We can let Appleby run around here for a bit before we head back.
+<Chalgrove>     If we follow the track down and then left, it will lead us [to the station](6003.html).
+<Broadstairs>   Very well.
 """,
 ]
