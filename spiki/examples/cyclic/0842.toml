@@ -8,10 +8,13 @@ attrib = {class = "spiki next", href = "6401.html"}
 a = "Revisit"
 
 [doc.html.body.main]
-blocks = """
-Appleby gets permission to follow the Phantasm.
-Appleby is quiet for a moment. He looks happier now.
-
+blocks = [
+"""
+Describe the feeling of hope.
+Lots of discovery to be done
+""",
+"""
 <Chalgrove>     OK, is it time for another round?
 <Broadstairs>   Let's [keep moving](6401.html). I'd like to try further down the street.
 """
+]
