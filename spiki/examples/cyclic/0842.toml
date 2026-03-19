@@ -10,11 +10,15 @@ a = "Revisit"
 [doc.html.body.main]
 blocks = [
 """
-Describe the feeling of hope.
-Lots of discovery to be done
+<Chalgrove>     Appleby won't stop hunting around anyway.
+<Appleby>       I need you to keep making notes though.
+                There's a lot going on here. I'm likely to get lost in it otherwise.
 """,
 """
-<Chalgrove>     OK, is it time for another round?
-<Broadstairs>   Let's [keep moving](6401.html). I'd like to try further down the street.
+A half-remembered sense of mutual respect makes a welcome return. Some of the earlier antagonism has been forgiven.
+""",
+"""
+<Broadstairs>   OK, is it time for another round?
+<Appleby>       Let's [keep moving](6401.html). I'd like to try further down the street.
 """
 ]
