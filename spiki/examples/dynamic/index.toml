@@ -1,1 +1,84 @@
 # https://raw.githubusercontent.com/Bowserinator/Periodic-Table-JSON/refs/heads/master/periodic-table-lookup.json
+
+[metadata]
+
+[doc]
+config = {tag_mode = "open"}
+"!doctype html" = ""
+
+[doc.html]
+config = {tag_mode = "pair"}
+attrib = {lang = "en"}
+
+[doc.html.head]
+title = "{metadata[title]}"
+
+[[doc.html.head.meta]]
+config = {tag_mode = "void"}
+attrib = {charset = "UTF-8"}
+
+[[doc.html.head.meta]]
+config = {tag_mode = "void"}
+attrib = {name = "viewport", content = "width=device-width, initial-scale=1.0"}
+
+[[doc.html.head.meta]]
+config = {tag_mode = "void"}
+attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
+
+[[doc.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel = "preconnect", href = "https://fonts.googleapis.com"}
+
+[[doc.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel = "preconnect", href = "https://fonts.gstatic.com", crossorigin = "crossorigin"}
+
+[[doc.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&display=swap"}
+
+[[doc.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"}
+
+[[doc.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel= "stylesheet", href="basics.css"}
+
+[[doc.html.head.script]]
+attrib = {src = "https://unpkg.com/hyperscript.org@0.9.14", async = "async"}
+
+[doc.html.body.header]
+attrib = {accesskey = "m", popovertarget = "nav-upper"}
+button = "≡"  # "IDENTICAL TO" (U+2261)
+
+[doc.html.body.header.nav]
+attrib = {id="nav-upper", popover = "auto"}
+
+[[doc.html.body.header.nav.ul.li]]
+attrib = {class = "card"}
+
+[doc.html.body.header.nav.ul.li.div.span]
+attrib = {href = "0834.html"}
+a = "1"
+
+[doc.html.body.header.nav.ul.li.div]
+p = "Inception"
+
+[[doc.html.body.main.section]]
+button = "Click Me!"
+
+[doc.html.body.main.section.attrib]
+script = "on click set x to 10 then log x"
+
+[[doc.html.body.main.dl.div]]
+dt = "Imprint"
+dd = "Hounds of History"
+
+[[doc.html.body.main.dl.div]]
+dt = "Project"
+dd = "Cyclic Fruition Number 1"
+
+[[doc.html.body.main.dl.div]]
+dt = "Author"
+dd = "D E Haynes"
