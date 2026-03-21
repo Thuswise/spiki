@@ -48,37 +48,22 @@ attrib = {rel= "stylesheet", href="basics.css"}
 [[doc.html.head.script]]
 attrib = {src = "https://unpkg.com/hyperscript.org@0.9.14", async = "async"}
 
-[doc.html.body.header]
-attrib = {accesskey = "m", popovertarget = "nav-upper"}
-button = "≡"  # "IDENTICAL TO" (U+2261)
-
-[doc.html.body.header.nav]
-attrib = {id="nav-upper", popover = "auto"}
-
-[[doc.html.body.header.nav.ul.li]]
-attrib = {class = "card"}
-
-[doc.html.body.header.nav.ul.li.div.span]
-attrib = {href = "0834.html"}
-a = "1"
-
-[doc.html.body.header.nav.ul.li.div]
-p = "Inception"
-
 [[doc.html.body.main.section]]
-button = "Click Me!"
+button = "Fetch data"
 
 [doc.html.body.main.section.attrib]
-script = "on click set x to 10 then log x"
+id = "btn_fetch"
+script = """
+on click
+add @disabled
+fetch https://raw.githubusercontent.com/Bowserinator/Periodic-Table-JSON/refs/heads/master/periodic-table-lookup.json
+as json
+put it into data
+put data["order"] after me
+finally
+remove @disabled
+"""
 
 [[doc.html.body.main.dl.div]]
-dt = "Imprint"
-dd = "Hounds of History"
-
-[[doc.html.body.main.dl.div]]
-dt = "Project"
-dd = "Cyclic Fruition Number 1"
-
-[[doc.html.body.main.dl.div]]
-dt = "Author"
-dd = "D E Haynes"
+dt = "Key"
+dd = "Value"
