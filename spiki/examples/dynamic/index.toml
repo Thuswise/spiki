@@ -75,6 +75,8 @@ on input
 for word in data["order"]
 if my.value is not empty and word contains my.value.toLowerCase()
 log "Word: " + word
+put data[word].name after me
+break
 """
 
 [[doc.html.body.main.dl.div]]
