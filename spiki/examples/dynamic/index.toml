@@ -58,10 +58,23 @@ on click
 add @disabled
 fetch https://raw.githubusercontent.com/Bowserinator/Periodic-Table-JSON/refs/heads/master/periodic-table-lookup.json
 as json
-put it into data
+set global data to result
+log data
 put data["order"] after me
 finally
 remove @disabled
+"""
+
+[[doc.html.body.main.section]]
+input = ""
+
+[doc.html.body.main.section.attrib]
+id = "inp_pick"
+script = """
+on input
+for word in data["order"]
+if my.value is not empty and word contains my.value.toLowerCase()
+log "Word: " + word
 """
 
 [[doc.html.body.main.dl.div]]
