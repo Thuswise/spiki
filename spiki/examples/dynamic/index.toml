@@ -59,26 +59,38 @@ add @disabled
 fetch https://raw.githubusercontent.com/Bowserinator/Periodic-Table-JSON/refs/heads/master/periodic-table-lookup.json
 as json
 set global data to result
-log data
-put data["order"] after me
 finally
 remove @disabled
 """
 
 [[doc.html.body.main.section]]
-input = ""
 
-[doc.html.body.main.section.attrib]
+[doc.html.body.main.section.input]
+config = {tag_mode = "void"}
+
+[doc.html.body.main.section.input.attrib]
 id = "inp_pick"
 script = """
 on input
 for word in data["order"]
 if my.value is not empty and word contains my.value.toLowerCase()
-log "Word: " + word
-put data[word].name after me
+put data[word].name into <dd.name/>
+put data[word].number into <dd.number/>
+put data[word].atomic_mass into <dd.mass/>
 break
 """
 
 [[doc.html.body.main.dl.div]]
-dt = "Key"
-dd = "Value"
+attrib = { class = "name field" }
+dt = "Name"
+dd = ""
+
+[[doc.html.body.main.dl.div]]
+attrib = { class = "number field" }
+dt = "Number"
+dd = ""
+
+[[doc.html.body.main.dl.div]]
+attrib = { class = "mass field" }
+dt = "Atomic Mass"
+dd = ""
