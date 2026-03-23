@@ -52,7 +52,7 @@ attrib = {src = "https://unpkg.com/hyperscript.org@0.9.14", async = "async"}
 blocks = """
 This is an example of an interactive HTML5 application.
 It uses [Hyperscript](https://hyperscript.org/), which is a lightweight Javascript library.
-Hyperscript's *locality of behaviour* is a good fit for the Spiki TOML format.
+Spiki facilitates the *locality of behaviour* approach.
 
 Click the button below to download the data for the Periodic Table of Elements.
 """
