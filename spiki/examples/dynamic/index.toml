@@ -63,6 +63,7 @@ button = "Get Data"
 [doc.html.body.main.section.attrib]
 id = "btn_fetch"
 script = """
+init add @disabled to #inp_pick
 on click
 add @disabled
 fetch https://raw.githubusercontent.com/Bowserinator/Periodic-Table-JSON/refs/heads/master/periodic-table-lookup.json
@@ -70,6 +71,7 @@ as json
 set global data to result
 finally
 remove @disabled
+remove @disabled from #inp_pick
 """
 
 [[doc.html.body.main.section]]

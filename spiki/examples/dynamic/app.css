@@ -32,21 +32,6 @@ display: grid;
 grid-template-rows: [head] auto [main] 9fr [foot] 1fr;
 }
 
-body header {
-font-size: 1.8rem;
-grid-row: head;
-width: 100%
-}
-
-body footer {
-font-size: 1.8rem;
-grid-row: foot;
-margin-left: auto;
-margin-right: auto;
-padding-top: 1.6rem;
-width: 100%;
-}
-
 main {
 grid-row: main;
 max-width: 48rem;
@@ -57,10 +42,6 @@ padding-left: 2.4rem;
 padding-right: 0.4rem;
 padding-bottom: 2.0rem;
 padding-top: 2.4rem;
-}
-
-main:has(blockquote) {
-background-color: white;
 }
 
 blockquote {
