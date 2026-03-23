@@ -48,8 +48,17 @@ attrib = {rel= "stylesheet", href="app.css"}
 [[doc.html.head.script]]
 attrib = {src = "https://unpkg.com/hyperscript.org@0.9.14", async = "async"}
 
+[doc.html.body.main]
+blocks = """
+This is an example of an interactive HTML5 application.
+It uses [Hyperscript](https://hyperscript.org/), which is a lightweight Javascript library.
+Hyperscript's *locality of behaviour* is a good fit for the Spiki TOML format.
+
+Click the button below to download the data for the Periodic Table of Elements.
+"""
+
 [[doc.html.body.main.section]]
-button = "Fetch data"
+button = "Get Data"
 
 [doc.html.body.main.section.attrib]
 id = "btn_fetch"
@@ -64,6 +73,9 @@ remove @disabled
 """
 
 [[doc.html.body.main.section]]
+blocks = """
+Type the name of an element to display its properties.
+"""
 
 [doc.html.body.main.section.input]
 config = {tag_mode = "void"}

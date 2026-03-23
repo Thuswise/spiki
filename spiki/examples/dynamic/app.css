@@ -1,6 +1,5 @@
 * {
 box-sizing: border-box;
-border: 0;
 font: inherit;
 font-size: 90%;
 line-height: 1.2em;
@@ -14,12 +13,8 @@ vertical-align: baseline;
 
 body {
 background-color: lightgray;
-font-family: serif;
+font-family: Bahnschrift, "DIN Alternate", "Franklin Gothic Medium", "Nimbus Sans Narrow", sans-serif-condensed, sans-serif;
 font-size: 1.2rem;
-}
-
-button, input {
-font-size: 1.8rem;
 }
 
 cite {
@@ -31,6 +26,7 @@ text-transform: uppercase;
 div ul {
 list-style-type: none;
 }
+
 body {
 display: grid;
 grid-template-rows: [head] auto [main] 9fr [foot] 1fr;
@@ -87,13 +83,13 @@ font-family: monospace;
 
 a {
 color: #000000;
-font-family: "Bitter", serif;
+font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
 font-weight: 600;
 text-decoration: underline;
 }
 
 p {
-font-family: "Lora", "Georgia", serif;
+font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa, Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri, source-sans-pro, sans-serif;
 font-size: 1.4rem;
 font-style: normal;
 font-weight: 450;
@@ -102,6 +98,7 @@ font-weight: 450;
 dl div {
 display: flex;
 flex-direction: row;
+font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 place-items: center;
 }
 
@@ -119,11 +116,21 @@ dt::after {
 content: ":";
 }
 
-button[popovertarget] {
+button {
+font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
 font-size: 2.4rem;
 font-weight: bold;
 margin: 0.6rem;
-padding: 0.4rem;
+padding: 1.0rem;
+}
+
+input {
+border-color: black;
+border-radius: 5px;
+border-width: 1px;
+margin: 0.6rem;
+padding: 0.8rem;
+font-size: 1.8rem;
 }
 
 em {
@@ -131,11 +138,10 @@ font-style: italic;
 }
 
 main p {
-font-style: italic;
+font-style: normal;
 }
 
 cite {
-font-family: "Bitter", serif;
 font-weight: 450;
 font-style: normal;
 }
