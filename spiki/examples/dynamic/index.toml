@@ -43,7 +43,7 @@ attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Lor
 
 [[doc.html.head.link]]
 config = {tag_mode = "void"}
-attrib = {rel= "stylesheet", href="basics.css"}
+attrib = {rel= "stylesheet", href="app.css"}
 
 [[doc.html.head.script]]
 attrib = {src = "https://unpkg.com/hyperscript.org@0.9.14", async = "async"}
