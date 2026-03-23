@@ -27,22 +27,6 @@ attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
 
 [[doc.html.head.link]]
 config = {tag_mode = "void"}
-attrib = {rel = "preconnect", href = "https://fonts.googleapis.com"}
-
-[[doc.html.head.link]]
-config = {tag_mode = "void"}
-attrib = {rel = "preconnect", href = "https://fonts.gstatic.com", crossorigin = "crossorigin"}
-
-[[doc.html.head.link]]
-config = {tag_mode = "void"}
-attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&display=swap"}
-
-[[doc.html.head.link]]
-config = {tag_mode = "void"}
-attrib = {rel = "stylesheet", href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"}
-
-[[doc.html.head.link]]
-config = {tag_mode = "void"}
 attrib = {rel= "stylesheet", href="app.css"}
 
 [[doc.html.head.script]]
