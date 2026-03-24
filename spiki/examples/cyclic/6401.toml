@@ -10,7 +10,8 @@ a = "Inception"
 [doc.html.body.main]
 blocks = [
 """
-They walk back through the main part of the town, taking note of all they see.
+They find their way back through the main part of the town.
+Appleby on alert. Broadstairs for backup. Chalgrove in charge of collating.
 """,
 """
 <Broadstairs>   We'd be on a lot better footing if we could figure out the nature of

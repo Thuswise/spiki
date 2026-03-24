@@ -10,12 +10,13 @@ a = "Revisit"
 [doc.html.body.main]
 blocks = [
 """
-<Chalgrove>     Appleby won't stop hunting around anyway.
-<Appleby>       I need you to keep making notes though.
-                There's a lot going on here. I'm likely to get lost in it otherwise.
+<Chalgrove>     Appleby is happy hunting around anyway.
+<Appleby>       I'll need you to keep making notes though.
+                This mystery might run deep. I'm likely to get lost in it otherwise.
 """,
 """
-A half-remembered sense of mutual respect makes a welcome return. Some of the earlier antagonism has been forgiven.
+Much of the earlier antagonism has been forgotten.
+A healthy degree of mutual respect is making its welcome return.
 """,
 """
 <Broadstairs>   OK, is it time for another round?
