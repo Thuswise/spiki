@@ -101,7 +101,7 @@ You can install Spiki as a `PyPI package`_. It runs from the command line.::
 
     options:
       -h, --help            show this help message and exit
-      -O, --output OUTPUT   Specify output directory [/home/boss/src/spiki/output]
+      -O, --output OUTPUT   Specify output directory [~/src/spiki/output]
       --plugin PLUGIN       Specify plugin list [
                             'spiki.plugins.finder:Finder', 'spiki.plugins.loader:Loader',
                             'spiki.plugins.bootstrapper:Bootstrapper', 'spiki.plugins.writer:Writer'
