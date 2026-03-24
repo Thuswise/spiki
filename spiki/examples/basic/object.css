@@ -55,7 +55,7 @@ font-style: italic;
 }
 
 main p {
-font-style: italic;
+font-style: normal;
 }
 
 cite {
@@ -66,6 +66,6 @@ font-style: normal;
 
 cite ~ p {
 font-weight: 350;
-font-style: normal;
+font-style: oblique;
 }
 
