@@ -10,20 +10,36 @@ a = "Withdrawn"
 [doc.html.body.main]
 blocks = [
 """
-They assemble in the gardens of a church.
+<Appleby>       Aha, what have we here? I might pop in quickly.
 """,
 """
-<Broadstairs>   While we're here, I'll just quickly light up.
+The shop has darkened windows and heavy old door. It's a Wine Merchant, but they also sell Tobacco.
+Appleby disappears inside.
 """,
 """
-Plumes of smoke. Furniture polish and burnt leather.
-The invincible aura of Broadstairs turns Perique and Latakia. ???
+<Broadstairs>   Not a bad idea actually.
 """,
 """
-<Appleby>       What have you got today?
-<Broadstairs>   Balkan mixture.
+Broadstairs props himself against a tree.
+Out from his jacket he produces a tin of Balkan Mixture and
+a beautiful handmade pipe; a Danish Egg with an Olivewood band. 
+Chalgrove accepts the invitation. His is a smart bronze Falcon.
+He packed the bowl earlier before setting out.
 """,
 """
-Chalgrove is thinking of [his supper](0848.html).
+<Broadstairs>   What do you have today?
+<Chalgrove>     Clan. I dumped the last of that Erinmore.
+                Couldn't get on with it.
+""",
+"""
+The other nods and settles back into plumes of smoke.
+The aura of Broadstairs takes up Perique and Latakia.
+All about him is furniture polish and burnt leather.
+""",
+"""
+Appleby is back with a cigar. He lights up and the three characters cogitate together.
+After a third of the little Edmundo, Appleby wants to [get going](0848.html).
+Chalgrove is packing to [leave](0848.html).
+Broadstairs begins to think of [his supper](0848.html).
 """,
 ]
