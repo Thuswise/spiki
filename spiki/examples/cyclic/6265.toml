@@ -10,13 +10,19 @@ a = "Inception"
 [doc.html.body.main]
 blocks = [
 """
-<Broadstairs>   Back through the town?
-<Chalgrove>     I think we'd best avoid the areas of greatest anomaly.
-<Appleby>       Follow me then.
+<Broadstairs>   Are you comfortable heading back through the town?
+<Chalgrove>     I think we had best avoid the areas of greatest anomaly.
+<Appleby>       After me then.
 """,
 """
-It seems some of the older buildings offered resistance to encroachment. So it happened that they
-find their way back past a grand Anglican church. Chalgrove would ordinarily have loved to go inside,
-but it's all he can do to hide his anxiety that they [reach the station](0834.html).
+Appleby follows his nose. It appears to him that some of the oldest buildings are mounting a resistance
+to the encroachment of the Phantasm. They were standing at the time of Kepler and Newton.
+They refuse to allow the Natural Principles to fall.
+
+And so it happens that they troop past a grand Anglican church.
+The font in that place has bathed a very famous figure of the Enlightenment.
+
+But Chalgrove can spare no time for that today. It's all he can do to hide his anxiety that they soon
+[reach the station](0834.html).
 """,
 ]
