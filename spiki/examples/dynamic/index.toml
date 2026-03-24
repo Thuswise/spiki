@@ -34,9 +34,9 @@ attrib = {src = "https://unpkg.com/hyperscript.org@0.9.14", async = "async"}
 
 [doc.html.body.main]
 blocks = """
-This is an example of an interactive HTML5 application.
+Here is an example of an interactive HTML5 application.
 It uses [Hyperscript](https://hyperscript.org/), which is a lightweight Javascript library.
-Spiki facilitates the *locality of behaviour* approach.
+This is a good match because Spiki facilitates the *locality of behaviour* favoured by modern Javascript frameworks..
 
 Click the button below to download the data for the Periodic Table of Elements.
 """
@@ -73,6 +73,7 @@ on input
 for word in data["order"]
 if my.value is not empty and word contains my.value.toLowerCase()
 put data[word].name into <dd.name/>
+put data[word].symbol into <dd.symbol/>
 put data[word].number into <dd.number/>
 put data[word].atomic_mass into <dd.mass/>
 break
@@ -81,6 +82,11 @@ break
 [[doc.html.body.main.dl.div]]
 attrib = { class = "name field" }
 dt = "Name"
+dd = ""
+
+[[doc.html.body.main.dl.div]]
+attrib = { class = "symbol field" }
+dt = "Symbol"
 dd = ""
 
 [[doc.html.body.main.dl.div]]
