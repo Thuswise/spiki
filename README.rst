@@ -194,7 +194,7 @@ SpeechMark takes inspiration from other markup systems already in common use, eg
 * `reStructuredText <https://docutils.sourceforge.io/rst.html>`_
 
 I tried both these systems prior to creating SpeechMark. I found I needed some features which
-Markdown didn't have. On the hand, RST proved to be overkill for my particular purpose.
+Markdown didn't have. On the other hand RST proved to be overkill for this purpose.
 
 Philosophy
 ==========
