@@ -171,7 +171,7 @@ Parsing text programmatically::
     '''.strip()
 
     sm = SpeechMark()
-    sm.loads(text)
+    html5 = sm.loads(text)
 
 ... produces this HTML5 output::
 
