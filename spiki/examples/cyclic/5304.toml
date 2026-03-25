@@ -9,12 +9,9 @@ a = "Cancelled"
 
 [doc.html.body.main]
 blocks = """
-They mistake for a Material token.
+A bell rings at the bar.
 
-<Broadstairs>   It's a common mistake to think of the enemy as a single entity.
-                The larger the organization, the more it is riven with rivalry.
-<Chalgrove>     A big firm can often be a cluster of fiefdoms.
-<Broadstairs>   The only thing they share is the name.
-<Chalgrove>     Underneath it's all chaos. I've seen it myself.
-<Appleby>       What are you suggesting?
+<Appleby>       What was that?
+<Broadstairs>   I think they've just called time.
+<Chalgrove>     Is it that late already?
 """
