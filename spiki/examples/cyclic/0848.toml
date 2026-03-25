@@ -10,8 +10,8 @@ a = "Revisit"
 [doc.html.body.main]
 blocks = [
 """
-<Appleby>       I don't really want to hang around much longer.
-<Chalgrove>     I'm afraid we might be short on time.
+<Appleby>       So we're not going to go in any further?.
+<Chalgrove>     I'm afraid we might be too short on time.
 <Broadstairs>   Shall we withdraw? I've no desire to be late again.
 """,
 """
