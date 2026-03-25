@@ -59,7 +59,7 @@ The Index
 =========
 
 If you create an *index.toml* file it will be used to generate a corresponding *index.html* for your generated content.
-Here there is an opportunity to define a ``base`` table. All the conventions of the ``doc`` table apply to ``base``.
+Here you can define a ``base`` table. All the conventions of the ``doc`` table apply to ``base``.
 Every other TOML file will inherit the contents of ``base`` as if it had been part of the ``doc`` table.
 
 Plugins
