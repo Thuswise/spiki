@@ -80,6 +80,17 @@ Bootstrapper    Generates a ``__main.py__`` module and a ``.pyz`` file for porta
 You can define which plugins to use from the command line. Advanced users may create their own plugins to customize
 Spiki behaviour.
 
+Output
+======
+
+The standard set of plugins create a Python `Zip App`_ which is portable across OS platforms.
+It launches a local server and opens a browser tab to the index page::
+
+    python output.pyz
+
+On Windows PCs with Python installed, you may simply double-click the file to achieve the same effect.
+On other systems the suffix is not significant and ``.zip`` may be preferred for clarity.
+
 Examples
 ========
 
@@ -121,6 +132,7 @@ You can install Spiki as a `PyPI package`_. It runs from the command line.::
 
 .. _TOML syntax: https://toml.io
 .. _PyPI package: https://pypi.org/project/spiki/
+.. _Zip App: https://docs.python.org/3/library/zipapp.html#module-zipapp
 
 SpeechMark
 ##########
