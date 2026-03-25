@@ -83,13 +83,17 @@ Spiki behaviour.
 Output
 ======
 
-The standard set of plugins create a Python `Zip App`_ which is portable across OS platforms.
-It launches a local server and opens a browser tab to the index page::
+The standard set of plugins create a Python `Zip App`_ which is portable across OS platforms (Python 3.10 and later).
+It launches a local server and opens a browser tab to the index page. Simply run in a terminal like this::
 
     python output.pyz
 
+Like any other Python program you can supply options to it::
+
+    python output.pyz --help
+
 On Windows PCs with Python installed, you may simply double-click the file to achieve the same effect.
-On other systems the suffix is not significant and ``.zip`` may be preferred for clarity.
+On other systems the suffix is not significant and *.zip* may be preferred for clarity.
 
 Examples
 ========
@@ -123,7 +127,7 @@ You can install Spiki as a `PyPI package`_. It runs from the command line.::
 
     options:
       -h, --help            show this help message and exit
-      -O, --output OUTPUT   Specify output directory [~/src/spiki/output]
+      -O, --output OUTPUT   Specify output directory [./output]
       --plugin PLUGIN       Specify plugin list [
                             'spiki.plugins.finder:Finder', 'spiki.plugins.loader:Loader',
                             'spiki.plugins.bootstrapper:Bootstrapper', 'spiki.plugins.writer:Writer'
