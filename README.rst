@@ -97,7 +97,7 @@ basic       A triptych of dialogue with a dropdown menu and thumbnail images. A 
             eg: `python -m spiki.main =spiki/examples/basic/spiki.cli`
 cyclic      A short story with a branching narrative
 dynamic     A Javascript application demonstrating how Spiki supports *locality of behaviour*
-=======     =======================================================================================================
+=========   =======================================================================================================
 
 Usage
 =====
