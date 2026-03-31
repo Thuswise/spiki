@@ -54,6 +54,10 @@ attrib = {rel= "stylesheet", href="layout.css"}
 config = {tag_mode = "void"}
 attrib = {rel= "stylesheet", href="object.css"}
 
+[[base.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel = "icon", href="/favicon.svg", sizes="any", type="image/svg+xml"}
+
 [base.html.body.header]
 attrib = {accesskey = "m", popovertarget = "nav-upper"}
 button = "≡"  # "IDENTICAL TO" (U+2261)
