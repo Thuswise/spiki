@@ -10,7 +10,7 @@ a = "Elaboration"
 [doc.html.body.main]
 blocks = [
 """
-They know Appleby. If they're not careful he will charge off and theyll end up chasing after him.
+They know Appleby. If they're not careful he will charge off and they'll end up chasing after him.
 """,
 """
 <Broadstairs>   Let's maintain a bit of discipline, shall we?
