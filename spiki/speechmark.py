@@ -78,21 +78,21 @@ class SpeechMark:
     ):
         self.cue_matcher = re.compile(
             r"""
-        ^<                              # Opening bracket
-        (?P<role>[^\.:\\?# >]*)         # Role
-        (?P<directives>[^\:\\?# >]*)    # Directives
-        (?P<mode>[^\\?# >]*)            # Mode
-        (?P<parameters>[^# >]*)         # Parameters
-        (?P<fragments>[^ >]*)           # Fragments
-        >                               # Closing bracket
+        ^<                          # Opening bracket
+        (?P<role>[^.:?# >]*)        # Role
+        (?P<directives>[^:?# >]*)   # Directives
+        (?P<mode>[^?# >]*)          # Mode
+        (?P<parameters>[^# >]*)     # Parameters
+        (?P<fragments>[^ >]*)       # Fragments
+        >                           # Closing bracket
         """,
             re.VERBOSE,
         )
 
         self.list_matcher = re.compile(
             r"""
-        ^\s*                            # Leading space
-        (?P<ordinal>\+|\d+\.)           # Digits and a dot
+        ^\s*                        # Leading space
+        (?P<ordinal>\+|\d+\.)       # Digits and a dot
         """,
             re.VERBOSE,
         )
@@ -107,8 +107,8 @@ class SpeechMark:
 
         self.link_matcher = re.compile(
             r"""
-        \[(?P<label>[^\]]*?)\]          # Non-greedy, permissive
-        \((?P<link>[^\)]*?)\)           # Non-greedy, permissive
+        \[(?P<label>[^\]]*?)\]      # Non-greedy, permissive
+        \((?P<link>[^\)]*?)\)       # Non-greedy, permissive
         """,
             re.VERBOSE,
         )
