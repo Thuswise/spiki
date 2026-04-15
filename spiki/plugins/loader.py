@@ -72,11 +72,12 @@ class Loader(Plugin):
         try:
             text = self.visitor.state[path].text
             node = tomllib.loads(text)
-        except (AttributeError, TypeError, tomllib.TOMLDecodeError):
+        except (AttributeError, TypeError, tomllib.TOMLDecodeError) as error:
             self.logger.warning(
                 f"Unable to read data from {path.relative_to(self.visitor.root)}",
                 extra=dict(phase=self.phase)
             )
+            self.logger.debug(format(error), extra=dict(phase=self.phase))
         else:
             return Change(self, path=path, node=node)
 
