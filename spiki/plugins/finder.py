@@ -56,11 +56,21 @@ class Finder(Plugin):
                 file_type = self.get_type(name)
                 p = parent.joinpath(name)
                 self.logger.info(
-                    f"Found {file_type:<16} file: {name}",
+                    f"Found {file_type:26} file: {name}",
                     extra=dict(path=p.relative_to(parent), phase=self.phase)
                 )
-                if file_type:
-                    yield Change(self, path=p, type=file_type)
+                yield Change(self, path=p, type=file_type)
+
+    def run_filter(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
+        change = self.visitor.state[path]
+        if change.type in (
+            "application/x-python-code", "text/x-python",
+        ):
+            self.logger.info(
+                f"Block {change.type:26} file: {change.path.name}",
+                extra=dict(path=change.path.name, phase=self.phase)
+            )
+            del self.visitor.state[path]
 
     def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         file_type = self.get_type(path.name)

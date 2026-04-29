@@ -81,7 +81,6 @@ class VisitorTests(unittest.TestCase):
         plugin_types = [
             "spiki.plugins.finder:Finder",
             "spiki.plugins.loader:Loader",
-            # "spiki.plugins.indexer:Indexer",
             "spiki.plugins.writer:Writer",
         ]
         examples = importlib.resources.files("spiki.examples")
@@ -102,7 +101,7 @@ class VisitorTests(unittest.TestCase):
             output_path = pathlib.Path(output_name)
             files = list(output_path.glob("*.css")) + list(output_path.glob("*.html"))
 
-        self.assertEqual(len(visitor.state), 10, visitor.state)
+        self.assertEqual(len(visitor.state), 11, visitor.state)
         path = list(visitor.state)[0]
         self.assertEqual("a.toml", path.name)
 
@@ -112,11 +111,12 @@ class VisitorTests(unittest.TestCase):
         self.assertEqual(doc.count("<meta"), 3)
         self.assertLess(doc.index("<nav"), doc.index("<blockquote"), visitor.state[path].node)
 
-        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 10)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 20)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 10)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 10)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 11)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 11)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.FILTER]), 11)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 22)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 11)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 11)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.EXPORT]), 12)
 
         file_names = sorted([i.name for i in files])
         self.assertEqual(len(files), 7, files)

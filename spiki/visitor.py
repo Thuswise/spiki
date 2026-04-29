@@ -123,7 +123,11 @@ class Visitor(contextlib.ExitStack):
         for phase in list(Phase)[2:]:
             for path in list(self.state):
                 for plugin in self.running:
-                    state = self.state[path]
+                    try:
+                        state = self.state[path]
+                    except KeyError:
+                        # Assume filtered out
+                        continue
                     try:
                         change = plugin(phase, path=path, text=state.text, node=state.node, doc=state.doc)
                     except Exception as error:
