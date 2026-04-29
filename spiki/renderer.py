@@ -76,7 +76,7 @@ class Renderer:
         tag_mode = self.get_option(self.Options.tag_mode)
         pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
         for node, entry in pool:
-            entry = html.escape(entry.format(**kwargs))
+            entry = html.escape(entry.format(**dict(kwargs, **tree)))
             if tag_mode == "open":
                 yield f"<{node}{attrs}>"
             elif tag_mode == "pair":

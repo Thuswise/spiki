@@ -241,6 +241,23 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(rv.count("<dd>"), 2)
         self.assertEqual(rv.count("</dd>"), 2)
 
+    def test_node_scope(self):
+        toml = textwrap.dedent("""
+        [metadata]
+        title = "Page"
+
+        [doc.html]
+        config = {tag_mode = "pair"}
+
+        [[doc.html.body.main.dl.div]]
+        metadata.title = "Local"
+        dt = "Title"
+        dd = "{metadata[title]}"
+        """)
+        template = tomllib.loads(toml)
+        rv = Renderer().serialize(template)
+        self.assertIn("<dt>Title</dt>\n<dd>Local</dd>", rv)
+
     def test_block_scope(self):
         toml = textwrap.dedent("""
         [data]
