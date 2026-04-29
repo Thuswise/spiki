@@ -88,7 +88,12 @@ class Renderer:
         path = path or list()
         context = context or dict()
 
-        self.state.attrib = tree.pop("attrib", {})
+        try:
+            self.state.attrib = tree.pop("attrib", {})
+        except AttributeError:
+            # String values
+            return
+
         blocks = tree.pop("blocks", "")
         self.state.blocks = [blocks] if blocks and isinstance(blocks, str) else blocks
         self.state.config = self.state.config.new_child(self.check_config(tree.pop("config", {}), self.Options))

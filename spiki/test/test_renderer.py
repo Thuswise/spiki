@@ -240,3 +240,18 @@ class RendererTests(unittest.TestCase):
         self.assertEqual(rv.count("</dt>"), 2)
         self.assertEqual(rv.count("<dd>"), 2)
         self.assertEqual(rv.count("</dd>"), 2)
+
+    def test_block_scope(self):
+        toml = textwrap.dedent("""
+        [data]
+        events = ["Birthday", "Christmas"]
+
+        [doc.html.body.section]
+        config = {tag_mode = "pair"}
+        blocks = '''<> Happy {data[events][0]}!'''
+        events = ["Monday", "Friday"]
+
+        """)
+        template = tomllib.loads(toml)
+        rv = Renderer().serialize(template)
+        self.assertIn("Happy Monday!", rv)
