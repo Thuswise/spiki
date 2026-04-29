@@ -21,24 +21,16 @@ import textwrap
 import tomllib
 import unittest
 
-from spiki.visitor import Visitor
-from spiki.plugins.indexer import Indexer
-from spiki.plugins.loader import Loader
+try:
+    from string.templatelib import Interpolation
+    from string.templatelib import Template
+except ModuleNotFoundError:
+    Interpolation = None
+    Template = None
 
 
-class IndexerTests(unittest.TestCase):
+class ExampleTests(unittest.TestCase):
 
-    def test_survey(self):
-        with tempfile.TemporaryDirectory() as src_name:
-            src = Path(src_name).resolve()
-            index = src.joinpath("index.toml")
-            index.write_text("")
-            visitor = Visitor(paths=[src])
-            with (
-                Loader(visitor) as loader,
-                Indexer(visitor) as indexer
-            ):
-                index_node = loader.run_enrich(path=index, node={}).node
-                list(indexer.gen_survey(path=index, node=index_node))
-                self.assertTrue(indexer.indexes)
-                self.assertEqual(visitor.url_of(index_node), "index.html")
+    @unittest.skipUnless(Interpolation, "requires Python 3.14 or later")
+    def test_template(self):
+        self.fail()

@@ -1,0 +1,59 @@
+[derive]
+product = "Candles"
+quantity = 4
+stock = 6
+
+[metadata]
+title = "Tabular data"
+
+[doc]
+config = {tag_mode = "open"}
+"!doctype html" = ""
+
+[doc.html]
+config = {tag_mode = "pair"}
+attrib = {lang = "en"}
+
+[doc.html.head]
+title = "{metadata[title]}"
+
+[[doc.html.head.meta]]
+config = {tag_mode = "void"}
+attrib = {charset = "UTF-8"}
+
+[[doc.html.head.meta]]
+config = {tag_mode = "void"}
+attrib = {name = "viewport", content = "width=device-width, initial-scale=1.0"}
+
+[[doc.html.head.meta]]
+config = {tag_mode = "void"}
+attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
+
+[[doc.html.head.link]]
+config = {tag_mode = "void"}
+attrib = {rel= "stylesheet", href="app.css"}
+
+[doc.html.body.main]
+blocks = """
+This example demonstrates use of a non-standard plugin.
+
+Both tabular data and speech are populated from ancillary files.
+
+"""
+
+[[doc.html.body.main.section]]
+
+[doc.html.body.main.section.table]
+# Table
+caption = "CSV Data"
+
+[doc.html.body.main.section.table.thead]
+[doc.html.body.main.section.table.tbody]
+
+[[doc.html.body.main.section]]
+derive = "orders.tsv"
+blocks = """
+<Customer>  {derive[quantity]} {derive[product]}
+<Shopkeep>  {'Nope' if stock < quantity else 'OK'}
+({derive.path} row {derive.rows[derive.index]})
+"""
