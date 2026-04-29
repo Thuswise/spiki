@@ -64,7 +64,7 @@ class Finder(Plugin):
     def run_filter(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Generator[Change]:
         change = self.visitor.state[path]
         if change.type in (
-            "application/x-python-code", "text/x-python",
+            "", "application/x-python-code", "text/x-python",
         ):
             self.logger.info(
                 f"Block {change.type:26} file: {change.path.name}",
