@@ -59,12 +59,12 @@ class Renderer:
         rv = self.state.config.get(option.name, None)
         return rv in option.value and rv
 
-    def gen_blocks(self, **kwargs) -> Generator[str]:
+    def gen_blocks(self, tree: dict, **kwargs) -> Generator[str]:
         block_wrap = self.get_option(self.Options.block_wrap)
         for n, block in enumerate(self.state.blocks):
             if block_wrap:
                 yield f'<{block_wrap} id="{n:02d}">'
-            block = block.format(**kwargs)
+            block = block.format(**dict(kwargs, **tree))
             for line in self.sm.feed(textwrap.dedent(block).strip(), terminate=True):
                 yield line.replace('<li id="', f'<li id="{n:02d}-')
             self.sm.reset()
@@ -117,11 +117,11 @@ class Renderer:
 
         block_site = self.get_option(self.Options.block_site)
         if block_site == "above":
-            yield from self.gen_blocks(**context)
+            yield from self.gen_blocks(tree, **context)
             yield from self.gen_nodes(tree, **context)
         else:
             yield from self.gen_nodes(tree, **context)
-            yield from self.gen_blocks(**context)
+            yield from self.gen_blocks(tree, **context)
 
         pool = [(k, v) for k, v in tree.items() if isinstance(v, list)]
         for node, entry in pool:

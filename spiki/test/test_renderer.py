@@ -249,7 +249,7 @@ class RendererTests(unittest.TestCase):
         [doc.html.body.section]
         config = {tag_mode = "pair"}
         blocks = '''<> Happy {data[events][0]}!'''
-        events = ["Monday", "Friday"]
+        data.events = ["Monday", "Friday"]
 
         """)
         template = tomllib.loads(toml)
