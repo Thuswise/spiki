@@ -18,6 +18,7 @@
 import csv
 import logging
 from pathlib import Path
+from UsetDict import UserDict
 
 from spiki.plugin import Change
 from spiki.plugin import Plugin

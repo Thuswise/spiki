@@ -64,7 +64,10 @@ class Renderer:
         for n, block in enumerate(self.state.blocks):
             if block_wrap:
                 yield f'<{block_wrap} id="{n:02d}">'
-            block = block.format(**dict(kwargs, **tree))
+            try:
+                block = block.format(**dict(kwargs, **tree))
+            except Exception as error:
+                raise type(error)(f"Error: {error}\n{block=}\n{tree=}") from error
             for line in self.sm.feed(textwrap.dedent(block).strip(), terminate=True):
                 yield line.replace('<li id="', f'<li id="{n:02d}-')
             self.sm.reset()
