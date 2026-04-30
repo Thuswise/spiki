@@ -37,7 +37,11 @@ class Derivation(UserDict):
 
     @property
     def templates(self):
-        return {n: i for n, i in enumerate(self.sections) if i.get("derive")}
+        return {n: i for n, i in enumerate(self.sections) if isinstance(i.get("define"), dict)}
+
+    def blocks(self, template: str):
+        # TODO properties for variable substitution
+        return []
 
 
 class Tabulator(Plugin):
@@ -64,11 +68,16 @@ class Tabulator(Plugin):
     def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         d = Derivation(node)
         for pos, section in d.templates.items():
-            path = self.visitor.location_of(node).parent.joinpath(section["derive"]).resolve()
+            try:
+                path = self.visitor.location_of(node).parent.joinpath(section["define"]["file"]).resolve()
+            except KeyError:
+                continue
+
             if "blocks" in section:
                 for n, row in enumerate(self.sources.get(path, [])):
                     print(f"{row=}")
 
             self.logger.info(f"{path=}")
+        # TODO: Pop define key
 
         return Change(self, path=path, node=node, doc=doc)

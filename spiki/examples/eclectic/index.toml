@@ -1,8 +1,3 @@
-[derive]
-product = "Candles"
-quantity = 4
-stock = 6
-
 [metadata]
 title = "Tabular data"
 
@@ -37,23 +32,14 @@ attrib = {rel= "stylesheet", href="app.css"}
 blocks = """
 This example demonstrates use of a non-standard plugin.
 
-Both tabular data and speech are populated from ancillary files.
+A Speech template is populated from an ancillary file.
 
 """
 
 [[doc.html.body.main.section]]
-
-[doc.html.body.main.section.table]
-# Table
-caption = "CSV Data"
-
-[doc.html.body.main.section.table.thead]
-[doc.html.body.main.section.table.tbody]
-
-[[doc.html.body.main.section]]
-derive = "orders.csv"
-blocks = """
-<Customer>  {derive[quantity]} {derive[product]}
-<Shopkeep>  {'Nope' if stock < quantity else 'OK'}
-({derive.path} row {derive.rows[derive.index]})
-"""
+define = {file = "orders.csv", index = 0, quantity = 0, product = "?", reply = "OK", rows = [{}]}
+blocks = ["""
+<Customer>  {define[quantity]} {define[product]}
+<Shopkeep>  {define[reply]}
+({define[file]} row {define[index]})
+"""]
