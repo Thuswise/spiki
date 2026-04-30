@@ -51,7 +51,7 @@ caption = "CSV Data"
 [doc.html.body.main.section.table.tbody]
 
 [[doc.html.body.main.section]]
-derive = "orders.tsv"
+derive = "orders.csv"
 blocks = """
 <Customer>  {derive[quantity]} {derive[product]}
 <Shopkeep>  {'Nope' if stock < quantity else 'OK'}
