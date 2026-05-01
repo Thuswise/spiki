@@ -1,0 +1,97 @@
+* {
+box-sizing: border-box;
+font: inherit;
+font-size: 90%;
+line-height: 1.2em;
+list-style-type: none;
+margin: 0;
+outline: 0;
+padding: 0;
+text-decoration: none;
+vertical-align: baseline;
+}
+
+body {
+background-color: lightgray;
+font-family: Bahnschrift, "DIN Alternate", "Franklin Gothic Medium", "Nimbus Sans Narrow", sans-serif-condensed, sans-serif;
+font-size: 1.2rem;
+}
+
+cite {
+color: grey;
+font-family: serif;
+text-transform: uppercase;
+}
+
+div ul {
+list-style-type: none;
+}
+
+body {
+display: grid;
+grid-template-rows: [head] auto [main] 9fr [foot] 1fr;
+}
+
+main {
+grid-row: main;
+max-width: 48rem;
+margin-left: auto;
+margin-right: auto;
+padding-bottom: 1.2rem;
+padding-left: 2.4rem;
+padding-right: 0.4rem;
+padding-bottom: 2.0rem;
+padding-top: 2.4rem;
+}
+
+blockquote {
+padding: 0.2rem;
+}
+
+p {
+padding: 0.6rem;
+}
+
+cite {
+display: block;
+font-size: 1.0rem;
+margin: 0.4rem 0 0.2rem 0;
+}
+
+code {
+font-family: monospace;
+}
+
+a {
+color: #000000;
+font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
+font-weight: 600;
+text-decoration: underline;
+}
+
+p {
+font-size: 1.4rem;
+font-style: normal;
+font-weight: 450;
+}
+
+em {
+font-style: italic;
+}
+
+main p {
+font-style: normal;
+}
+
+cite {
+font-weight: 450;
+font-style: normal;
+}
+
+cite ~ p {
+font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
+font-weight: normal;
+font-weight: 350;
+font-style: normal;
+}
+

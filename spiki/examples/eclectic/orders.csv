@@ -1,4 +1,4 @@
-Product,RRP,Unit,Stock,Order
+product,rrp,unit,stock,order
 Candle,£1.20,ea,36.0,4
 Pump,£12.99,ea,4.0,1
 Hose,£5.99,5m,1.0,2

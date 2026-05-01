@@ -26,7 +26,7 @@ attrib = {http-equiv = "X-UA-Compatible", content = "ie=edge"}
 
 [[doc.html.head.link]]
 config = {tag_mode = "void"}
-attrib = {rel= "stylesheet", href="app.css"}
+attrib = {rel= "stylesheet", href="speech.css"}
 
 [doc.html.body.main]
 blocks = """
@@ -41,5 +41,6 @@ define = {file = "orders.csv", index = 0, quantity = 0, product = "?", reply = "
 blocks = ["""
 <Customer>  {define[quantity]} {define[product]}
 <Shopkeep>  {define[reply]}
-({define[file]} row {define[index]})
+
+*({define[file]} row {define[index]})*
 """]
