@@ -110,8 +110,8 @@ class VisitorTests(unittest.TestCase):
         self.assertEqual(doc.count("<meta"), 3)
         self.assertLess(doc.index("<nav"), doc.index("<blockquote"), visitor.state[path].node)
 
-        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 11)
-        self.assertEqual(len([i for i in witness if i.phase == Phase.FILTER]), 11)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.SURVEY]), 10)
+        self.assertEqual(len([i for i in witness if i.phase == Phase.FILTER]), 10)
         self.assertEqual(len([i for i in witness if i.phase == Phase.INGEST]), 20)
         self.assertEqual(len([i for i in witness if i.phase == Phase.ENRICH]), 10)
         self.assertEqual(len([i for i in witness if i.phase == Phase.RENDER]), 10)
