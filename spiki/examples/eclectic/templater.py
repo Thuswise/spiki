@@ -17,37 +17,45 @@
 
 
 import csv
-import logging
 from pathlib import Path
 import random
 
 from spiki.plugin import Change
 from spiki.plugin import Plugin
-from spiki.renderer import Renderer
 
 
 class Templater(Plugin):
 
     def __init__(self, visitor):
+        """
+        Plugins rely on behaviour provided by the base class.
+        If you want your own initializer you'll also need to invoke that of the parent.
+
+        Plugins are context managers so the same applies to the __enter__ and __exit__ methods.
+
+        """
         super().__init__(visitor)
         self.sources = {}
 
-    def __enter__(self):
-        return self
+    def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> None | Change:
+        """
+        Plugin methods are invoked in sequence. See `spiki.plugin.Phase` for the significance of each phase.
+        This example looks for tabular data in local CSV files.
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        rv = super().__exit__(exc_type, exc_val, exc_tb)
-        return rv
-
-    def run_ingest(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+        """
         if path.suffix == ".csv":
             with path.open(newline="") as data_file:
                 reader = csv.DictReader(data_file)
                 self.sources[path] = list(reader)
 
-        return Change(self, path=path, node=node, doc=doc)
+    def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> None | Change:
+        """
+        This method looks for sections with a `define` attribute. It uses the nearby SpeechMark block as
+        a template for dialogue and substitutes row by row from the indicated file.
 
-    def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
+        We return a `spiki.plugin.Change` object because we have modified the existing content.
+
+        """
         try:
             sections = node["doc"]["html"]["body"]["main"].get("section", [])
         except KeyError:
@@ -67,14 +75,15 @@ class Templater(Plugin):
                     punc = random.choice("?!.")
                     text = template.format(define=dict(define, index=index, punc=punc, **row))
                     blocks.append(text)
+                self.logger.info(
+                    f"Substituted {index + 1} rows of data from {data_path.name}",
+                    extra=dict(path=path.name, phase=self.phase),
+                )
             except (IndexError, KeyError) as error:
                 self.logger.warning(
                     f"{type(error).__name__}: {error} (section {n}, row {index})",
                     extra=dict(path=path.name, phase=self.phase)
                 )
                 continue
-
-            self.logger.info(f"{path=}")
-        # TODO: Pop define key
 
         return Change(self, path=path, node=node, doc=doc)

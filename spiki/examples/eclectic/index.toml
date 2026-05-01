@@ -32,11 +32,14 @@ attrib = {rel= "stylesheet", href="speech.css"}
 blocks = """
 This example shows how to extend Spiki with your own plugin.
 
-The custom code is in the file `templater.py`.
-The plugin is invoked by the CLI options in `spiki/examples/eclectic/spiki.cli`.
+The custom code is in the file
+[templater.py](https://github.com/thuswise/spiki/blob/main/spiki/examples/eclectic/templater.py).
+The plugin is invoked by the CLI options in
+[spiki.cli](https://github.com/thuswise/spiki/blob/main/spiki/examples/eclectic/spiki.cli).
 
 It uses the speech block as a template and creates new dialogue by
-substituting data from a local file.
+substituting data from a
+[local file](https://github.com/thuswise/spiki/blob/main/spiki/examples/eclectic/orders.csv).
 
 """
 
