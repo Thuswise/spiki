@@ -19,6 +19,7 @@
 import csv
 import logging
 from pathlib import Path
+import random
 
 from spiki.plugin import Change
 from spiki.plugin import Plugin
@@ -53,13 +54,18 @@ class Templater(Plugin):
             sections = []
 
         for n, section in enumerate(sections):
-            define = section.pop("define", {})
+            try:
+                define = section.pop("define")
+            except KeyError:
+                continue
+
             blocks = section.get("blocks", [])
             try:
                 template = blocks.pop(0)
                 data_path = self.visitor.location_of(node).parent.joinpath(define["file"]).resolve()
                 for index, row in enumerate(self.sources.get(data_path, [])):
-                    text = template.format(define=dict(define, index=index, **row))
+                    punc = random.choice("?!.")
+                    text = template.format(define=dict(define, index=index, punc=punc, **row))
                     blocks.append(text)
             except (IndexError, KeyError) as error:
                 self.logger.warning(

@@ -1,5 +1,5 @@
 [metadata]
-title = "Tabular data"
+title = "Custom Plugins"
 
 [doc]
 config = {tag_mode = "open"}
@@ -30,17 +30,26 @@ attrib = {rel= "stylesheet", href="speech.css"}
 
 [doc.html.body.main]
 blocks = """
-This example demonstrates use of a non-standard plugin.
+This example shows how to extend Spiki with your own plugin..
 
-A Speech template is populated from an ancillary file.
+The custom  code is in the file `templater.py`.
+The plugin is invoked by the CLI options in `spiki/examples/eclectic/spiki.cli`.
+
+It uses the speech blocks as a template and creates new dialogue by
+substituting data from a local file.
 
 """
 
 [[doc.html.body.main.section]]
-define = {file = "orders.csv", index = 0, quantity = 0, product = "?", reply = "OK", rows = [{}]}
 blocks = ["""
-<Customer>  {define[quantity]} {define[product]}
-<Shopkeep>  {define[reply]}
+*A man walks into a hardware store*...
+"""]
+
+[[doc.html.body.main.section]]
+define = {file = "orders.csv", index = 0, quantity = 0, product = "?", punc = "", reply = "OK", rows = [{}]}
+blocks = ["""
+<Customer>  {define[product]}{define[punc]}
+<Shopkeep>  {define[product]}. {define[reply]}. {define[rrp]}.
 
 *({define[file]} row {define[index]})*
 """]

@@ -12,13 +12,13 @@ vertical-align: baseline;
 }
 
 body {
-background-color: lightgray;
-font-family: Bahnschrift, "DIN Alternate", "Franklin Gothic Medium", "Nimbus Sans Narrow", sans-serif-condensed, sans-serif;
+background-color: platinum;
+font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa, Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri, source-sans-pro, sans-serif;
 font-size: 1.2rem;
 }
 
 cite {
-color: grey;
+color: charcoal;
 font-family: serif;
 text-transform: uppercase;
 }
@@ -88,7 +88,7 @@ font-weight: 450;
 font-style: normal;
 }
 
-cite ~ p {
+cite ~ p, section p {
 font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
 font-weight: normal;
 font-weight: 350;
