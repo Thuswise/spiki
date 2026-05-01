@@ -16,7 +16,6 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
-from collections import UserDict
 import csv
 import logging
 from pathlib import Path
@@ -26,25 +25,7 @@ from spiki.plugin import Plugin
 from spiki.renderer import Renderer
 
 
-class Derivation(UserDict):
-
-    @property
-    def sections(self):
-        try:
-            return self.data["doc"]["html"]["body"]["main"].get("section", [])
-        except KeyError:
-            return []
-
-    @property
-    def templates(self):
-        return {n: i for n, i in enumerate(self.sections) if isinstance(i.get("define"), dict)}
-
-    def blocks(self, template: str):
-        # TODO properties for variable substitution
-        return []
-
-
-class Tabulator(Plugin):
+class Templater(Plugin):
 
     def __init__(self, visitor):
         super().__init__(visitor)
@@ -66,16 +47,19 @@ class Tabulator(Plugin):
         return Change(self, path=path, node=node, doc=doc)
 
     def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
-        d = Derivation(node)
-        for pos, section in d.templates.items():
+        try:
+            sections = node["doc"]["html"]["body"]["main"].get("section", [])
+        except KeyError:
+            sections = []
+
+        for section in sections:
+            blocks = section.get("blocks", [])
             try:
                 path = self.visitor.location_of(node).parent.joinpath(section["define"]["file"]).resolve()
-            except KeyError:
-                continue
-
-            if "blocks" in section:
                 for n, row in enumerate(self.sources.get(path, [])):
                     print(f"{row=}")
+            except KeyError:
+                continue
 
             self.logger.info(f"{path=}")
         # TODO: Pop define key

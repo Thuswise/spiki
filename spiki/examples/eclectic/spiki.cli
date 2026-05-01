@@ -1,6 +1,6 @@
 --plugin spiki.plugins.finder:Finder
 --plugin spiki.plugins.loader:Loader
---plugin spiki.examples.eclectic.tabulator:Tabulator
+--plugin spiki.examples.eclectic.templater:Templater
 --plugin spiki.plugins.writer:Writer
 --plugin spiki.plugins.bootstrapper:Bootstrapper
 
