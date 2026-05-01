@@ -44,7 +44,7 @@ class Templater(Plugin):
 
         """
         if path.suffix == ".csv":
-            with path.open(newline="") as data_file:
+            with path.open(encoding="utf8", newline="") as data_file:
                 reader = csv.DictReader(data_file)
                 self.sources[path] = list(reader)
 
