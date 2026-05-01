@@ -107,11 +107,13 @@ To compile::
 =========   =======================================================================================================
 Directory   Notes
 =========   =======================================================================================================
-atomic      A simple *Hello, World!* example
-basic       A triptych of dialogue with a dropdown menu and thumbnail images. With a *.cli* file to specify plugins
-            eg: ``python -m spiki.main =spiki/examples/basic/spiki.cli``
-cyclic      A short story with a branching narrative
-dynamic     A Javascript application demonstrating how Spiki supports *locality of behaviour*
+atomic      A simple *Hello, World!* example.
+basic       A triptych of dialogue with a dropdown menu and thumbnail images.
+cyclic      A short story with a branching narrative.
+dynamic     A Javascript application demonstrating how Spiki supports *locality of behaviour*.
+eclectic    An example of a custom plugin for user-defined behaviour.
+            Uses a *.cli* file to include the plugin as an option
+            eg: ``python -m spiki.main =spiki/examples/eclectic/spiki.cli``
 =========   =======================================================================================================
 
 Usage

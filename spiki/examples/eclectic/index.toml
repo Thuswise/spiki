@@ -30,12 +30,12 @@ attrib = {rel= "stylesheet", href="speech.css"}
 
 [doc.html.body.main]
 blocks = """
-This example shows how to extend Spiki with your own plugin..
+This example shows how to extend Spiki with your own plugin.
 
-The custom  code is in the file `templater.py`.
+The custom code is in the file `templater.py`.
 The plugin is invoked by the CLI options in `spiki/examples/eclectic/spiki.cli`.
 
-It uses the speech blocks as a template and creates new dialogue by
+It uses the speech block as a template and creates new dialogue by
 substituting data from a local file.
 
 """
