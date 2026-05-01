@@ -53,12 +53,16 @@ class Templater(Plugin):
             sections = []
 
         for section in sections:
+            define = section.get("define", {})
             blocks = section.get("blocks", [])
             try:
-                path = self.visitor.location_of(node).parent.joinpath(section["define"]["file"]).resolve()
-                for n, row in enumerate(self.sources.get(path, [])):
-                    print(f"{row=}")
-            except KeyError:
+                template = blocks.pop(0)
+                path = self.visitor.location_of(node).parent.joinpath(define["file"]).resolve()
+                for index, row in enumerate(self.sources.get(path, [])):
+                    text = template.format(define=dict(define, index=index, **row))
+                    print(f"{text=}")
+            except (IndexError, KeyError):
+                raise
                 continue
 
             self.logger.info(f"{path=}")
