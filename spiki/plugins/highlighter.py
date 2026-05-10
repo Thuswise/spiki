@@ -20,6 +20,9 @@ import itertools
 from pathlib import Path
 import random
 
+import pygments
+from pygments.formatters import HtmlFormatter
+from pygments.lexers.html import HtmlLexer
 from spiki.plugin import Change
 from spiki.plugin import Plugin
 
@@ -40,17 +43,21 @@ class Highlighter(Plugin):
 
     def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> None | Change:
         targets = list(itertools.chain(self.find_code(node)))
-        self.logger.info(
-            f"{targets=}",
-            extra=dict(path=path.name, phase=self.phase),
-        )
+        # print(HtmlFormatter().get_style_defs(".highlight"))
         for n, target in enumerate(targets):
             try:
-                define = target.pop("define")
+                code = target.pop("code")
             except KeyError:
                 continue
 
-            blocks = section.get("blocks", [])
+            lexer = HtmlLexer()
+            formatter = HtmlFormatter()
+            render = pygments.highlight(code, lexer, formatter)
+            self.logger.info(
+                f"{render=}",
+                extra=dict(path=path.name, phase=self.phase),
+            )
+            blocks = target.get("blocks", [])
             try:
                 template = blocks.pop(0)
                 data_path = self.visitor.location_of(node).parent.joinpath(define["file"]).resolve()
@@ -64,7 +71,7 @@ class Highlighter(Plugin):
                 )
             except (IndexError, KeyError) as error:
                 self.logger.warning(
-                    f"{type(error).__name__}: {error} (section {n}, row {index})",
+                    f"{type(error).__name__}: {error} (section {n}",
                     extra=dict(path=path.name, phase=self.phase)
                 )
                 continue
