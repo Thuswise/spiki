@@ -27,6 +27,17 @@ from spiki.plugin import Change
 from spiki.plugin import Plugin
 
 
+class Formatter(HtmlFormatter):
+    # See https://pygments.org/docs/formatters/#HtmlFormatter
+    options = (
+        "classprefix", "cssclass", "full",
+        "anchorlinenos", "linenos", "hl_lines", "linenostart", "linenostep",
+        "linenospecial", "lineseparator", "lineanchors", "linespans",
+        "filename", "debug_token_types", "style", "title",
+        "nowrap", "wrapcode"
+    )
+
+
 class Highlighter(Plugin):
 
     @classmethod
@@ -42,11 +53,13 @@ class Highlighter(Plugin):
                 yield node
 
     def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> None | Change:
-        lexer = HtmlLexer()
-        formatter = HtmlFormatter()
         targets = list(itertools.chain(self.find_code(node)))
         # print(HtmlFormatter().get_style_defs(".highlight"))
-        for n, target in enumerate(targets):
+        for target in targets:
+            lexer = HtmlLexer()
+            config = target.get("config", {})
+            kwargs = {k: config.pop(k) for k in list(config) if k in Formatter.options}
+            formatter = Formatter(**kwargs)
             self.logger.debug(
                 f"Rendering {target}",
                 extra=dict(path=path.name, phase=self.phase),
@@ -55,7 +68,7 @@ class Highlighter(Plugin):
                 text = target.pop("code").format(**target)
             except Exception as error:
                 self.logger.warning(
-                    f"{type(error).__name__}: {error} ({code})",
+                    f"{type(error).__name__}: {error} ({target})",
                     extra=dict(path=path.name, phase=self.phase)
                 )
                 continue
