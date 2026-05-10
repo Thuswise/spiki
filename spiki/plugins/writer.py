@@ -27,26 +27,13 @@ from spiki.renderer import Renderer
 
 class Writer(Plugin):
 
-    def __init__(self, visitor):
-        super().__init__(visitor)
-        self.space = None
-
-    def __enter__(self):
-        self.space = Path(tempfile.mkdtemp()).resolve()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        rv = super().__exit__(exc_type, exc_val, exc_tb)
-        shutil.rmtree(self.space, ignore_errors=True)
-        return rv
-
     def run_render(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         doc = Renderer(node).serialize()
         return Change(self, path=path, node=node, doc=doc)
 
     def run_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         route = path.relative_to(self.visitor.root).parent
-        parent = self.space.joinpath(route).resolve()
+        parent = self.visitor.space.joinpath(route).resolve()
         slug = node["metadata"]["slug"]
 
         if path.suffix == ".toml":
@@ -57,7 +44,7 @@ class Writer(Plugin):
             text = self.visitor.state[path].text
 
         self.logger.info(
-            f"Exporting to {dest.relative_to(self.space)}",
+            f"Exporting to {dest.relative_to(self.visitor.space)}",
             extra=dict(path=path.relative_to(self.visitor.root), phase=self.phase)
         )
         try:
@@ -81,8 +68,8 @@ class Writer(Plugin):
     def end_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         output = self.visitor.options["output"]
         self.logger.debug(
-                f"Copying from {self.space} to {output}...",
+                f"Copying from {self.visitor.space} to {output}...",
                 extra=dict(path=path, phase=self.phase)
         )
-        shutil.copytree(self.space, output, dirs_exist_ok=True)
+        shutil.copytree(self.visitor.space, output, dirs_exist_ok=True)
         return Change(self)
