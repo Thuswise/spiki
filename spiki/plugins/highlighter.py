@@ -75,9 +75,5 @@ class Highlighter(Plugin):
 
             render = pygments.highlight(text, lexer, formatter)
             target["code"] = render
-            try:
-                target["config"]["text_escape"] = "none"
-            except KeyError:
-                target["config"] = dict(text_escape="none")
 
         return Change(self, path=path, node=node, doc=doc)

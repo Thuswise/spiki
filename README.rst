@@ -54,6 +54,8 @@ block_site
     One of ``above``, ``below`` or ``stripe``. Determines where blocks are placed relative to table-level tags.
 block_wrap
     May be set to ``div`` or ``section``. Used to define a parent element for generated SpeechMark blocks.
+text_escape
+    May be set to ``none``, otherwise defaults to ``html``. Applies character escaping to text values.
 
 The Index
 =========
