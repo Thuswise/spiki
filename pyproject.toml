@@ -23,6 +23,11 @@ requires-python = ">=3.12"
 dependencies = [
 ]
 
+[project.optional-dependencies]
+highlighter = [
+    "pygments",
+]
+
 [project.urls]
 github = "https://github.com/thuswise/spiki"
 examples = "https://github.com/thuswise/spiki/tree/main/spiki/examples"

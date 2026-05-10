@@ -53,10 +53,13 @@ def main(args):
     level = logging.DEBUG if args.debug else logging.INFO
     setup_logger(level=level)
     logger = logging.getLogger("spiki")
-    args.output.mkdir(parents=True, exist_ok=True)
 
     plugin_types = args.plugin or default_plugin_types
-    # TODO: A file path (.toml) is a plugin input
+    args.output = args.output.expanduser()
+    args.paths = [i.expanduser() for i in args.paths]
+    logger.debug(f"{args=}")
+
+    args.output.mkdir(parents=True, exist_ok=True)
     with Visitor(*plugin_types, **vars(args)) as visitor:
         for n, change in enumerate(visitor.walk(*args.paths)):
             pass
