@@ -16,6 +16,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Generator
 import dataclasses
 import enum
 import logging
@@ -72,11 +73,17 @@ class Plugin:
         else:
             method = getattr(self, f"run_{phase.name.lower()}", None)
 
-        if method:
-            rv = method(path=path, node=node, doc=doc, **kwargs)
-            return rv or Change(self, phase=phase, path=path, node=node, doc=doc)
+        if not method:
+            return
+
+        rv = method(path=path, node=node, doc=doc, **kwargs)
+        if isinstance(rv, Generator):
+            rv = list(rv)
+            self.logger.debug(f"Generator: {method} {[type(i) for i in rv]=}", extra=dict(phase=phase))
+            yield from rv
         else:
-            return None
+            self.logger.debug(f"Function: {method} {type(rv)=}", extra=dict(phase=phase))
+            yield rv or Change(self, phase=phase, path=path, node=node, doc=doc)
 
     @staticmethod
     def slugify(text: str, table="".maketrans({i: i for i in string.ascii_letters + string.digits + "_-"})):

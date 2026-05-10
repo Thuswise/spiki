@@ -16,6 +16,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections import defaultdict
 import itertools
 from pathlib import Path
 import random
@@ -52,6 +53,10 @@ class Highlighter(Plugin):
             if k == "code":
                 yield node
 
+    def __init__(self, visitor):
+        super().__init__(visitor)
+        self.styles = defaultdict(set)
+
     def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> None | Change:
         targets = list(itertools.chain(self.find_code(node)))
         # print(HtmlFormatter().get_style_defs(".highlight"))
@@ -59,6 +64,12 @@ class Highlighter(Plugin):
             lexer = HtmlLexer()
             config = target.get("config", {})
             kwargs = {k: config.pop(k) for k in list(config) if k in Formatter.options}
+
+            # Record any style and prefix combinations for generation later
+            style = kwargs.get("style", "default")
+            prefix = kwargs.get("classprefix", "")
+            self.styles[style].add(prefix)
+
             formatter = Formatter(**kwargs)
             self.logger.debug(
                 f"Rendering {target}",
@@ -77,3 +88,15 @@ class Highlighter(Plugin):
             target["code"] = render
 
         return Change(self, path=path, node=node, doc=doc)
+
+    def end_extend(self, **kwargs) -> Change:
+        for style, prefixes in self.styles.items():
+            path = self.visitor.root.joinpath(f"{style}.css")
+            node = dict(metadata=dict(slug=path.name))
+            text = ""
+
+            self.logger.info(
+                f"Generated style {path.name}",
+                extra=dict(path=path.relative_to(self.visitor.root), phase=self.phase)
+            )
+            yield Change(self, path=path, text=text, node=node, phase=self.phase)

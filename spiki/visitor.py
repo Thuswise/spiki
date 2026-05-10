@@ -102,22 +102,20 @@ class Visitor(contextlib.ExitStack):
             for path in paths:
                 for plugin in self.running:
                     try:
-                        changes = list(plugin(phase, path=path) or [])
+                        changes = list(plugin(phase, path=path))
                     except Exception as error:
                         self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
                         continue
 
                     for change in changes:
-                        try:
-                            yield dataclasses.replace(change, phase=phase)
-                            self.state[change.path] = dataclasses.replace(
-                                self.state.setdefault(change.path, change),
-                                phase=phase,
-                            )
-                        except TypeError:
-                            continue
-            else:
-                for change in filter(None, (plugin(phase) for plugin in self.running)):
+                        assert isinstance(change, Change) , f"Plugin violation ({plugin})!"
+                        yield dataclasses.replace(change, phase=phase)
+                        self.state[change.path] = dataclasses.replace(
+                            self.state.setdefault(change.path, change),
+                            phase=phase,
+                        )
+            if False:
+                for change in (c for plugin in self.running for c in list(plugin(phase)) if c):
                     yield dataclasses.replace(change, phase=phase)
 
         for phase in list(Phase)[2:]:
@@ -129,26 +127,28 @@ class Visitor(contextlib.ExitStack):
                         # Assume filtered out
                         continue
                     try:
-                        change = plugin(phase, path=path, text=state.text, node=state.node, doc=state.doc)
+                        changes = list(plugin(phase, path=path, text=state.text, node=state.node, doc=state.doc))
                     except Exception as error:
                         self.logger.warning(error, extra=dict(phase=phase), exc_info=True)
                         continue
 
-                    try:
-                        yield dataclasses.replace(change, phase=phase)
-                    except TypeError:
-                        continue
+                    for change in changes:
+                        assert isinstance(change, Change) , f"Plugin violation ({plugin})!"
+                        try:
+                            yield dataclasses.replace(change, phase=phase)
+                        except TypeError:
+                            continue
 
-                    if change.text:
-                        self.state[path].text = change.text
-                    if change.node:
-                        self.state[path].node.update(change.node)
-                    if change.doc:
-                        self.state[path].doc = change.doc
-                    if change.result:
-                        self.state[path].result = change.result
+                        if change.text:
+                            self.state[path].text = change.text
+                        if change.node:
+                            self.state[path].node.update(change.node)
+                        if change.doc:
+                            self.state[path].doc = change.doc
+                        if change.result:
+                            self.state[path].result = change.result
             else:
-                for change in filter(None, (plugin(phase) for plugin in self.running)):
+                for change in (c for plugin in self.running for c in list(plugin(phase)) if c):
                     if change.text:
                         self.state.setdefault(change.path, change).text = change.text
                     yield dataclasses.replace(change, phase=phase)
