@@ -39,6 +39,7 @@ class Renderer:
         tag_mode    = ["open", "pair", "void"]
         block_wrap  = ["div", "section", "none"]
         block_site  = ["above", "below", "stripe"]
+        text_escape = ["html", "none"]
 
     def __init__(self, template: dict = None, *, config: dict = None):
         self.template = template or dict()
@@ -55,8 +56,8 @@ class Renderer:
                 continue
         return config
 
-    def get_option(self, option: "Option"):
-        rv = self.state.config.get(option.name, None)
+    def get_option(self, option: "Option", default=None):
+        rv = self.state.config.get(option.name, default)
         return rv in option.value and rv
 
     def gen_blocks(self, tree: dict, **kwargs) -> Generator[str]:
@@ -77,15 +78,19 @@ class Renderer:
     def gen_nodes(self, tree: dict, **kwargs) -> Generator[str]:
         attrs =  (" " + " ".join(f'{k}="{html.escape(v)}"' for k, v in self.state.attrib.items())).rstrip()
         tag_mode = self.get_option(self.Options.tag_mode)
-        pool = [(node, v) for node, v in tree.items() if isinstance(v, str)]
-        for node, entry in pool:
-            entry = html.escape(entry.format(**dict(kwargs, **tree)))
+        pool = [(tag, v) for tag, v in tree.items() if isinstance(v, str)]
+        for tag, entry in pool:
+            if self.get_option(self.Options.text_escape, "html") == "html":
+                entry = html.escape(entry.format(**dict(kwargs, **tree)))
+            else:
+                entry = entry.format(**dict(kwargs, **tree))
+
             if tag_mode == "open":
-                yield f"<{node}{attrs}>"
+                yield f"<{tag}{attrs}>"
             elif tag_mode == "pair":
-                yield f"<{node}{attrs}>{entry}</{node}>"
+                yield f"<{tag}{attrs}>{entry}</{tag}>"
             elif tag_mode == "void":
-                yield f"<{node}{attrs} />"
+                yield f"<{tag}{attrs} />"
 
     def walk(self, tree: dict, path: list = None, context: dict = None) -> Generator[str]:
         path = path or list()

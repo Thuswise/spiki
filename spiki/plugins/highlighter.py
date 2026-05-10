@@ -42,38 +42,29 @@ class Highlighter(Plugin):
                 yield node
 
     def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> None | Change:
+        lexer = HtmlLexer()
+        formatter = HtmlFormatter()
         targets = list(itertools.chain(self.find_code(node)))
         # print(HtmlFormatter().get_style_defs(".highlight"))
         for n, target in enumerate(targets):
-            try:
-                code = target.pop("code")
-            except KeyError:
-                continue
-
-            lexer = HtmlLexer()
-            formatter = HtmlFormatter()
-            render = pygments.highlight(code, lexer, formatter)
-            self.logger.info(
-                f"{render=}",
+            self.logger.debug(
+                f"Rendering {target}",
                 extra=dict(path=path.name, phase=self.phase),
             )
-            blocks = target.get("blocks", [])
             try:
-                template = blocks.pop(0)
-                data_path = self.visitor.location_of(node).parent.joinpath(define["file"]).resolve()
-                for index, row in enumerate(self.sources.get(data_path, [])):
-                    punc = random.choice("?!.")
-                    text = template.format(define=dict(define, index=index, punc=punc, **row))
-                    blocks.append(text)
-                self.logger.info(
-                    f"Substituted {index + 1} rows of data from {data_path.name}",
-                    extra=dict(path=path.name, phase=self.phase),
-                )
-            except (IndexError, KeyError) as error:
+                text = target.pop("code").format(**target)
+            except Exception as error:
                 self.logger.warning(
-                    f"{type(error).__name__}: {error} (section {n}",
+                    f"{type(error).__name__}: {error} ({code})",
                     extra=dict(path=path.name, phase=self.phase)
                 )
                 continue
+
+            render = pygments.highlight(text, lexer, formatter)
+            target["code"] = render
+            try:
+                target["config"]["text_escape"] = "none"
+            except KeyError:
+                target["config"] = dict(text_escape="none")
 
         return Change(self, path=path, node=node, doc=doc)
