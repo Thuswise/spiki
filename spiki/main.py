@@ -31,8 +31,8 @@ from spiki.plugin import Phase
 default_plugin_types = [
     "spiki.plugins.finder:Finder",
     "spiki.plugins.loader:Loader",
-    "spiki.plugins.bootstrapper:Bootstrapper",
     "spiki.plugins.writer:Writer",
+    "spiki.plugins.bootstrapper:Bootstrapper",
 ]
 
 
@@ -78,7 +78,7 @@ def parser():
 
 def run():
     p = parser()
-    args, res = p.parse_known_args()
+    args = p.parse_args()
     rv = main(args)
     sys.exit(rv)
 

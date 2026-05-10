@@ -78,7 +78,11 @@ class Writer(Plugin):
         else:
             return Change(self, path=path, node=node, doc=doc, result=dest)
 
-    def end_export(self, **kwargs) -> Change:
+    def end_export(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> Change:
         output = self.visitor.options["output"]
+        self.logger.debug(
+                f"Copying from {self.space} to {output}...",
+                extra=dict(path=path, phase=self.phase)
+        )
         shutil.copytree(self.space, output, dirs_exist_ok=True)
         return Change(self)
