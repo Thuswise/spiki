@@ -45,6 +45,7 @@ build-backend = "setuptools.build_meta"
 packages = [
     "spiki",
     "spiki.examples",
+    "spiki.plugins",
     "spiki.test",
 ]
 
