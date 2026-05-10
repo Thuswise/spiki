@@ -55,7 +55,7 @@ class Bootstrapper(Plugin):
 
         text = self.get_source("spiki.plugins.bootstrapper")
         self.logger.info(
-            f"Generated the {path.name}",
+            f"Generated a {path.name}",
             extra=dict(path=path.relative_to(self.visitor.root), phase=self.phase)
         )
         return Change(self, path=path, text=text, node=node, phase=self.phase)

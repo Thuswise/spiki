@@ -16,7 +16,6 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 
-from collections import defaultdict
 import itertools
 from pathlib import Path
 import random
@@ -41,6 +40,13 @@ class Formatter(HtmlFormatter):
 
 class Highlighter(Plugin):
 
+    @staticmethod
+    def style_path(style_name: str, prefix: str = "") -> Path:
+        prefix = prefix.strip("_-")
+        if prefix:
+            return Path(f"pygments_{style_name}_{prefix}.css")
+        return Path(f"pygments_{style_name}.css")
+
     @classmethod
     def find_code(cls, node: dict):
         for k, v in node.items():
@@ -55,22 +61,21 @@ class Highlighter(Plugin):
 
     def __init__(self, visitor):
         super().__init__(visitor)
-        self.styles = defaultdict(set)
+        self.styles = {}
 
     def run_extend(self, path: Path = None, node: dict = None, doc: str = None, **kwargs) -> None | Change:
         targets = list(itertools.chain(self.find_code(node)))
-        # print(HtmlFormatter().get_style_defs(".highlight"))
         for target in targets:
-            lexer = HtmlLexer()
             config = target.get("config", {})
             kwargs = {k: config.pop(k) for k in list(config) if k in Formatter.options}
+            lexer = pygments.lexers.get_lexer_by_name(config.pop("text_lexer", "toml"))
 
             # Record any style and prefix combinations for generation later
             style = kwargs.get("style", "default")
             prefix = kwargs.get("classprefix", "")
-            self.styles[style].add(prefix)
-
             formatter = Formatter(**kwargs)
+            self.styles[(style, prefix)] = formatter.get_style_defs()
+
             self.logger.debug(
                 f"Rendering {target}",
                 extra=dict(path=path.name, phase=self.phase),
@@ -90,10 +95,9 @@ class Highlighter(Plugin):
         return Change(self, path=path, node=node, doc=doc)
 
     def end_extend(self, **kwargs) -> Change:
-        for style, prefixes in self.styles.items():
-            path = self.visitor.root.joinpath(f"{style}.css")
+        for (style, prefix), text in self.styles.items():
+            path = self.visitor.root.joinpath(self.style_path(style, prefix))
             node = dict(metadata=dict(slug=path.name))
-            text = ""
 
             self.logger.info(
                 f"Generated style {path.name}",
