@@ -81,7 +81,10 @@ class Visitor(contextlib.ExitStack):
         try:
             cls = pkgutil.resolve_name(type_name)
         except (AttributeError, ModuleNotFoundError) as error:
-            self.logger.warning(f"'{type_name}' not resolved. Plugin not loaded.")
+            self.logger.warning(
+                f"Plugin not loaded ({error}).",
+                extra=dict(path=type_name)
+            )
             return None
 
         plugin = cls(self)
