@@ -16,6 +16,8 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
+from collections.abc import Callable
+from collections import defaultdict
 from collections import deque
 import html
 import itertools
@@ -76,6 +78,7 @@ class SpeechMark:
         lines=[],
         maxlen=None,
         noescape="!\"',-;{}~",
+        callback: Callable = None
     ):
         self.cue_matcher = re.compile(
             r"""
@@ -121,16 +124,20 @@ class SpeechMark:
                 if k.endswith(";") and len(v) == 1 and v not in noescape + "#+.`_*[]()@?=:/"
             }
         )
+
+        self.callback = callback or self.on_cue
         self.source = deque(lines, maxlen=maxlen)
+        self.cues = []
         self._index = 0
 
     @property
     def text(self) -> str:
         return "\n".join(self.source)
 
-    def cue_element(self, match: re.Match) -> str:
+    def cue_element(self, match: re.Match, callback=None) -> str:
         details = match.groupdict()
-        # TODO: Cue callback with details
+        if callback:
+            callback(details, source=self.source, index=self._index)
         if not details["role"].strip() and not details["parameters"]:
             return ""
 
@@ -194,7 +201,7 @@ class SpeechMark:
             if n == 0:
                 if cue:
                     yield '<blockquote cite="{0}">'.format(html.escape(cue.group(), quote=True))
-                    yield self.cue_element(cue)
+                    yield self.cue_element(cue, callback=self.callback)
                 elif not n:
                     yield "<blockquote>"
 
@@ -261,6 +268,9 @@ class SpeechMark:
                 yield "</p>"
                 paragraph = False
             yield "</blockquote>"
+
+    def on_cue(self, details: dict, source: deque, index: int):
+        print(f"{details=}", f"{source=}")
 
     def loads(self, text: str, marker: str = "\n", **kwargs) -> str:
         self.reset()

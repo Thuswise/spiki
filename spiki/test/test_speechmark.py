@@ -1071,6 +1071,24 @@ class BlockTests(Syntax):
         return self.check(markup, output)
 
 
+class SpeechMarkTests(unittest.TestCase):
+
+    def test_cue_details(self):
+        text = textwrap.dedent("""
+        <A.mem[-1]@nearby.B.mem[0],nearby.C.mem[0]:10?class=mystery&t=now()#!>
+        You probably shouldn't use cues like this.
+        <B.agreeing:whispers> Correct.
+        """).strip()
+        sm = SpeechMark()
+        rv = sm.loads(text)
+        self.assertTrue(hasattr(sm, "cues"), vars(sm))
+        self.assertIsInstance(sm.cues, list)
+        self.assertEqual(len(sm.cues), 2)
+        self.assertEqual(
+            sm.cues[1], dict(role="B", directives=["agreeing"], mode="whispers")
+        )
+
+
 if __name__ == "__main__":
     from collections import defaultdict
     import inspect
