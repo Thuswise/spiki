@@ -70,6 +70,7 @@ class SpeechMark:
         </blockquote>
 
     """
+    # TODO: Implement a callback with which to report cues.
     def __init__(
         self,
         lines=[],
@@ -129,6 +130,7 @@ class SpeechMark:
 
     def cue_element(self, match: re.Match) -> str:
         details = match.groupdict()
+        # TODO: Cue callback with details
         if not details["role"].strip() and not details["parameters"]:
             return ""
 
