@@ -25,6 +25,7 @@ import operator
 import re
 import sys
 import textwrap
+import urllib.parse
 
 from . import __version__
 
@@ -269,8 +270,19 @@ class SpeechMark:
                 paragraph = False
             yield "</blockquote>"
 
-    def on_cue(self, details: dict, source: deque, index: int):
-        print(f"{details=}", f"{source=}")
+    def on_cue(self, details: dict, source: deque, index: int, *args, **kwargs):
+        lhs, _, rhs = details["directives"].partition("@")
+        directives = [lhs.lstrip(".")] + list(filter(None, rhs.split(",")))
+        mode = details["mode"].lstrip(":")
+        self.cues.append(
+            dict(
+                details,
+                directives=directives,
+                mode=int(mode) if mode.isdecimal() else mode,
+                parameters=urllib.parse.parse_qs(details["parameters"].lstrip("?")),
+                fragments=urllib.parse.parse_qs(details["fragments"].lstrip("#")),
+            )
+        )
 
     def loads(self, text: str, marker: str = "\n", **kwargs) -> str:
         self.reset()
@@ -282,6 +294,7 @@ class SpeechMark:
         yield from self.parse_lines(terminate)
 
     def reset(self):
+        self.cues.clear()
         self.source.clear()
         self._index = 0
 
