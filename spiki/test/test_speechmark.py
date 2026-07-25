@@ -1079,7 +1079,6 @@ class SpeechMarkTests(unittest.TestCase):
 
         You probably shouldn't use cues like this.
 
-        Maybe.
         <B.agreeing:whispers> Correct.
         """).strip()
         sm = SpeechMark()
