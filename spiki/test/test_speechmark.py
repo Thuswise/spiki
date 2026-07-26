@@ -1075,11 +1075,11 @@ class SpeechMarkTests(unittest.TestCase):
 
     def test_cue_details(self):
         text = textwrap.dedent("""
-        <A.mem[-1]@nearby.B.mem[0],nearby['C'].mem[0]:10?class=mystery&t=now()#!>
+        <A.mem[-1]@nearby.B.mem[0],nearby['C'].mem[0]:10?class=mystery&t=now()#0,1>
 
         You probably shouldn't use cues like this.
 
-        <B.agreeing:whispers> Correct.
+        <B.agreeing:whispers#!> Correct.
         """).strip()
         sm = SpeechMark()
         rv = sm.loads(text)
@@ -1093,7 +1093,7 @@ class SpeechMarkTests(unittest.TestCase):
                 directives=["mem[-1]", "nearby.B.mem[0]", "nearby['C'].mem[0]"],
                 mode=10,
                 parameters={"class": ["mystery"], "t": ["now()"]},
-                fragments={},
+                fragments=[0, 1],
             )
         )
         self.assertEqual(
@@ -1103,7 +1103,7 @@ class SpeechMarkTests(unittest.TestCase):
                 directives=["agreeing"],
                 mode="whispers",
                 parameters={},
-                fragments={},
+                fragments=["!"],
             )
         )
 

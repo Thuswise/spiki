@@ -274,13 +274,14 @@ class SpeechMark:
         lhs, _, rhs = details["directives"].partition("@")
         directives = [lhs.lstrip(".")] + list(filter(None, rhs.split(",")))
         mode = details["mode"].lstrip(":")
+        fragments = [int(i) if i.isdecimal() else i for i in details["fragments"].lstrip("#").split(",")]
         self.cues.append(
             dict(
                 details,
                 directives=directives,
                 mode=int(mode) if mode.isdecimal() else mode,
                 parameters=urllib.parse.parse_qs(details["parameters"].lstrip("?")),
-                fragments=urllib.parse.parse_qs(details["fragments"].lstrip("#")),
+                fragments=fragments,
             )
         )
 
