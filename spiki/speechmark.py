@@ -73,7 +73,6 @@ class SpeechMark:
         </blockquote>
 
     """
-    # TODO: Implement a callback with which to report cues.
     def __init__(
         self,
         lines=[],
