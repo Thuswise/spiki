@@ -15,10 +15,8 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
-import html
-import re
+import operator
 import textwrap
-import tomllib
 from types import SimpleNamespace as SN
 import unittest
 
@@ -71,8 +69,14 @@ class ConditionalTests(unittest.TestCase):
 
         """).strip()
         c = Conditions()
-        rv = c.fix(text, context)
-        self.assertEqual(rv, "<A?guard=ENGLAND&value=ENGLAND> Welcome to England, Boris!")
+        fix = c.fix(text, context)
+        self.assertEqual(fix, "<A?guard=ENGLAND&value=ENGLAND> Welcome to England, Boris!")
+        terms = list(c.terms(fix))
+        self.assertEqual(len(terms), 1)
+        cue_terms = terms[0]
+        self.assertEqual(len(cue_terms), 1, terms)
+        self.assertEqual(len(cue_terms[0]), 3, terms)
+        self.assertEqual(cue_terms[0], ("ENGLAND", operator.eq, "ENGLAND"))
 
     def test_cue_multiple_true(self):
         text = textwrap.dedent("""

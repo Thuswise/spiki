@@ -16,6 +16,8 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import codecs
+import itertools
+import operator
 import string
 
 from spiki.speechmark import SpeechMark
@@ -46,3 +48,15 @@ class Conditions:
 
     def fix(self, text: str, context: dict) -> str:
         return self.formatter.vformat(text, args=[], kwargs=context)
+
+    def terms(self, text: str) -> list:
+        html5 = self.processor.loads(text)
+        lookup = {
+            "eq": operator.eq,
+        }
+        for cue in self.processor.cues:
+            p = cue.get("parameters", {})
+            yield [
+                (g, lookup.get(o, operator.eq), v)
+                for g, o, v in itertools.zip_longest(p.get("guard", []), p.get("check", []), p.get("value", []))
+            ]
