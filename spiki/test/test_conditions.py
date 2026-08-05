@@ -58,6 +58,10 @@ class ConditionalTests(unittest.TestCase):
         self.assertEqual(sm.cues[0]["parameters"].get("guard", [None])[0], '{B.state["into"]}')
         self.assertEqual(sm.cues[0]["parameters"].get("value", [None])[0], '{A.state["spot"]}')
 
+    def test_cue_conversion_rot13(self):
+        rv = Conditions().fix("{rude!x}", dict(rude="Ehqr!"))
+        self.assertEqual(rv, "Rude!")
+
     def test_cue_conversion_upper(self):
         context = dict(
             B=SN(name="Boris", state={"into": SN(name="England")}),
@@ -66,9 +70,9 @@ class ConditionalTests(unittest.TestCase):
         <A?guard={B.state[into].name!u}&value=ENGLAND> Welcome to England, {B.name}!
 
         """).strip()
-        print(f"{context["B"].state=}")
         c = Conditions()
-        self.fail(c.template(text, context))
+        rv = c.fix(text, context)
+        self.assertEqual(rv, "<A?guard=ENGLAND&value=ENGLAND> Welcome to England, Boris!")
 
     def test_cue_multiple_true(self):
         text = textwrap.dedent("""

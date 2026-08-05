@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import codecs
 import string
 
 from spiki.speechmark import SpeechMark
@@ -29,6 +30,10 @@ class Conditions:
                 return str(value).lower()
             elif conversion == "u":
                 return str(value).upper()
+            elif conversion == "x":
+                codec = codecs.lookup("rot13")
+                rv, length = codec.decode(value)
+                return rv
             else:
                 return super().convert_field(value, conversion)
 
@@ -39,5 +44,5 @@ class Conditions:
     def evaluate(self, cue: dict, context: dict) -> list[bool]:
         return False
 
-    def template(self, text: str, context: dict) -> str:
+    def fix(self, text: str, context: dict) -> str:
         return self.formatter.vformat(text, args=[], kwargs=context)
