@@ -77,6 +77,9 @@ class ConditionalTests(unittest.TestCase):
         self.assertEqual(len(cue_terms), 1, terms)
         self.assertEqual(len(cue_terms[0]), 3, terms)
         self.assertEqual(cue_terms[0], ("ENGLAND", operator.eq, "ENGLAND"))
+        verdict = c.verdict(text, context)
+        self.assertEqual(len(verdict), len(terms))
+        self.assertTrue(c.verdict(text, context)[0])
 
     def test_cue_multiple_true(self):
         text = textwrap.dedent("""

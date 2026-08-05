@@ -43,9 +43,6 @@ class Conditions:
         self.processor = SpeechMark()
         self.formatter = self.ComparisonFormatter()
 
-    def evaluate(self, cue: dict, context: dict) -> list[bool]:
-        return False
-
     def fix(self, text: str, context: dict) -> str:
         return self.formatter.vformat(text, args=[], kwargs=context)
 
@@ -60,3 +57,9 @@ class Conditions:
                 (g, lookup.get(o, operator.eq), v)
                 for g, o, v in itertools.zip_longest(p.get("guard", []), p.get("check", []), p.get("value", []))
             ]
+
+    def verdict(self, text: dict, context: dict) -> bool:
+        text = self.fix(text, context)
+        terms = self.terms(text)
+        return [all(o(g, v) for g, o, v in t) for t in terms]
+
