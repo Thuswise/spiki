@@ -16,6 +16,7 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 import codecs
+from collections.abc import Generator
 import itertools
 import operator
 import string
@@ -46,7 +47,7 @@ class Conditions:
     def fix(self, text: str, context: dict) -> str:
         return self.formatter.vformat(text, args=[], kwargs=context)
 
-    def terms(self, text: str) -> list:
+    def terms(self, text: str) -> Generator[list[tuple]]:
         html5 = self.processor.loads(text)
         lookup = {
             "eq": operator.eq,
@@ -58,7 +59,7 @@ class Conditions:
                 for g, o, v in itertools.zip_longest(p.get("guard", []), p.get("check", []), p.get("value", []))
             ]
 
-    def verdict(self, text: dict, context: dict) -> bool:
+    def verdict(self, text: dict, context: dict) -> list[bool]:
         text = self.fix(text, context)
         terms = self.terms(text)
         return [all(o(g, v) for g, o, v in t) for t in terms]
