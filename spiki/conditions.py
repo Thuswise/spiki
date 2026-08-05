@@ -15,8 +15,29 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+import string
+
+from spiki.speechmark import SpeechMark
+
+
 class Conditions:
 
-    @staticmethod
-    def evaluate(cue: dict, context: dict) -> list[bool]:
+    class ComparisonFormatter(string.Formatter):
+
+        def convert_field(self, value: object, conversion: str) -> str:
+            if conversion == "l":
+                return str(value).lower()
+            elif conversion == "u":
+                return str(value).upper()
+            else:
+                return super().convert_field(value, conversion)
+
+    def __init__(self):
+        self.processor = SpeechMark()
+        self.formatter = self.ComparisonFormatter()
+
+    def evaluate(self, cue: dict, context: dict) -> list[bool]:
         return False
+
+    def template(self, text: str, context: dict) -> str:
+        return self.formatter.vformat(text, args=[], kwargs=context)

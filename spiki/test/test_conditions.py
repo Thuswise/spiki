@@ -22,7 +22,6 @@ import tomllib
 from types import SimpleNamespace as SN
 import unittest
 
-import spiki
 from spiki.conditions import Conditions
 from spiki.speechmark import SpeechMark
 
@@ -56,9 +55,40 @@ class ConditionalTests(unittest.TestCase):
         """).strip()
         sm = SpeechMark()
         rv = sm.loads(text)
-        self.fail(sm.cues[0])
+        self.assertEqual(sm.cues[0]["parameters"].get("guard", [None])[0], '{B.state["into"]}')
+        self.assertEqual(sm.cues[0]["parameters"].get("value", [None])[0], '{A.state["spot"]}')
 
     def test_cue_conversion_upper(self):
+        context = dict(
+            B=SN(name="Boris", state={"into": SN(name="England")}),
+        )
+        text = textwrap.dedent("""
+        <A?guard={B.state[into].name!u}&value=ENGLAND> Welcome to England, {B.name}!
+
+        """).strip()
+        print(f"{context["B"].state=}")
+        c = Conditions()
+        self.fail(c.template(text, context))
+
+    def test_cue_multiple_true(self):
+        text = textwrap.dedent("""
+        <A?guard={B.state["into"].name!u}&value=ENGLAND}> Welcome to England, {B.name}!
+
+        """).strip()
+        sm = SpeechMark()
+        rv = sm.loads(text)
+        self.fail(sm.cues[0])
+
+    def test_cue_multiple_false(self):
+        text = textwrap.dedent("""
+        <A?guard={B.state["into"].name!u}&value=ENGLAND}> Welcome to England, {B.name}!
+
+        """).strip()
+        sm = SpeechMark()
+        rv = sm.loads(text)
+        self.fail(sm.cues[0])
+
+    def test_cue_guard_no_value(self):
         text = textwrap.dedent("""
         <A?guard={B.state["into"].name!u}&value=ENGLAND}> Welcome to England, {B.name}!
 
