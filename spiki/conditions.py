@@ -44,12 +44,14 @@ class Conditions:
         self.processor = SpeechMark()
         self.formatter = self.ComparisonFormatter()
 
-    def fix(self, text: str, context: dict) -> str:
+    def fix(self, text: str, context: dict, hide_errors=True) -> str:
         try:
             return self.formatter.vformat(text, args=[], kwargs=context)
         except Exception as err:
-            # FIXME
-            raise
+            if hide_errors:
+                return ""
+            else:
+                raise err
 
     def terms(self, text: str) -> Generator[list[tuple]]:
         html5 = self.processor.loads(text)
@@ -65,8 +67,6 @@ class Conditions:
 
     def verdict(self, text: dict, context: dict) -> list[bool]:
         text = self.fix(text, context)
-        print(f"{text=}")
-        terms = self.terms(text)
-        print(f"{terms=}")
-        return [all(o(g, v) for g, o, v in t) for t in terms]
+        terms = list(self.terms(text))
+        return [all(o(g, g if v is None else v) for g, o, v in t) for t in terms]
 

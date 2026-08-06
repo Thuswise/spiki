@@ -91,6 +91,7 @@ class ConditionalTests(unittest.TestCase):
         self.assertIsInstance(v, list)
         self.assertTrue(any(v), v)
         self.assertTrue(all(v), v)
+        self.assertEqual(v, [True])
 
     def test_cue_multiple_false(self):
         text = textwrap.dedent("""
@@ -100,13 +101,28 @@ class ConditionalTests(unittest.TestCase):
         c = Conditions()
         v = c.verdict(text, dict(A=SN(name="A", win=True), B=SN(name="B", win=False)))
         self.assertIsInstance(v, list)
-        self.assertEqual(v, [True, False])
+        self.assertEqual(v, [False])
 
-    def test_cue_guard_no_value(self):
+    def test_cue_guard_no_value_true(self):
         text = textwrap.dedent("""
-        <A?guard={B.state["into"].name!u}&value=ENGLAND}> Welcome to England, {B.name}!
+        <A?guard={A.win}&guard={B.win}> Correct, {B.name}!
 
         """).strip()
-        sm = SpeechMark()
-        rv = sm.loads(text)
-        self.fail(sm.cues[0])
+        c = Conditions()
+        v = c.verdict(text, dict(A=SN(name="A", win=True), B=SN(name="B", win=True)))
+        self.assertIsInstance(v, list)
+        self.assertTrue(any(v), v)
+        self.assertTrue(all(v), v)
+        self.assertEqual(v, [True])
+
+    def test_cue_guard_no_value_false(self):
+        text = textwrap.dedent("""
+        <A?guard={A.win}&guard={B.lose}> Correct, {B.name}!
+
+        """).strip()
+        c = Conditions()
+        v = c.verdict(text, dict(A=SN(name="A", win=True), B=SN(name="B", win=True)))
+        self.assertIsInstance(v, list)
+        self.assertFalse(any(v), v)
+        self.assertTrue(all(v), v)
+        self.assertEqual(v, [])
