@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
-from collections import defauldict
+from collections import defaultdict
+import mimetypes
 
 
 class Document:
@@ -23,15 +24,24 @@ class Document:
     def __init__(self, *args):
         self.data = defaultdict(list)
 
+import pathlib
+import shutil
 import tempfile
+import textwrap
 import unittest
 
 
 class DocumentTests(unittest.TestCase):
 
-    def test_native(self):
-        a = SN(name="Alice")
-        b = SN(name="Boris")
-        rv = "{b.name[0]!s}".format(a=a, b=b)
-        self.assertEqual(rv, "B")
+    def setUp(self):
+        self.path = pathlib.Path(tempfile.mkdtemp())
 
+    def tearDown(self):
+        shutil.rmtree(self.path)
+
+    def test_simple(self):
+        config = dict(port=8080)
+        text = textwrap.dedent("""
+        <A> Knock knock.
+        <B> Who's there?
+        """)
