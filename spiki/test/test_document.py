@@ -27,7 +27,7 @@ class Document:
     def __init__(self, *args, path=None):
         self.data = defaultdict(list)
         for arg in args:
-            self.data[id(self) if path is None else path].append(arg)
+            self.data[path].append(arg)
 
     @property
     def header(self):
