@@ -45,7 +45,11 @@ class Conditions:
         self.formatter = self.ComparisonFormatter()
 
     def fix(self, text: str, context: dict) -> str:
-        return self.formatter.vformat(text, args=[], kwargs=context)
+        try:
+            return self.formatter.vformat(text, args=[], kwargs=context)
+        except Exception as err:
+            # FIXME
+            raise
 
     def terms(self, text: str) -> Generator[list[tuple]]:
         html5 = self.processor.loads(text)
@@ -61,6 +65,8 @@ class Conditions:
 
     def verdict(self, text: dict, context: dict) -> list[bool]:
         text = self.fix(text, context)
+        print(f"{text=}")
         terms = self.terms(text)
+        print(f"{terms=}")
         return [all(o(g, v) for g, o, v in t) for t in terms]
 
