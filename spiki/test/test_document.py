@@ -18,11 +18,18 @@
 from collections import defaultdict
 import mimetypes
 
+from spiki import __version__
+
 
 class Document:
 
     def __init__(self, *args):
         self.data = defaultdict(list)
+
+    @property
+    def header(self):
+        return dict(root=id(self), format=__version__)
+
 
 import pathlib
 import shutil
@@ -45,3 +52,7 @@ class DocumentTests(unittest.TestCase):
         <A> Knock knock.
         <B> Who's there?
         """)
+        doc = Document(config, text)
+        self.assertIsInstance(doc.header, dict)
+        self.assertTrue(doc.header.get("root", None))
+        self.assertEqual(doc.header.get("format", None), __version__)
