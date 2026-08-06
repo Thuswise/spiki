@@ -31,15 +31,21 @@ class Document:
 
     @property
     def header(self):
-        return dict(root=id(self), format=__version__)
+        return dict(root=id(self), spiki=__version__)
 
     def __str__(self):
         return "\n".join((
             "{0}\n{1}".format(
-                json.dumps(self.header, sort_keys=False),
+                json.dumps(
+                    dict(
+                        self.header,
+                        type="application/json" if isinstance(i, (dict, list)) else "text/plain"
+                    ),
+                    sort_keys=False
+                ),
                 json.dumps(i, indent=0, sort_keys=False) if isinstance(i, (dict, list)) else i
             )
-            for k, v in self.data.items()
+            for n, (k, v) in enumerate(self.data.items())
             for i in v
         ))
 
@@ -67,7 +73,7 @@ class DocumentTests(unittest.TestCase):
         doc = Document(config, text)
         self.assertIsInstance(doc.header, dict)
         self.assertTrue(doc.header.get("root", None))
-        self.assertEqual(doc.header.get("format", None), __version__)
+        self.assertEqual(doc.header.get("spiki", None), __version__)
 
     def test_str(self):
         config = dict(port=8080)
