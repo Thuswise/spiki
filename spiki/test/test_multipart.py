@@ -21,6 +21,7 @@ import tempfile
 import textwrap
 import unittest
 
+import spiki
 from spiki.multipart import Multipart
 
 
@@ -90,8 +91,9 @@ class MultipartTests(unittest.TestCase):
         """)
         doc = Multipart(config, text)
         self.assertIsInstance(doc.header, dict)
-        self.assertTrue(doc.header.get("root", None))
-        self.assertEqual(doc.header.get("spiki", None), __version__)
+        self.assertTrue(doc.header.get("mark", None))
+        self.assertEqual(doc.header.get("spiki", None), spiki.__version__)
+        print(f"{doc.data=}")
 
     def test_str(self):
         config = dict(port=8080)
