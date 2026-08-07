@@ -16,8 +16,10 @@
 # If not, see <https://www.gnu.org/licenses/>.
 
 from collections import defaultdict
+import io
 import json
 import mimetypes
+import re
 
 from spiki import __version__
 
@@ -25,6 +27,7 @@ from spiki import __version__
 class Document:
 
     def __init__(self, *args, path: list = None):
+        self.root_regex = re.compile("")
         self.path = path
         self.data = defaultdict(list)
         for arg in args:
@@ -43,15 +46,23 @@ class Document:
                 json.dumps(
                     dict(
                         self.header,
-                        type="application/json" if isinstance(i, (dict, list)) else "text/plain"
+                        type="application/json"
+                        if isinstance(i, (dict, list))
+                        else "text/plain"
                     ),
                     sort_keys=False
                 ),
-                json.dumps(i, indent=0, sort_keys=False) if isinstance(i, (dict, list)) else i
+                json.dumps(i, indent=0, sort_keys=False)
+                if isinstance(i, (dict, list))
+                else i
             )
             for n, (k, v) in enumerate(self.data.items())
             for i in v
         ))
+
+    def feed(self, text: str):
+        pass
+
 
 import pathlib
 import shutil
@@ -67,6 +78,9 @@ class DocumentTests(unittest.TestCase):
 
     def tearDown(self):
         shutil.rmtree(self.path)
+
+    def test_root_regex(self):
+        self.fail()
 
     def test_simple(self):
         config = dict(port=8080)
