@@ -24,14 +24,18 @@ from spiki import __version__
 
 class Document:
 
-    def __init__(self, *args, path=None):
+    def __init__(self, *args, path: list = None):
+        self.path = path
         self.data = defaultdict(list)
         for arg in args:
             self.data[path].append(arg)
 
     @property
     def header(self):
-        return dict(root=id(self), spiki=__version__)
+        if self.path is None:
+            return dict(root=id(self), spiki=__version__)
+        else:
+            return dict(root=id(self), spiki=__version__, path=self.path[:])
 
     def __str__(self):
         return "\n".join((
