@@ -97,8 +97,8 @@ class MultipartTests(unittest.TestCase):
         text = textwrap.dedent("""
         <A> Knock knock.
         <B> Who's there?
-        """)
+        """).rstrip()
         doc = Multipart(config, text)
         rv = str(doc)
         lines = rv.splitlines()
-        self.assertEqual(len(lines), 7, rv)
+        self.assertEqual(len(lines), 8, rv)

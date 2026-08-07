@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+from collections.abc import Generator
 from collections import defaultdict
 import io
 import json
@@ -62,7 +63,7 @@ class Multipart:
             for i in v
         ))
 
-    def feed(self, text: str, header_length=84, data_types=("application/json", )):
+    def feed(self, text: str, header_length=84, data_types=("application/json", )) -> Generator[dict]:
         delimiters = list(self.mark_regex.finditer(text))
         if not delimiters:
             self.logger.error("No delimiters found")
@@ -77,6 +78,11 @@ class Multipart:
             self.logger.error(f"Invalid Header. Pos: {pos}")
             return
 
+        mark = header.get("mark")
+        if not mark:
+            self.logger.error(f"No mark found. Pos: {pos}")
+            return
+
         for n, d in enumerate(delimiters):
             if (pos := d.end()) - d.start() > header_length:
                 self.logger.error(f"Delimiter too long. Pos: {pos}")
@@ -86,6 +92,10 @@ class Multipart:
                 data = json.loads(d[0])
             except json.JSONDecodeError:
                 self.logger.error(f"Invalid Delimiter. Pos: {pos}")
+                return
+
+            if data.get("mark") != mark:
+                self.logger.error(f"Mark mismatch. Pos: {pos}")
                 return
 
             if len(delimiters) - n > 1:
