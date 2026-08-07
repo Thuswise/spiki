@@ -62,7 +62,7 @@ class Multipart:
             for i in v
         ))
 
-    def feed(self, text: str, header_length=84):
+    def feed(self, text: str, header_length=84, data_types=("application/json", )):
         delimiters = list(self.mark_regex.finditer(text))
         if not delimiters:
             self.logger.error("No delimiters found")
@@ -93,7 +93,11 @@ class Multipart:
             else:
                 data["payload"] = payload = text[d.end():]
 
-            if data.get("type") == "application/json":
-                pass
+            if data.get("type") in data_types:
+                try:
+                    data["payload"] = json.loads(payload)
+                except json.JSONDecodeError:
+                    self.logger.error(f"Invalid Data. Pos: {d.end()}")
+                    return
 
             yield data

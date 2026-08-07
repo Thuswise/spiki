@@ -50,7 +50,10 @@ class MultipartTests(unittest.TestCase):
     def test_root_regex_reject(self):
         for n, text in enumerate([
             textwrap.dedent("""
-            {{"mark": 2863490869328, "spiki": "0.25.0", "type": "application/json"}}
+            {"mark": 2863490869328, "spiki": "0.25.0", "type": "application/json"}
+            """),  # Leading whitespace
+            textwrap.dedent("""
+            {{"mark": 2863490869328, "spiki": "0.25.0", "type": "application/json"}
             """).lstrip(),
             textwrap.dedent("""
             {"mark": 2863490869328, "spiki": "0.25.0", "type": "application/json"}}
@@ -60,7 +63,7 @@ class MultipartTests(unittest.TestCase):
             {
             "port": 8080
             }
-            {"mark": 28634908693X8, "spiki": "0.25.0", "type": "text/plain"}
+            {"mark": "2863490869328", "spiki": "0.25.0", "type": "text/plain"}
 
             <A> Knock knock.
             <B> Who's there?
@@ -70,11 +73,12 @@ class MultipartTests(unittest.TestCase):
             {
             "port": 8080,  # This is not valid JSON
             }
-            """),
+            """).lstrip(),
         ]):
             with self.subTest(n=n, text=text):
                 doc = Multipart()
                 bits = list(doc.feed(text))
+                self.assertFalse(bits)
                 self.assertFalse(doc.data)
 
     def test_simple(self):
