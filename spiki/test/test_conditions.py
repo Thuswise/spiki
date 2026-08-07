@@ -24,21 +24,7 @@ from spiki.conditions import Conditions
 from spiki.speechmark import SpeechMark
 
 
-#TODO:
-"""
-Add l and u converters for upper/lower.
-
-guard = "{B.state['into'].name[0]!u}"
-value = "LON"
-check = "eq" / "neq" / "in" / "nin"
-
-"""
-class Verdict:
-    def evaluate(cue, context):
-        return False
-
-
-class ConditionalTests(unittest.TestCase):
+class ConditionsTests(unittest.TestCase):
 
     def test_native(self):
         a = SN(name="Alice")
