@@ -67,7 +67,7 @@ class MultipartTests(unittest.TestCase):
 
             <A> Knock knock.
             <B> Who's there?
-            """).lstrip(),
+            """).lstrip(),  # Mismatched mark
             textwrap.dedent("""
             {"mark": 2863490869328, "spiki": "0.25.0", "type": "application/json"}
             {
@@ -77,9 +77,10 @@ class MultipartTests(unittest.TestCase):
         ]):
             with self.subTest(n=n, text=text):
                 doc = Multipart()
-                bits = list(doc.feed(text))
-                self.assertFalse(bits)
-                self.assertFalse(doc.data)
+                with self.assertLogs("spiki.multipart", level="ERROR") as context:
+                    bits = list(doc.feed(text))
+                    self.assertLessEqual(len(doc.data), len(bits))
+                self.assertTrue(any("Pos: " in i for i in context.output))
 
     def test_simple(self):
         config = dict(port=8080)
