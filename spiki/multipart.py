@@ -105,9 +105,11 @@ class Multipart:
 
             if data.get("type") in data_types:
                 try:
-                    data["payload"] = json.loads(payload)
+                    data["payload"] = payload = json.loads(payload)
                 except json.JSONDecodeError:
                     self.logger.error(f"Invalid Data. Pos: {d.end()}")
                     return
 
+            path = data.get("path")
+            self.data[path].append(payload)
             yield data

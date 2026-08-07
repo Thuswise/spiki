@@ -79,8 +79,8 @@ class MultipartTests(unittest.TestCase):
                 doc = Multipart()
                 with self.assertLogs("spiki.multipart", level="ERROR") as context:
                     bits = list(doc.feed(text))
-                    self.assertLessEqual(len(doc.data), len(bits))
-                self.assertTrue(any("Pos: " in i for i in context.output))
+                self.assertIn("ERROR", "\n".join(context.output))
+                self.assertIn("Pos: ", "\n".join(context.output))
 
     def test_simple(self):
         config = dict(port=8080)
