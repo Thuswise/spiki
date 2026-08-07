@@ -18,16 +18,18 @@
 from collections import defaultdict
 import io
 import json
+import logging
 import mimetypes
 import re
 
 from spiki import __version__
 
 
-class Document:
+class Multipart:
 
     def __init__(self, *args, path: list = None):
-        self.root_regex = re.compile("")
+        self.logger = logging.getLogger("spiki.multipart")
+        self.mark_regex = re.compile(r"^\{.+?\}$", re.MULTILINE)
         self.path = path
         self.data = defaultdict(list)
         for arg in args:
@@ -36,9 +38,9 @@ class Document:
     @property
     def header(self):
         if self.path is None:
-            return dict(root=id(self), spiki=__version__)
+            return dict(mark=id(self), spiki=__version__)
         else:
-            return dict(root=id(self), spiki=__version__, path=self.path[:])
+            return dict(mark=id(self), spiki=__version__, path=self.path[:])
 
     def __str__(self):
         return "\n".join((
@@ -60,46 +62,38 @@ class Document:
             for i in v
         ))
 
-    def feed(self, text: str):
-        pass
+    def feed(self, text: str, header_length=84):
+        delimiters = list(self.mark_regex.finditer(text))
+        if not delimiters:
+            self.logger.error("No delimiters found")
+            return
+        if (pos := delimiters[0].start()) != 0:
+            self.logger.error(f"Header does not lead. Pos: {pos}")
+            return
 
+        try:
+            header = json.loads(delimiters[0][0])
+        except json.JSONDecodeError:
+            self.logger.error(f"Invalid Header. Pos: {pos}")
+            return
 
-import pathlib
-import shutil
-import tempfile
-import textwrap
-import unittest
+        for n, d in enumerate(delimiters):
+            if (pos := d.end()) - d.start() > header_length:
+                self.logger.error(f"Delimiter too long. Pos: {pos}")
+                return
 
+            try:
+                data = json.loads(d[0])
+            except json.JSONDecodeError:
+                self.logger.error(f"Invalid Delimiter. Pos: {pos}")
+                return
 
-class DocumentTests(unittest.TestCase):
+            if len(delimiters) - n > 1:
+                data["payload"] = payload = text[d.end(): delimiters[n + 1].start()]
+            else:
+                data["payload"] = payload = text[d.end():]
 
-    def setUp(self):
-        self.path = pathlib.Path(tempfile.mkdtemp())
+            if data.get("type") == "application/json":
+                pass
 
-    def tearDown(self):
-        shutil.rmtree(self.path)
-
-    def test_root_regex(self):
-        self.fail()
-
-    def test_simple(self):
-        config = dict(port=8080)
-        text = textwrap.dedent("""
-        <A> Knock knock.
-        <B> Who's there?
-        """)
-        doc = Document(config, text)
-        self.assertIsInstance(doc.header, dict)
-        self.assertTrue(doc.header.get("root", None))
-        self.assertEqual(doc.header.get("spiki", None), __version__)
-
-    def test_str(self):
-        config = dict(port=8080)
-        text = textwrap.dedent("""
-        <A> Knock knock.
-        <B> Who's there?
-        """)
-        doc = Document(config, text)
-        rv = str(doc)
-        lines = rv.splitlines()
-        self.assertEqual(len(lines), 7, rv)
+            yield data
