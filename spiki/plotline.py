@@ -19,3 +19,5 @@
 # TODO: Paths identify nodes (stage) or edges (story) depending on content.
 # Both nodes and edges have ports which connect them.
 
+# Stage: Python code (entity model)
+# Story: Speech      (drama  model)
