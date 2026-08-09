@@ -26,10 +26,6 @@ import re
 from spiki import __version__
 
 
-# TODO: Paths idenitfy nodes (stage) or edges (story) depending on content.
-# Both nodes and edges have ports which connect them.
-
-
 class Multipart:
 
     def __init__(self, *args, path: list = None):
