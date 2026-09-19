@@ -204,6 +204,11 @@ class SpeechMark:
                     yield self.cue_element(cue, callback=self.callback)
                     if self.cues:
                         self.cues[-1]["lines"] = lines.copy()
+                        text = line[cue.span()[-1]:]
+                        self.cues[-1].setdefault("words", []).extend(
+                            [i for i in re.split(r"\W+", text) if i]
+                        )
+
                 elif not n:
                     yield "<blockquote>"
 
@@ -230,6 +235,9 @@ class SpeechMark:
                 line = line[item.end() :].lstrip()  # Retain hanging text
                 if self.cues:
                     self.cues[-1].setdefault("items", []).append(line)
+                    self.cues[-1].setdefault("words", []).extend(
+                        [i for i in re.split(r"\W+", line) if i]
+                    )
 
             elif not paragraph and n < min(list_items or [sys.maxsize]):
                 paragraph = True

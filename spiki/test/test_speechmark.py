@@ -1122,6 +1122,7 @@ class SpeechMarkTests(unittest.TestCase):
         rv = sm.loads(text)
         self.assertEqual(len(getattr(sm, "cues", [])), 2)
         self.assertEqual(sm.cues[1]["lines"], ["<B> Yes, *really* simple."])
+        self.assertEqual(sm.cues[1]["words"], ["Yes", "really", "simple"])
 
     def test_cue_items(self):
         text = textwrap.dedent("""
@@ -1137,6 +1138,13 @@ class SpeechMarkTests(unittest.TestCase):
         self.assertEqual(len(sm.cues[0]["lines"]), 5)
         self.assertEqual(len(sm.cues[0]["items"]), 3)
         self.assertEqual(sm.cues[0]["items"][1], "Go for the Shepherd's Pie")
+        self.assertEqual(
+            sm.cues[0]["words"][:10],
+            ["What", "will", "you", "have", "sir", "The", "special", "is", "fish", "today"]
+        )
+        self.assertEqual(
+            sm.cues[0]["words"][-7:], ["Shepherd", "s", "Pie", "Try", "the", "Dover", "Sole"]
+        )
 
 
 if __name__ == "__main__":
