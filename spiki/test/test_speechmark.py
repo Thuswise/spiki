@@ -1087,7 +1087,10 @@ class SpeechMarkTests(unittest.TestCase):
         self.assertIsInstance(sm.cues, list)
         self.assertEqual(len(sm.cues), 2)
         self.assertEqual(
-            sm.cues[0],
+            {
+                k: v for k, v in sm.cues[0].items()
+                if k in ("role", "directives", "mode", "parameters", "fragments")
+            },
             dict(
                 role="A",
                 directives=["mem[-1]", "nearby.B.mem[0]", "nearby['C'].mem[0]"],
@@ -1097,7 +1100,10 @@ class SpeechMarkTests(unittest.TestCase):
             )
         )
         self.assertEqual(
-            sm.cues[1],
+            {
+                k: v for k, v in sm.cues[1].items()
+                if k in ("role", "directives", "mode", "parameters", "fragments")
+            },
             dict(
                 role="B",
                 directives=["agreeing"],
@@ -1106,6 +1112,16 @@ class SpeechMarkTests(unittest.TestCase):
                 fragments=["!"],
             )
         )
+
+    def test_cue_text(self):
+        text = textwrap.dedent("""
+        <A> Shall we keep it simple?
+        <B> Yes, *really* simple.
+        """).strip()
+        sm = SpeechMark()
+        rv = sm.loads(text)
+        self.assertEqual(len(getattr(sm, "cues", [])), 2)
+        self.assertEqual(sm.cues[1]["lines"], ["<B> Yes, *really* simple."])
 
 
 if __name__ == "__main__":

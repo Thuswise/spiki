@@ -93,7 +93,6 @@ class MultipartTests(unittest.TestCase):
         self.assertIsInstance(doc.header, dict)
         self.assertTrue(doc.header.get("mark", None))
         self.assertEqual(doc.header.get("spiki", None), spiki.__version__)
-        print(f"{doc.data=}")
 
     def test_str(self):
         config = dict(port=8080)

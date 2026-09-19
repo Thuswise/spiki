@@ -202,6 +202,8 @@ class SpeechMark:
                 if cue:
                     yield '<blockquote cite="{0}">'.format(html.escape(cue.group(), quote=True))
                     yield self.cue_element(cue, callback=self.callback)
+                    if self.cues:
+                        self.cues[-1]["lines"] = lines.copy()
                 elif not n:
                     yield "<blockquote>"
 
