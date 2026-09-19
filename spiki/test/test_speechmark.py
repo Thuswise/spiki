@@ -1123,6 +1123,21 @@ class SpeechMarkTests(unittest.TestCase):
         self.assertEqual(len(getattr(sm, "cues", [])), 2)
         self.assertEqual(sm.cues[1]["lines"], ["<B> Yes, *really* simple."])
 
+    def test_cue_items(self):
+        text = textwrap.dedent("""
+        <A> What will you have, sir? The special is fish today.
+
+        1. Order the Beef Wellington
+        2. Go for the Shepherd's Pie
+        3. Try the Dover Sole
+        """).strip()
+        sm = SpeechMark()
+        rv = sm.loads(text)
+        self.assertEqual(len(getattr(sm, "cues", [])), 1)
+        self.assertEqual(len(sm.cues[0]["lines"]), 5)
+        self.assertEqual(len(sm.cues[0]["items"]), 3)
+        self.assertEqual(sm.cues[0]["items"][1], "Go for the Shepherd's Pie")
+
 
 if __name__ == "__main__":
     from collections import defaultdict

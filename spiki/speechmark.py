@@ -228,6 +228,8 @@ class SpeechMark:
                 else:
                     yield f"""<li id="{details['ordinal'].rstrip('.')}"><p>"""
                 line = line[item.end() :].lstrip()  # Retain hanging text
+                if self.cues:
+                    self.cues[-1].setdefault("items", []).append(line)
 
             elif not paragraph and n < min(list_items or [sys.maxsize]):
                 paragraph = True
