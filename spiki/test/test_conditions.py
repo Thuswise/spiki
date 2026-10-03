@@ -120,3 +120,33 @@ class ConditionsTests(unittest.TestCase):
         c = Conditions()
         rv = c.verdict(text, context, hide_errors=False)
         self.assertTrue(any(rv) and all(rv))
+
+    def test_cue_numeric_contains(self):
+        context = dict(obj=SN(tick=108))
+        text = "<?guard={obj.tick:X}&check=contains&value=6>"
+        c = Conditions()
+        rv = c.verdict(text, context, hide_errors=False)
+        self.assertTrue(any(rv) and all(rv))
+
+    def test_cue_numeric_contains(self):
+        context = dict(obj=SN(tick=108))
+        text = "<?guard=6&check=in&value={obj.tick:X}>"
+        c = Conditions()
+        rv = c.verdict(text, context, hide_errors=False)
+        self.assertTrue(any(rv) and all(rv))
+
+    def test_cue_modulus(self):
+        context = dict(obj=SN(tick=108))
+        text = "<?guard={obj.tick!A}&check=eq&value=8>"
+        c = Conditions()
+        fix = c.fix(text, context)
+        rv = c.verdict(text, context, hide_errors=False)
+        self.assertTrue(any(rv) and all(rv))
+
+    def test_cue_modulus_16(self):
+        context = dict(obj=SN(tick=108))
+        text = "<?guard={obj.tick!0}&check=eq&value=12>"
+        c = Conditions()
+        fix = c.fix(text, context)
+        rv = c.verdict(text, context, hide_errors=False)
+        self.assertTrue(any(rv) and all(rv))

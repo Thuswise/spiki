@@ -18,6 +18,7 @@
 import codecs
 from collections.abc import Generator
 import itertools
+import logging
 import operator
 import string
 
@@ -42,7 +43,30 @@ class Conditions:
     class ComparisonFormatter(string.Formatter):
 
         def convert_field(self, value: object, conversion: str) -> str:
-            if conversion == "l":
+            """
+            Expands options for string comparisons.
+
+            !l  lowercase
+            !u  uppercase
+
+            !1, !2, !3, !4, !5, !6, !7, !8, !9,
+            !A, !B, !C, !D, !E, !F, !0: modulo 1 to 16 respectively
+
+            !x  rot13 transformation
+
+            """
+            if conversion is None:
+                return value
+            elif conversion in string.hexdigits.upper():
+                try:
+                    mod = int(conversion, 16) or 16  # 0 means mod 16
+                    return value % mod
+                except TypeError as err:
+                    logger = logging.getLogger("conditions")
+                    logger.warning(err)
+                    logger.debug(err, exc_info=True)
+                return value
+            elif conversion == "l":
                 return str(value).lower()
             elif conversion == "u":
                 return str(value).upper()
