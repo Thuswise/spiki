@@ -26,6 +26,19 @@ from spiki.speechmark import SpeechMark
 
 class Conditions:
 
+    checks = {
+        "eq": operator.eq,
+        "ge": operator.ge,
+        "gt": operator.gt,
+        "le": operator.le,
+        "lt": operator.lt,
+        "ne": operator.ne,
+        "is": operator.is_,
+        "isnot": operator.is_not,
+        "contains": operator.contains,
+        "in": lambda a,b: operator.contains(b, a),
+    }
+
     class ComparisonFormatter(string.Formatter):
 
         def convert_field(self, value: object, conversion: str) -> str:
@@ -55,18 +68,15 @@ class Conditions:
 
     def terms(self, text: str) -> Generator[list[tuple]]:
         html5 = self.processor.loads(text)
-        lookup = {
-            "eq": operator.eq,
-        }
         for cue in self.processor.cues:
             p = cue.get("parameters", {})
             yield [
-                (g, lookup.get(o, operator.eq), v)
+                (g, self.checks.get(o, operator.eq), v)
                 for g, o, v in itertools.zip_longest(p.get("guard", []), p.get("check", []), p.get("value", []))
             ]
 
-    def verdict(self, text: dict, context: dict) -> list[bool]:
-        text = self.fix(text, context)
+    def verdict(self, text: dict, context: dict, **kwargs) -> list[bool]:
+        text = self.fix(text, context, **kwargs)
         terms = list(self.terms(text))
         return [all(o(g, g if v is None else v) for g, o, v in t) for t in terms]
 

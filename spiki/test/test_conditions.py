@@ -112,3 +112,11 @@ class ConditionsTests(unittest.TestCase):
         self.assertFalse(any(v), v)
         self.assertTrue(all(v), v)
         self.assertEqual(v, [])
+
+    def test_cue_numeric_eq(self):
+        context = dict(obj=SN(tick=108))
+        text = "<?guard={obj.tick:X}&check=eq&value=6C>"
+        fix = text.format(**context)
+        c = Conditions()
+        rv = c.verdict(text, context, hide_errors=False)
+        self.assertTrue(any(rv) and all(rv))
