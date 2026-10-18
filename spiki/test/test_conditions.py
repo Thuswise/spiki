@@ -46,6 +46,10 @@ class ConditionsTests(unittest.TestCase):
         rv = Conditions().fix("{rude!x}", dict(rude="Ehqr!"))
         self.assertEqual(rv, "Rude!")
 
+    def test_cue_conversion_title(self):
+        rv = Conditions().fix("{heading!t}", dict(heading="the road to Wigan Pier"))
+        self.assertEqual(rv, "The Road To Wigan Pier")
+
     def test_cue_conversion_upper(self):
         context = dict(
             B=SN(name="Boris", state={"into": SN(name="England")}),

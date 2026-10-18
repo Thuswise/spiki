@@ -47,6 +47,7 @@ class Conditions:
             Expands options for string comparisons.
 
             !l  lowercase
+            !t  titlecase
             !u  uppercase
 
             !1, !2, !3, !4, !5, !6, !7, !8, !9,
@@ -68,6 +69,8 @@ class Conditions:
                 return value
             elif conversion == "l":
                 return str(value).lower()
+            elif conversion == "t":
+                return string.capwords(value)
             elif conversion == "u":
                 return str(value).upper()
             elif conversion == "x":
