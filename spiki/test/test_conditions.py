@@ -42,6 +42,10 @@ class ConditionsTests(unittest.TestCase):
         self.assertEqual(sm.cues[0]["parameters"].get("guard", [None])[0], '{B.state["into"]}')
         self.assertEqual(sm.cues[0]["parameters"].get("value", [None])[0], '{A.state["spot"]}')
 
+    def test_cue_conversion_entity(self):
+        rv = Conditions().fix("{brand!e}", dict(brand="P&O"), hide_errors=False)
+        self.assertEqual(rv, "P&amp;O")
+
     def test_cue_conversion_rot13(self):
         rv = Conditions().fix("{rude!x}", dict(rude="Ehqr!"))
         self.assertEqual(rv, "Rude!")

@@ -42,6 +42,9 @@ class Conditions:
 
     class ComparisonFormatter(string.Formatter):
 
+        def __init__(self, processor=None):
+            self.processor = processor
+
         def convert_field(self, value: object, conversion: str) -> str:
             """
             Expands options for string comparisons.
@@ -53,6 +56,7 @@ class Conditions:
             !1, !2, !3, !4, !5, !6, !7, !8, !9,
             !A, !B, !C, !D, !E, !F, !0: modulo 1 to 16 respectively
 
+            !e  HTML entity escaping
             !x  rot13 transformation
 
             """
@@ -73,6 +77,8 @@ class Conditions:
                 return string.capwords(value)
             elif conversion == "u":
                 return str(value).upper()
+            elif conversion == "e":
+                return str(value).translate(self.processor.escape_table)
             elif conversion == "x":
                 codec = codecs.lookup("rot13")
                 rv, length = codec.decode(value)
@@ -82,7 +88,7 @@ class Conditions:
 
     def __init__(self):
         self.processor = SpeechMark()
-        self.formatter = self.ComparisonFormatter()
+        self.formatter = self.ComparisonFormatter(self.processor)
 
     def fix(self, text: str, context: dict, hide_errors=True) -> str:
         try:
