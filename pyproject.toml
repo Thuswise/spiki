@@ -37,6 +37,18 @@ bugs = "https://github.com/thuswise/spiki/issues"
 speechmark = "spiki.speechmark:run"
 spiki = "spiki.main:run"
 
+[project.entry-points."pygments.lexers"]
+speechmark_lexer = "spiki.plugout.sm_lexer:SpeechMarkLexer"
+
+[project.entry-points."pygments.formatters"]
+speechmark_formatter = "spiki.plugout.sm_formatter:SpeechMarkFormatter"
+
+[project.entry-points."pygments.styles"]
+speechmark-style = "spiki.plugout.sm_style:SpeechMarkStyle"
+
+[project.entry-points."pygments.filters"]
+speechmark-filter = "spiki.plugout.sm_filter:SpeechMarkFilter"
+
 [build-system]
 requires = ["setuptools>=75.0.0"]
 build-backend = "setuptools.build_meta"
@@ -46,6 +58,8 @@ packages = [
     "spiki",
     "spiki.examples",
     "spiki.plugins",
+    "spiki.plugout",
+    "spiki.plugout.test",
     "spiki.test",
 ]
 
