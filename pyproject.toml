@@ -73,5 +73,9 @@ packages = [
     "*/*.toml",
 ]
 
+"spiki.plugout.test" = [
+    "*.sm",
+]
+
 [tool.setuptools.dynamic]
 version = {attr = "spiki.__version__"}
