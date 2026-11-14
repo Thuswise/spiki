@@ -60,17 +60,23 @@ class SpeechMarkLexer(RegexLexer):
             (r"^<", String.Affix, "cue"),
             (r"(?=^[^<])", Text, "text"),
         ],
+        "expand": [
+            (r"{", String.Affix),
+            (r"}", String.Affix),
+        ],
         "cue": [
             (r"^<", String.Affix),
-            (r"foo\n", Keyword),
-            (r">", String.Affix, "text"),
+            include("expand"),
+            (r">", String.Affix, "#pop"),
         ],
         "text": [
-            (r"^<", String.Affix, "cue"),
+            (r"^<", String.Affix, "#pop"),
+            include("expand"),
             (r".*\n", Text),
         ],
         "list": [
             (r"foo\n", Keyword),
+            include("expand"),
             (r".*\n", Text),
         ],
     }
