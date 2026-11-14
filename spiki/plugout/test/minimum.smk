@@ -13,4 +13,30 @@ Can you help us?
 
 We're lost. # Need some character development for Colin
 
-<ALICE?guard={BORIS.state[exit].name!u}&value=STATION> I guess you came by train, {BORIS.name}?
+<BORIS#!>
+
+1. We're looking for the Museum
+2. Is there a Library near here?
+3. Which is the way to the river?
+
+<ALICE@BORIS,COLIN>
+
+Didn't you bring a *map*?
+
+<COLIN>
+
+Boris, I _told you_ we should have brought a map.
+
+<BORIS>
+
+I looked in the bookcase before we left.
+
+I found:
+
++ `219`, that's Wolverhampton,
++ The big one for Kidderminster.
++ ...
+
+`OS 241` was missing!
+
+<ALICE?guard={BORIS.state[exit].name!u}&value=STATION> I suppose you must have come by train, {BORIS.name}?
