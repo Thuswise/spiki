@@ -74,7 +74,7 @@ packages = [
 ]
 
 "spiki.plugout.test" = [
-    "*.sm",
+    "*.smk",
 ]
 
 [tool.setuptools.dynamic]

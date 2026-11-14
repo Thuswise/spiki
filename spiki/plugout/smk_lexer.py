@@ -1,4 +1,21 @@
-"""An example plugin lexer for Pygments."""
+#!/usr/bin/env python
+#   encoding: utf-8
+
+# Copyright (C) 2025 D E Haynes
+# This file is part of spiki.
+
+# Spiki is free software: you can redistribute it and/or modify it under the terms of the
+# GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# Spiki is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+# the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with spiki.
+# If not, see <https://www.gnu.org/licenses/>.
+
+import re
 
 try:
     from pygments.lexer import RegexLexer
@@ -12,9 +29,10 @@ except ModuleNotFoundError:
 
 class SpeechMarkLexer(RegexLexer):
     name = "SpeechMark"
-    aliases = ["speechmark"]
+    aliases = ["speechmark", "smk"]
     filenames = ["*.smk"]
-    mimetypes = ["text/speechmark"]
+    mimetypes = ["text/x-speechmark", "text/speechmark"]
+    flags = re.MULTILINE
 
     # This lexer highlights lines that read "foo".
     tokens = {
@@ -23,3 +41,7 @@ class SpeechMarkLexer(RegexLexer):
             (r".*\n", Text),
         ]
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+

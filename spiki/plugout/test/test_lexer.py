@@ -26,9 +26,9 @@ from spiki.plugout.smk_lexer import SpeechMarkLexer
 class LexerTests(unittest.TestCase):
 
     def setUp(self):
-       self.text = importlib.resources.read_text("spiki.plugout.test", "minimum.sm")
+       self.text = importlib.resources.read_text("spiki.plugout.test", "minimum.smk")
 
     def test_lexer(self):
         options = {}
-        lexer = pygments.lexers.get_lexer_by_name("speechmark")
+        lexer = SpeechMarkLexer()
         self.fail(lexer)
