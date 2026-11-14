@@ -18,6 +18,7 @@
 import importlib.resources
 import unittest
 
+import pygments
 import pygments.lexers
 
 from spiki.plugout.smk_lexer import SpeechMarkLexer
@@ -31,4 +32,5 @@ class LexerTests(unittest.TestCase):
     def test_lexer(self):
         options = {}
         lexer = SpeechMarkLexer()
-        self.fail(lexer)
+        rv = list(pygments.lex(self.text, lexer))
+        self.fail(rv)
