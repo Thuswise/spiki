@@ -36,12 +36,16 @@ import re
 
 try:
     from pygments.lexer import RegexLexer
+    from pygments.lexer import include
     from pygments.token import Keyword
+    from pygments.token import String
     from pygments.token import Text
 except ModuleNotFoundError:
+    from types import SimpleNamespace as SN
     RegexLexer = object
-    Keyword = object
-    Text = object
+    Keyword = SN()
+    String = SN(Affix=None)
+    Text = SN()
 
 
 class SpeechMarkLexer(RegexLexer):
@@ -51,12 +55,24 @@ class SpeechMarkLexer(RegexLexer):
     mimetypes = ["text/x-speechmark", "text/speechmark"]
     flags = re.MULTILINE
 
-    # This lexer highlights lines that read "foo".
     tokens = {
         "root": [
+            (r"^<", String.Affix, "cue"),
+            (r"(?=^[^<])", Text, "text"),
+        ],
+        "cue": [
+            (r"^<", String.Affix),
+            (r"foo\n", Keyword),
+            (r">", String.Affix, "text"),
+        ],
+        "text": [
+            (r"^<", String.Affix, "cue"),
+            (r".*\n", Text),
+        ],
+        "list": [
             (r"foo\n", Keyword),
             (r".*\n", Text),
-        ]
+        ],
     }
 
     def __init__(self, **kwargs):
