@@ -22,12 +22,15 @@ import pygments
 import pygments.lexers
 
 from spiki.plugout.smk_lexer import SpeechMarkLexer
+from spiki.speechmark import SpeechMark
 
 
 class LexerTests(unittest.TestCase):
 
     def setUp(self):
-       self.text = importlib.resources.read_text("spiki.plugout.test", "minimum.smk")
+        self.text = importlib.resources.read_text("spiki.plugout.test", "minimum.smk")
+        self.sm = SpeechMark()
+        print(self.sm.loads(self.text))
 
     def test_lexer(self):
         options = {}
