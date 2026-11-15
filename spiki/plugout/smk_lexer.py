@@ -59,22 +59,23 @@ class SpeechMarkLexer(RegexLexer):
     tokens = {
         "base": [
             (r"(?=^<)", Token.Other.Transition, ("#pop", "cue")),
+            (r"(?={)", Token.Other.Transition, ("expand")),
         ],
         "root": [
-            # (r"(?={)", Token.Other.Transition, "expand"),
             include("base"),
             default("text")
         ],
         "expand": [
+            (r"\{[^\n\}]*\}", Token.String.Interpol, "#pop"),  # Variable expansion
         ],
         "cue": [
             (r"(^<)([^.:?# >]+)", bygroups(String.Affix, Name.Variable.Global)),
             (r"^<", String.Affix),
             include("base"),
-            (r"[\.=@:!]", Operator),
-            (r"[\?&#]", Punctuation),
-            (r"[^\.=@:!\?&# >]+", Text),
-            (r">", String.Affix, ("#pop", "text")),
+            (r"[\.=@:!]", Operator),                        # Cue operators
+            (r"[\?&#]", Punctuation),                       # Cue separators
+            (r"[^\.=@:!\?&# >]+", Text),                    # Cue text values
+            (r">", String.Affix, ("#pop", "text")),         # Cue terminator
         ],
         "text": [
             include("base"),
@@ -85,7 +86,7 @@ class SpeechMarkLexer(RegexLexer):
             (r"`[^\n\{\}`]*`", Token.Generic.Prompt),       # Code markup
             (r"(?!<)\n", Text.Whitespace),                  # Lone newlines
             (r"#.*?$", Token.Comment.Single),               # Comments
-            (r"((?!\n<|\n\n|\u2403|#|^\s*\+|^\s*\d+\.)[^\*_`])+", Text),
+            (r"((?!\n<|\n\n|\u2403|#|^\s*\+|^\s*\d+\.)[^\*_`\{\}])+", Text),
         ],
     }
 

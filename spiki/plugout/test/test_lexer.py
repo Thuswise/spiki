@@ -168,3 +168,13 @@ class LexerTests(unittest.TestCase):
         self.assertEqual(3, tokens.count(Token.Punctuation.Marker), rv)
         self.assertEqual(2, tokens.count(Token.Text.Whitespace), rv)
         self.assertEqual(2, tokens.count(Token.Generic.Prompt), rv)
+
+    def test_expansion_operator(self):
+        text = "<ALICE?guard={BORIS.state[exit].name!u}&value=STATION> I assume you have come by train, {BORIS.name}?"
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        tokens = [i[0] for i in rv]
+        self.assertNotIn(Token.Error, tokens, rv)
+        self.assertEqual(2, tokens.count(Token.String.Affix), rv)
+        self.assertEqual(1, [i[0] for i in rv].count(Token.Name.Variable.Global), rv)
+        self.assertEqual(2, [i[0] for i in rv].count(Token.Operator), rv)
+        self.assertEqual(2, tokens.count(Token.String.Interpol), rv)
