@@ -58,16 +58,21 @@ class LexerTests(unittest.TestCase):
         rv = list(pygments.lex(self.text, self.lexer))
         self.fail(rv)
 
-    def test_simple_text(self):
+    def test_text_eof(self):
         text = "Once upon a time...␃"
         rv = list(self.lexer.get_tokens_unprocessed(text))
-        # rv = list(self.lexer.get_tokens(text, unfiltered=False))
-        print(rv)
+        self.assertEqual(len(rv), 2)
+        self.assertIs(Token.Other.EOT, [i[1] for i in rv][-1], rv)
+
+    def test_simple_text(self):
+        text = "Once upon a time..."
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        self.assertTrue(rv)
         self.assertNotIn(Token.Error, [i[1] for i in rv], rv)
 
-    @unittest.skip("dev")
     def test_empty_cue(self):
-        text = "<> Once upon a time...␃"
+        text = "<> Once upon a time..."
         # rv = list(self.lexer.get_tokens_unprocessed(text))
         rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        print(rv)
         self.assertNotIn(Token.Error, [i[1] for i in rv], rv)

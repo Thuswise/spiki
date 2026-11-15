@@ -59,16 +59,21 @@ class SpeechMarkLexer(RegexLexer):
     """
     tokens = {
         "root": [
-            # (r"(?=^<)", String.Affix, "cue"),
             default("text")
+        ],
+        "cue": [
+            (r"^<", String.Affix),
+            # (r"(?={)", String.Affix, "expand"),
+            (r">", String.Affix, ("#pop", "text")),
         ],
         "text": [
             (r"\u2403", Other.EOT, ("#pop", "root")),
-            # (r"^<", String.Affix, ("#pop", "cue")),
+            (r"^<", String.Affix, ("#pop", "cue")),
             # (r"(?={)", String.Affix, "expand"),
             (r"[^\u2403]+", Text),
-            # default("#pop")
         ],
+        "expand": [
+        ]
     }
 
     def __init__(self, **kwargs):
