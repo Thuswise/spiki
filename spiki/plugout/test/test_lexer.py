@@ -15,24 +15,6 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
-"""
-
-_       Generic.Strong
-*       Generic.Emph
-`       Generic.Prompt
-#       Comment.Single
-{}      String.Interpol
-abc     String
-<ABC    Name.Variable.Global
-a=1     Name.Attribute
-.entrng Name.Function
-.@:!    Operator
-?&#,    Punctuation
-1.      Punctuation.Marker
-+       String.Affix
-
-"""
-
 import importlib.resources
 import textwrap
 import unittest
@@ -51,7 +33,7 @@ class LexerTests(unittest.TestCase):
         self.text = importlib.resources.read_text("spiki.plugout.test", "minimum.smk")
         self.sm = SpeechMark()
         self.lexer = SpeechMarkLexer()
-        # print(self.sm.loads(self.text))
+        self.sm.loads(self.text)
 
     def test_lexer(self):
         options = {}
@@ -59,26 +41,26 @@ class LexerTests(unittest.TestCase):
         rv = list(self.lexer.get_tokens(self.text, unfiltered=False))
         self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
 
-    def test_text_eof(self):
-        text = "Once upon a time...␃"
+    def test_text_eot(self):
+        text = "Testing times!␃"
         rv = list(self.lexer.get_tokens_unprocessed(text))
         self.assertEqual(len(rv), 2)
         self.assertIs(Token.Other.EOT, [i[1] for i in rv][-1], rv)
 
     def test_simple_text(self):
-        text = "Once upon a time..."
+        text = "Testing times!"
         rv = list(self.lexer.get_tokens(text, unfiltered=False))
         self.assertTrue(rv)
         self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
 
     def test_empty_cue(self):
-        text = "<> Once upon a time..."
+        text = "<> Testing times!"
         rv = list(self.lexer.get_tokens(text, unfiltered=False))
         self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
         self.assertEqual(2, [i[0] for i in rv].count(Token.String.Affix), rv)
 
     def test_simple_role(self):
-        text = "<ROLE> Once upon a time..."
+        text = "<ALICE> Testing times!"
         rv = list(self.lexer.get_tokens(text, unfiltered=False))
         self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
         self.assertEqual(2, [i[0] for i in rv].count(Token.String.Affix), rv)

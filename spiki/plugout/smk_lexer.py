@@ -15,6 +15,24 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+"""
+
+_       Generic.Strong
+*       Generic.Emph
+`       Generic.Prompt
+#       Comment.Single
+{}      String.Interpol
+abc     String
+<ABC    Name.Variable.Global
+a=1     Name.Attribute
+.entrng Name.Function
+.@:!    Operator
+?&#,    Punctuation
+1.      Punctuation.Marker
++       String.Affix
+
+"""
+
 import re
 
 try:
