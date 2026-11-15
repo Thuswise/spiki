@@ -80,7 +80,7 @@ class SpeechMarkLexer(RegexLexer):
         "text": [
             include("base"),
             (r"\u2403", Other.EOT, ("#pop", "root")),       # End-of-text sentinel
-            (r"^\s*\+|\d+\.", Punctuation.Marker),          # Lists, nordered and ordered
+            (r"^\s*\+|\d+\.", Punctuation.Marker),          # Lists, unordered and ordered
             (r"\*[^\n\{\}\*]*\*", Token.Generic.Prompt),    # Emphasis
             (r"_[^\n\{\}_]*_", Token.Generic.Prompt),       # Strong emphasis
             (r"`[^\n\{\}`]*`", Token.Generic.Prompt),       # Code markup
