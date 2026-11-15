@@ -34,6 +34,7 @@ a=1     Name.Attribute
 """
 
 import importlib.resources
+import textwrap
 import unittest
 
 import pygments
@@ -52,7 +53,6 @@ class LexerTests(unittest.TestCase):
         self.lexer = SpeechMarkLexer()
         # print(self.sm.loads(self.text))
 
-    @unittest.skip("dev")
     def test_lexer(self):
         options = {}
         rv = list(pygments.lex(self.text, self.lexer))
@@ -82,10 +82,38 @@ class LexerTests(unittest.TestCase):
         self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
         self.assertEqual(2, [i[0] for i in rv].count(Token.String.Affix), rv)
 
-    def test_role_mode(self):
-        text = "<ALICE:thinks>Testing times!"
+    def test_text_before_cue(self):
+        text = textwrap.dedent("""
+            Curtain
+
+            <ALICE:thinks>Testing times!
+            """
+        ).lstrip()
         rv = list(self.lexer.get_tokens(text, unfiltered=False))
         self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
         self.assertEqual(2, [i[0] for i in rv].count(Token.String.Affix), rv)
         self.assertEqual(1, [i[0] for i in rv].count(Token.Name.Variable.Global), rv)
         self.assertEqual(1, [i[0] for i in rv].count(Token.Operator), rv)
+
+    def test_role_mode(self):
+        text = "<ALICE:thinks>Testing times!"
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        tokens = [i[0] for i in rv]
+        self.assertNotIn(Token.Error, tokens, rv)
+        self.assertEqual(2, tokens.count(Token.String.Affix), rv)
+        self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
+        self.assertEqual(1, tokens.count(Token.Operator), rv)
+        self.assertEqual(1, tokens.count(Token.Text), rv)
+
+    def test_parameters(self):
+        text = "<BORIS?pause=2> Can you help us?"
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        tokens = [i[0] for i in rv]
+        self.assertNotIn(
+            Token.Error,
+            tokens,
+            list(self.lexer.get_tokens_unprocessed(text))
+        )
+        self.assertEqual(2, tokens.count(Token.String.Affix), rv)
+        self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
+        self.assertEqual(1, tokens.count(Token.Operator), rv)

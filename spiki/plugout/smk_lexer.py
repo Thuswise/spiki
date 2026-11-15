@@ -35,7 +35,7 @@ except ModuleNotFoundError:
     from types import SimpleNamespace as SN
     RegexLexer = object
     fake = SN(Affix=None, EOT=None, Transition=None, Variable=SN(Global=None))
-    Keyword = Name = Operator = Other = String = Text = fake
+    Keyword = Name = Operator = Other = Punctuation = String = Text = fake
     bygroups = tuple
     default = include = str
 
@@ -45,7 +45,7 @@ class SpeechMarkLexer(RegexLexer):
     aliases = ["speechmark", "smk"]
     filenames = ["*.smk"]
     mimetypes = ["text/x-speechmark", "text/speechmark"]
-    flags = re.MULTILINE
+    flags = re.DOTALL | re.MULTILINE
 
     """
     "expand": [
@@ -54,25 +54,33 @@ class SpeechMarkLexer(RegexLexer):
     ],
     """
     tokens = {
+        "base": [
+            # (r"(?=^<)|[\n]+(?=<)", Token.Other.Transition, "cue"),
+            (r"(?=^<)", Token.Other.Transition, "cue"),
+            (r"^(?=<)", Token.Other.Transition, "cue"),
+        ],
         "root": [
+            # (r"(?={)", Token.Other.Transition, "expand"),
+            include("base"),
             default("text")
+        ],
+        "expand": [
         ],
         "cue": [
             (r"(^<)([^.:?# >]+)", bygroups(String.Affix, Name.Variable.Global)),
             (r"^<", String.Affix),
             (r">", String.Affix, ("#pop", "text")),
-            (r"[.@:!]", Operator),
-            (r"[^.:?# >]+", Text),
-            # (r"(?={)", String.Affix, "expand"),
+            (r"[\.=@:!]", Operator),
+            (r"[\?&#]", Punctuation),
+            # (r"(?=:)[^.:?# >]+?", Text),
+            (r"[^.:?# >]+?", Text),
+            include("base"),
         ],
         "text": [
             (r"\u2403", Other.EOT, ("#pop", "root")),
-            (r"(?=^<)", Token.Other.Transition, ("#pop", "cue")),
-            # (r"(?={)", String.Affix, "expand"),
             (r"[^\u2403]+", Text),
+            include("base"),
         ],
-        "expand": [
-        ]
     }
 
     def __init__(self, **kwargs):
