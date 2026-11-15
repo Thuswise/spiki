@@ -103,7 +103,7 @@ class LexerTests(unittest.TestCase):
         self.assertEqual(2, tokens.count(Token.String.Affix), rv)
         self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
         self.assertEqual(1, tokens.count(Token.Operator), rv)
-        self.assertEqual(1, tokens.count(Token.Text), rv)
+        self.assertEqual(2, tokens.count(Token.Text), rv)
 
     def test_parameters(self):
         text = "<BORIS?pause=2> Can you help us?"
