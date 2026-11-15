@@ -56,7 +56,8 @@ class LexerTests(unittest.TestCase):
     def test_lexer(self):
         options = {}
         rv = list(pygments.lex(self.text, self.lexer))
-        self.fail(rv)
+        rv = list(self.lexer.get_tokens(self.text, unfiltered=False))
+        self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
 
     def test_text_eof(self):
         text = "Once upon a time...␃"
@@ -131,5 +132,38 @@ class LexerTests(unittest.TestCase):
         self.assertEqual(2, tokens.count(Token.String.Affix), rv)
         self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
         self.assertEqual(1, tokens.count(Token.Comment.Single), rv)
-        self.assertEqual(3, tokens.count(Token.Text.Whitespace), rv)
+        self.assertEqual(4, tokens.count(Token.Text.Whitespace), rv)
 
+    def test_ordered_lists(self):
+        text = textwrap.dedent("""
+        <BORIS#!>
+
+        1. We're looking for the Museum
+        2. Is there a Library near here?
+        3. Which is the way to the river?
+        """)
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        tokens = [i[0] for i in rv]
+        self.assertNotIn(Token.Error, tokens, rv)
+        self.assertEqual(2, tokens.count(Token.String.Affix), rv)
+        self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
+        self.assertEqual(3, tokens.count(Token.Punctuation.Marker), rv)
+        self.assertEqual(5, tokens.count(Token.Text.Whitespace), rv)
+
+    def test_unordered_lists(self):
+        text = textwrap.dedent("""
+        <BORIS> I looked in the bookcase before we left.
+
+        I found:
+        + `OS 219`, that's Wolverhampton,
+        + The big one for Kidderminster,
+        + ... and `OS 241` was missing!
+
+        """)
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        tokens = [i[0] for i in rv]
+        self.assertNotIn(Token.Error, tokens, rv)
+        self.assertEqual(2, tokens.count(Token.String.Affix), rv)
+        self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
+        self.assertEqual(3, tokens.count(Token.Punctuation.Marker), rv)
+        self.assertEqual(6, tokens.count(Token.Text.Whitespace), rv)

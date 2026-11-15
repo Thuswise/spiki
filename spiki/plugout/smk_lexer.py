@@ -34,8 +34,11 @@ except ModuleNotFoundError:
     # These are fake definitions to avoid import errors.
     from types import SimpleNamespace as SN
     RegexLexer = object
-    fake = SN(Affix=None, Comment=SN(Single=None), EOT=None, Transition=None, Variable=SN(Global=None), Whitespace=None)
-    Keyword = Name = Operator = Other = Punctuation = String = Text = fake
+    Token = SN(
+        Affix=None, Comment=SN(Single=None), EOT=None, Transition=None,
+        Variable=SN(Global=None), Whitespace=None
+    )
+    Keyword = Name = Operator = Other = Punctuation = String = Text = Token
     bygroups = tuple
     default = include = str
 
@@ -45,7 +48,7 @@ class SpeechMarkLexer(RegexLexer):
     aliases = ["speechmark", "smk"]
     filenames = ["*.smk"]
     mimetypes = ["text/x-speechmark", "text/speechmark"]
-    flags = re.DOTALL | re.MULTILINE
+    flags = re.MULTILINE
 
     """
     "expand": [
@@ -67,18 +70,19 @@ class SpeechMarkLexer(RegexLexer):
         "cue": [
             (r"(^<)([^.:?# >]+)", bygroups(String.Affix, Name.Variable.Global)),
             (r"^<", String.Affix),
+            include("base"),
             (r"[\.=@:!]", Operator),
             (r"[\?&#]", Punctuation),
             (r"[^\.=@:!\?&# >]+", Text),
-            include("base"),
             (r">", String.Affix, ("#pop", "text")),
         ],
         "text": [
             include("base"),
             (r"\u2403", Other.EOT, ("#pop", "root")),
+            (r"^\s*\+|\d+\.", Punctuation.Marker),
             (r"(?!<)\n", Text.Whitespace),
             (r"#.*?$", Token.Comment.Single),
-            (r"((?!\n<|\u2403|#).)++", Text),
+            (r"((?!\n<|\u2403|#|^\s*\+|^\s*\d+\.).)+", Text),
         ],
     }
 
