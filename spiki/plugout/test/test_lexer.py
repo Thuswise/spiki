@@ -68,11 +68,24 @@ class LexerTests(unittest.TestCase):
         text = "Once upon a time..."
         rv = list(self.lexer.get_tokens(text, unfiltered=False))
         self.assertTrue(rv)
-        self.assertNotIn(Token.Error, [i[1] for i in rv], rv)
+        self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
 
     def test_empty_cue(self):
         text = "<> Once upon a time..."
-        # rv = list(self.lexer.get_tokens_unprocessed(text))
         rv = list(self.lexer.get_tokens(text, unfiltered=False))
-        print(rv)
-        self.assertNotIn(Token.Error, [i[1] for i in rv], rv)
+        self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
+        self.assertEqual(2, [i[0] for i in rv].count(Token.String.Affix), rv)
+
+    def test_simple_role(self):
+        text = "<ROLE> Once upon a time..."
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
+        self.assertEqual(2, [i[0] for i in rv].count(Token.String.Affix), rv)
+
+    def test_role_mode(self):
+        text = "<ALICE:thinks>Testing times!"
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
+        self.assertEqual(2, [i[0] for i in rv].count(Token.String.Affix), rv)
+        self.assertEqual(1, [i[0] for i in rv].count(Token.Name.Variable.Global), rv)
+        self.assertEqual(1, [i[0] for i in rv].count(Token.Operator), rv)

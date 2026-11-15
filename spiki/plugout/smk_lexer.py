@@ -19,8 +19,11 @@ import re
 
 try:
     from pygments.lexer import RegexLexer
+    from pygments.lexer import bygroups
     from pygments.lexer import default
     from pygments.lexer import include
+    from pygments.token import Name
+    from pygments.token import Operator
     from pygments.token import Other
     from pygments.token import Punctuation
     from pygments.token import String
@@ -31,12 +34,10 @@ except ModuleNotFoundError:
     # These are fake definitions to avoid import errors.
     from types import SimpleNamespace as SN
     RegexLexer = object
-    Keyword = SN()
-    Other = SN()
-    String = SN(Affix=None)
-    Text = SN()
-    default = str
-    include = str
+    fake = SN(Affix=None, EOT=None, Transition=None, Variable=SN(Global=None))
+    Keyword = Name = Operator = Other = String = Text = fake
+    bygroups = tuple
+    default = include = str
 
 
 class SpeechMarkLexer(RegexLexer):
@@ -48,13 +49,8 @@ class SpeechMarkLexer(RegexLexer):
 
     """
     "expand": [
-        (r"{", String.Affix),
+        (r"{", String.Interpol),
         (r"}(?!})", String.Affix, "#pop"),
-    ],
-    "cue": [
-        (r"^<", String.Affix),
-        (r"(?={)", String.Affix, "expand"),
-        (r">", String.Affix, ("#pop", "text")),
     ],
     """
     tokens = {
@@ -62,13 +58,16 @@ class SpeechMarkLexer(RegexLexer):
             default("text")
         ],
         "cue": [
+            (r"(^<)([^.:?# >]+)", bygroups(String.Affix, Name.Variable.Global)),
             (r"^<", String.Affix),
-            # (r"(?={)", String.Affix, "expand"),
             (r">", String.Affix, ("#pop", "text")),
+            (r"[.@:!]", Operator),
+            (r"[^.:?# >]+", Text),
+            # (r"(?={)", String.Affix, "expand"),
         ],
         "text": [
             (r"\u2403", Other.EOT, ("#pop", "root")),
-            (r"^<", String.Affix, ("#pop", "cue")),
+            (r"(?=^<)", Token.Other.Transition, ("#pop", "cue")),
             # (r"(?={)", String.Affix, "expand"),
             (r"[^\u2403]+", Text),
         ],
