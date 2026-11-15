@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #   encoding: utf-8
 
-# Copyright (C) 2025 D E Haynes
+# Copyright (C) 2026 D E Haynes
 # This file is part of spiki.
 
 # Spiki is free software: you can redistribute it and/or modify it under the terms of the
@@ -35,8 +35,8 @@ except ModuleNotFoundError:
     from types import SimpleNamespace as SN
     RegexLexer = object
     Token = SN(
-        Affix=None, Comment=SN(Single=None), EOT=None, Transition=None,
-        Variable=SN(Global=None), Whitespace=None
+        Affix=None, Comment=SN(Single=None), EOT=None, Generic=SN(Prompt=None),
+        Transition=None, Variable=SN(Global=None), Whitespace=None
     )
     Keyword = Name = Operator = Other = Punctuation = String = Text = Token
     bygroups = tuple
@@ -78,11 +78,14 @@ class SpeechMarkLexer(RegexLexer):
         ],
         "text": [
             include("base"),
-            (r"\u2403", Other.EOT, ("#pop", "root")),
-            (r"^\s*\+|\d+\.", Punctuation.Marker),
-            (r"(?!<)\n", Text.Whitespace),
-            (r"#.*?$", Token.Comment.Single),
-            (r"((?!\n<|\u2403|#|^\s*\+|^\s*\d+\.).)+", Text),
+            (r"\u2403", Other.EOT, ("#pop", "root")),       # End-of-text sentinel
+            (r"^\s*\+|\d+\.", Punctuation.Marker),          # Lists, nordered and ordered
+            (r"\*[^\n\{\}\*]*\*", Token.Generic.Prompt),    # Emphasis
+            (r"_[^\n\{\}_]*_", Token.Generic.Prompt),       # Strong emphasis
+            (r"`[^\n\{\}`]*`", Token.Generic.Prompt),       # Code markup
+            (r"(?!<)\n", Text.Whitespace),                  # Lone newlines
+            (r"#.*?$", Token.Comment.Single),               # Comments
+            (r"((?!\n<|\n\n|\u2403|#|^\s*\+|^\s*\d+\.)[^\*_`])+", Text),
         ],
     }
 

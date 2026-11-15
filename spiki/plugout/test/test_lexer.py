@@ -132,7 +132,7 @@ class LexerTests(unittest.TestCase):
         self.assertEqual(2, tokens.count(Token.String.Affix), rv)
         self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
         self.assertEqual(1, tokens.count(Token.Comment.Single), rv)
-        self.assertEqual(4, tokens.count(Token.Text.Whitespace), rv)
+        self.assertEqual(3, tokens.count(Token.Text.Whitespace), rv)
 
     def test_ordered_lists(self):
         text = textwrap.dedent("""
@@ -148,7 +148,7 @@ class LexerTests(unittest.TestCase):
         self.assertEqual(2, tokens.count(Token.String.Affix), rv)
         self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
         self.assertEqual(3, tokens.count(Token.Punctuation.Marker), rv)
-        self.assertEqual(5, tokens.count(Token.Text.Whitespace), rv)
+        self.assertEqual(2, tokens.count(Token.Text.Whitespace), rv)
 
     def test_unordered_lists(self):
         text = textwrap.dedent("""
@@ -166,4 +166,5 @@ class LexerTests(unittest.TestCase):
         self.assertEqual(2, tokens.count(Token.String.Affix), rv)
         self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
         self.assertEqual(3, tokens.count(Token.Punctuation.Marker), rv)
-        self.assertEqual(6, tokens.count(Token.Text.Whitespace), rv)
+        self.assertEqual(2, tokens.count(Token.Text.Whitespace), rv)
+        self.assertEqual(2, tokens.count(Token.Generic.Prompt), rv)
