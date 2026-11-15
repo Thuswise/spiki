@@ -20,7 +20,7 @@
 _       Generic.Strong
 *       Generic.Emph
 `       Generic.Prompt
-#       Comment.single
+#       Comment.Single
 {}      String.Interpol
 abc     String
 <ABC    Name.Variable.Global
@@ -117,3 +117,19 @@ class LexerTests(unittest.TestCase):
         self.assertEqual(2, tokens.count(Token.String.Affix), rv)
         self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
         self.assertEqual(1, tokens.count(Token.Operator), rv)
+
+    def test_comments_and_left_arrows(self):
+        text = textwrap.dedent("""
+        <COLIN>
+
+        # Colin is some sort of economist.
+        We're < 50% lost.
+        """)
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        tokens = [i[0] for i in rv]
+        self.assertNotIn(Token.Error, tokens, rv)
+        self.assertEqual(2, tokens.count(Token.String.Affix), rv)
+        self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
+        self.assertEqual(1, tokens.count(Token.Comment.Single), rv)
+        self.assertEqual(3, tokens.count(Token.Text.Whitespace), rv)
+

@@ -34,7 +34,7 @@ except ModuleNotFoundError:
     # These are fake definitions to avoid import errors.
     from types import SimpleNamespace as SN
     RegexLexer = object
-    fake = SN(Affix=None, EOT=None, Transition=None, Variable=SN(Global=None))
+    fake = SN(Affix=None, Comment=SN(Single=None), EOT=None, Transition=None, Variable=SN(Global=None), Whitespace=None)
     Keyword = Name = Operator = Other = Punctuation = String = Text = fake
     bygroups = tuple
     default = include = str
@@ -74,9 +74,11 @@ class SpeechMarkLexer(RegexLexer):
             (r">", String.Affix, ("#pop", "text")),
         ],
         "text": [
-            (r"\u2403", Other.EOT, ("#pop", "root")),
-            (r"[^\u2403|\n<]+", Text),
             include("base"),
+            (r"\u2403", Other.EOT, ("#pop", "root")),
+            (r"(?!<)\n", Text.Whitespace),
+            (r"#.*?$", Token.Comment.Single),
+            (r"((?!\n<|\u2403|#).)++", Text),
         ],
     }
 
