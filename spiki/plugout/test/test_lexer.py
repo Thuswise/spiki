@@ -32,8 +32,8 @@ class LexerTests(unittest.TestCase):
     def setUp(self):
         self.text = importlib.resources.read_text("spiki.plugout.test", "minimum.smk")
         self.sm = SpeechMark()
-        self.lexer = SpeechMarkLexer()
         self.sm.loads(self.text)
+        self.lexer = SpeechMarkLexer()
 
     def test_lexer(self):
         options = {}
@@ -73,10 +73,11 @@ class LexerTests(unittest.TestCase):
             """
         ).lstrip()
         rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        tokens = [i[0] for i in rv]
         self.assertNotIn(Token.Error, [i[0] for i in rv], rv)
-        self.assertEqual(2, [i[0] for i in rv].count(Token.String.Affix), rv)
-        self.assertEqual(1, [i[0] for i in rv].count(Token.Name.Variable.Global), rv)
-        self.assertEqual(1, [i[0] for i in rv].count(Token.Operator), rv)
+        self.assertEqual(2, tokens.count(Token.String.Affix), rv)
+        self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
+        self.assertEqual(1, tokens.count(Token.Operator), rv)
 
     def test_role_mode(self):
         text = "<ALICE:thinks>Testing times!"
@@ -157,6 +158,6 @@ class LexerTests(unittest.TestCase):
         tokens = [i[0] for i in rv]
         self.assertNotIn(Token.Error, tokens, rv)
         self.assertEqual(2, tokens.count(Token.String.Affix), rv)
-        self.assertEqual(1, [i[0] for i in rv].count(Token.Name.Variable.Global), rv)
-        self.assertEqual(2, [i[0] for i in rv].count(Token.Operator), rv)
+        self.assertEqual(1, tokens.count(Token.Name.Variable.Global), rv)
+        self.assertEqual(2, tokens.count(Token.Operator), rv)
         self.assertEqual(2, tokens.count(Token.String.Interpol), rv)
