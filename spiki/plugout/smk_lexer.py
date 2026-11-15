@@ -15,37 +15,28 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
-"""
-
-_       Generic.Strong
-*       Generic.Emph
-`       Generic.Prompt
-#       Comment.single
-{}      String.Interpol
-abc     String
-<ABC    Name.Variable.Global
-a=1     Name.Attribute
-.entrng Name.Function
-.@:!    Operator
-?&#,    Punctuation
-1.      Punctuation.Marker
-+       String.Affix
-
-"""
 import re
 
 try:
     from pygments.lexer import RegexLexer
+    from pygments.lexer import default
     from pygments.lexer import include
-    from pygments.token import Keyword
+    from pygments.token import Other
+    from pygments.token import Punctuation
     from pygments.token import String
     from pygments.token import Text
+    from pygments.token import Token
 except ModuleNotFoundError:
+    # Pygments is an optional dependency.
+    # These are fake definitions to avoid import errors.
     from types import SimpleNamespace as SN
     RegexLexer = object
     Keyword = SN()
+    Other = SN()
     String = SN(Affix=None)
     Text = SN()
+    default = str
+    include = str
 
 
 class SpeechMarkLexer(RegexLexer):
@@ -55,29 +46,28 @@ class SpeechMarkLexer(RegexLexer):
     mimetypes = ["text/x-speechmark", "text/speechmark"]
     flags = re.MULTILINE
 
+    """
+    "expand": [
+        (r"{", String.Affix),
+        (r"}(?!})", String.Affix, "#pop"),
+    ],
+    "cue": [
+        (r"^<", String.Affix),
+        (r"(?={)", String.Affix, "expand"),
+        (r">", String.Affix, ("#pop", "text")),
+    ],
+    """
     tokens = {
         "root": [
-            (r"^<", String.Affix, "cue"),
-            (r"(?=^[^<])", Text, "text"),
-        ],
-        "expand": [
-            (r"{", String.Affix),
-            (r"}", String.Affix),
-        ],
-        "cue": [
-            (r"^<", String.Affix),
-            include("expand"),
-            (r">", String.Affix, "#pop"),
+            # (r"(?=^<)", String.Affix, "cue"),
+            default("text")
         ],
         "text": [
-            (r"^<", String.Affix, "#pop"),
-            include("expand"),
-            (r".*\n", Text),
-        ],
-        "list": [
-            (r"foo\n", Keyword),
-            include("expand"),
-            (r".*\n", Text),
+            (r"\u2403", Other.EOT, ("#pop", "root")),
+            # (r"^<", String.Affix, ("#pop", "cue")),
+            # (r"(?={)", String.Affix, "expand"),
+            (r"[^\u2403]+", Text),
+            # default("#pop")
         ],
     }
 

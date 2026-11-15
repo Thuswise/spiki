@@ -15,11 +15,30 @@
 # You should have received a copy of the GNU General Public License along with spiki.
 # If not, see <https://www.gnu.org/licenses/>.
 
+"""
+
+_       Generic.Strong
+*       Generic.Emph
+`       Generic.Prompt
+#       Comment.single
+{}      String.Interpol
+abc     String
+<ABC    Name.Variable.Global
+a=1     Name.Attribute
+.entrng Name.Function
+.@:!    Operator
+?&#,    Punctuation
+1.      Punctuation.Marker
++       String.Affix
+
+"""
+
 import importlib.resources
 import unittest
 
 import pygments
 import pygments.lexers
+from pygments.token import Token
 
 from spiki.plugout.smk_lexer import SpeechMarkLexer
 from spiki.speechmark import SpeechMark
@@ -30,10 +49,25 @@ class LexerTests(unittest.TestCase):
     def setUp(self):
         self.text = importlib.resources.read_text("spiki.plugout.test", "minimum.smk")
         self.sm = SpeechMark()
-        print(self.sm.loads(self.text))
+        self.lexer = SpeechMarkLexer()
+        # print(self.sm.loads(self.text))
 
+    @unittest.skip("dev")
     def test_lexer(self):
         options = {}
-        lexer = SpeechMarkLexer()
-        rv = list(pygments.lex(self.text, lexer))
+        rv = list(pygments.lex(self.text, self.lexer))
         self.fail(rv)
+
+    def test_simple_text(self):
+        text = "Once upon a time...␃"
+        rv = list(self.lexer.get_tokens_unprocessed(text))
+        # rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        print(rv)
+        self.assertNotIn(Token.Error, [i[1] for i in rv], rv)
+
+    @unittest.skip("dev")
+    def test_empty_cue(self):
+        text = "<> Once upon a time...␃"
+        # rv = list(self.lexer.get_tokens_unprocessed(text))
+        rv = list(self.lexer.get_tokens(text, unfiltered=False))
+        self.assertNotIn(Token.Error, [i[1] for i in rv], rv)
